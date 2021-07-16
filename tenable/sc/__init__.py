@@ -341,8 +341,9 @@ class TenableSC(APISession):
         '''
         if not self._apikeys:
             resp = self.delete('token')
-        self._build_session()
+        self._close_session()
         self._apikeys = False
+
 
     @property
     def accept_risks(self):

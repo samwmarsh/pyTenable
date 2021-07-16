@@ -18,6 +18,7 @@ interface to use for your own uses, take a look at the RESTfly library.
 '''
 from __future__ import absolute_import
 import requests, sys, platform, logging, re, time, logging, warnings, json
+from appdirs import unicode
 from requests.exceptions import (
     ConnectionError as RequestsConnectionError,
     RequestException as RequestsRequestException
@@ -26,13 +27,13 @@ from tenable.utils import url_validator
 from tenable import __version__, __author__
 
 from tenable.errors import (
-		UnexpectedValueError,
-		InvalidInputError,
-		PermissionError,
-		NotFoundError,
-		UnsupportedError,
-		FileDownloadError,
-		ServerError
+    UnexpectedValueError,
+    InvalidInputError,
+    PermissionError,
+    NotFoundError,
+    UnsupportedError,
+    FileDownloadError,
+    ServerError, UnknownError, RetryError
 )
 
 class APIResultsIterator(object):
@@ -453,6 +454,14 @@ class APISession(object):
                 ),
             ])
         })
+
+    def _close_session(self):
+        '''
+        Requests session destroyer
+        '''
+        if self._session:
+            self._session.close()
+            self._session = None
 
     def _resp_error_check(self, response, **kwargs): #stub
         '''
