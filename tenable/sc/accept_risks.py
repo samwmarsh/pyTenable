@@ -16,6 +16,7 @@ Methods available on ``sc.accept_risks``:
     .. automethod:: details
     .. automethod:: list
 '''
+from typing import List, Dict
 from .base import SCEndpoint
 
 class AcceptRiskAPI(SCEndpoint):
@@ -79,8 +80,14 @@ class AcceptRiskAPI(SCEndpoint):
 
         return kw
 
-    def list(self, repo_ids=None, plugin_id=None, port=None,
-             org_ids=None, fields=None):
+    def list(
+            self,
+            repo_ids: List[int] = None,
+            plugin_id: int = None,
+            port: int = None,
+            org_ids: List[int] = None,
+            fields: List[str] = None
+    ) -> List:
         '''
         Retrieves the list of accepted risk rules.
 
@@ -137,7 +144,11 @@ class AcceptRiskAPI(SCEndpoint):
 
         return self._api.get('acceptRiskRule', params=params).json()['response']
 
-    def details(self, id, fields=None):
+    def details(
+            self,
+            id: int,
+            fields: List[str] = None
+    ) -> Dict:
         '''
         Retrieves the details of an accepted risk rule.
 
@@ -164,7 +175,10 @@ class AcceptRiskAPI(SCEndpoint):
         return self._api.get('acceptRiskRule/{}'.format(self._check('id', id, int)),
             params=params).json()['response']
 
-    def delete(self, id):
+    def delete(
+            self,
+            id: int
+    ) -> str:
         '''
         Removes the accepted risk rule from Tenable.sc
 
@@ -183,7 +197,11 @@ class AcceptRiskAPI(SCEndpoint):
         return self._api.delete('acceptRiskRule/{}'.format(
             self._check('id', id, int))).json()['response']
 
-    def apply(self, id, repo):
+    def apply(
+            self,
+            id: int,
+            repo: int
+    ) -> str:
         '''
         Applies the accept risk rule for either all repositories, or the
         repository specified.
@@ -208,7 +226,12 @@ class AcceptRiskAPI(SCEndpoint):
                 'repository': {'id': self._check('repo', repo, int)}
             }).json()['response']
 
-    def create(self, plugin_id, repos, **kw):
+    def create(
+            self,
+            plugin_id: int,
+            repos: List,
+            **kw
+    ) -> Dict:
         '''
         Creates a new accept risk rule.  Either ips, uuids, or asset_list must
         be specified.
