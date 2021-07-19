@@ -15,10 +15,11 @@ Methods available on ``sc.current``:
     .. automethod:: org
     .. automethod:: user
 '''
+from typing import Dict, List
 from .base import SCEndpoint
 
 class CurrentSessionAPI(SCEndpoint):
-    def associate_cert(self):
+    def associate_cert(self) -> Dict:
         '''
         Associates the certificate passed to the server with the current user's
         account.  This allows for authentication via certificate in subsequent
@@ -33,7 +34,7 @@ class CurrentSessionAPI(SCEndpoint):
         '''
         return self._api.post('currentUser/associateCert').json()['response']
 
-    def org(self, fields=None):
+    def org(self, fields: List[str] = None) -> Dict:
         '''
         Returns the organization of the current session.
 
@@ -57,7 +58,7 @@ class CurrentSessionAPI(SCEndpoint):
                                          for f in fields])
         return self._api.get('currentOrganization', params=params).json()['response']
 
-    def user(self, fields=None):
+    def user(self, fields: List[str] = None) -> Dict:
         '''
         Returns the user of the current session.
 
