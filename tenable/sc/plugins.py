@@ -14,6 +14,7 @@ Methods available on ``sc.plugins``:
     .. automethod:: list
     .. automethod:: details
 '''
+from typing import Dict, List
 from .base import SCEndpoint, SCResultsIterator
 from tenable.errors import UnexpectedValueError
 
@@ -23,7 +24,7 @@ class PluginResultsIterator(SCResultsIterator):
 
 
 class PluginAPI(SCEndpoint):
-    def _constructor(self, **kwargs):
+    def _constructor(self, **kwargs) -> Dict:
         '''
         Constructs the plugin query.
         '''
@@ -93,7 +94,7 @@ class PluginAPI(SCEndpoint):
         # Return the modified keyword dict to the caller.
         return kwargs
 
-    def list(self, **kwargs):
+    def list(self, **kwargs) -> 'PluginResultsIterator':
         '''
         Retrieves the list of plugins.
 
@@ -161,7 +162,11 @@ class PluginAPI(SCEndpoint):
                                          _query=query,
                                          _pages_total=pages)
 
-    def details(self, plugin_id, fields=None):
+    def details(
+            self,
+            plugin_id: int,
+            fields: List[str] = None
+    ) -> Dict:
         '''
         Returns the details for a specific plugin.
 
@@ -185,7 +190,7 @@ class PluginAPI(SCEndpoint):
         return self._api.get('plugin/{}'.format(self._check('plugin_id', plugin_id, int)),
                              params=params).json()['response']
 
-    def family_list(self, **kwargs):
+    def family_list(self, **kwargs) -> List:
         '''
         Returns the list of plugin families.
 
@@ -219,7 +224,11 @@ class PluginAPI(SCEndpoint):
         query = self._constructor(**kwargs)
         return self._api.get('pluginFamily', params=query).json()['response']
 
-    def family_details(self, plugin_id, fields=None):
+    def family_details(
+            self,
+            plugin_id: int,
+            fields: List[str] = None
+    ) -> Dict:
         '''
         Returns the details for the specified plugin family.
 
@@ -245,7 +254,11 @@ class PluginAPI(SCEndpoint):
 
         return self._api.get('pluginFamily/{}'.format(self._check('plugin_id', plugin_id, int)), params=params).json()['response']
 
-    def family_plugins(self, plugin_id, **kwargs):
+    def family_plugins(
+            self,
+            plugin_id: int,
+            **kwargs
+    ) -> 'PluginResultsIterator':
         '''
         Retrieves the plugins for the specified family.
 
