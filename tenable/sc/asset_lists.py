@@ -17,12 +17,17 @@ Methods available on ``sc.asset_lists``:
     .. automethod:: edit
     .. automethod:: list
 '''
+from typing import Union, Tuple, Dict, Optional, List, Any, AnyStr, IO
 from .base import SCEndpoint
 from tenable.errors import UnexpectedValueError
 from io import BytesIO
 
 class AssetListAPI(SCEndpoint):
-    def _dynamic_rules_constructor(self, rule, sub=False):
+    def _dynamic_rules_constructor(
+            self,
+            rule: Union[Dict, Tuple],
+            sub: Optional[bool] = False
+    ) -> Dict:
         '''
         Handles expanding the tuple format into the JSON formatted request.
         '''
@@ -100,7 +105,7 @@ class AssetListAPI(SCEndpoint):
             raise TypeError('rules {} not a tuple or dict'.format(rule))
         return resp
 
-    def _constructor(self, **kw):
+    def _constructor(self, **kw) -> Dict[str, Any]:
         '''
         Handles parsing the keywords and returns a asset-list definition document
         '''
@@ -295,7 +300,12 @@ class AssetListAPI(SCEndpoint):
 
         return kw
 
-    def create(self, name, list_type, **kw):
+    def create(
+            self,
+            name: str,
+            list_type: str,
+            **kw
+    ) -> Dict:
         '''
         Creates an asset-list.
 
@@ -440,7 +450,11 @@ class AssetListAPI(SCEndpoint):
         payload = self._constructor(**kw)
         return self._api.post('asset', json=payload).json()['response']
 
-    def details(self, id, fields=None):
+    def details(
+            self,
+            id: int,
+            fields: List[str] = None
+    ) -> Dict:
         '''
         Returns the details for a specific asset-list.
 
@@ -464,7 +478,11 @@ class AssetListAPI(SCEndpoint):
         return self._api.get('asset/{}'.format(self._check('id', id, int)),
             params=params).json()['response']
 
-    def edit(self, id, **kw):
+    def edit(
+            self,
+            id: int,
+            **kw
+    ) -> Dict:
         '''
         Edits an asset-list.
 
@@ -566,7 +584,7 @@ class AssetListAPI(SCEndpoint):
         return self._api.patch('asset/{}'.format(
             self._check('id', id, int)), json=payload).json()['response']
 
-    def delete(self, id):
+    def delete(self, id: int) -> Dict:
         '''
         Removes a asset-list.
 
@@ -584,7 +602,7 @@ class AssetListAPI(SCEndpoint):
         return self._api.delete('asset/{}'.format(
             self._check('id', id, int))).json()['response']
 
-    def list(self, fields=None):
+    def list(self, fields: List[str] = None) -> List:
         '''
         Retrieves the list of asset list definitions.
 
@@ -608,7 +626,11 @@ class AssetListAPI(SCEndpoint):
 
         return self._api.get('asset', params=params).json()['response']
 
-    def import_definition(self, fobj, name=None):
+    def import_definition(
+            self,
+            fobj: IO[AnyStr],
+            name: str = None
+    ) -> Dict:
         '''
         Imports an asset list definition from an asset list definition XML file.
 
@@ -632,7 +654,11 @@ class AssetListAPI(SCEndpoint):
             payload['name'] = self._check('name', name, str)
         return self._api.post('asset/import', json=payload).json()['response']
 
-    def export_definition(self, id, fobj=None):
+    def export_definition(
+            self,
+            id: int,
+            fobj: IO[AnyStr] = None
+    ) -> IO[AnyStr]:
         '''
         Exports an asset list definition and stored the data in the file-like
         object that was passed.
@@ -668,7 +694,12 @@ class AssetListAPI(SCEndpoint):
         resp.close()
         return fobj
 
-    def refresh(self, id, org_id, *repos):
+    def refresh(
+            self,
+            id: int,
+            org_id: int,
+            *repos: int
+    )  -> Dict:
         '''
         Initiates an on-demand recalculation of the asset list.  Note this
         endpoint requires being logged in as an admin user.
@@ -699,7 +730,12 @@ class AssetListAPI(SCEndpoint):
                 'repIDs': [{'id': self._check('repo:id', i, int)} for i in repos]
             }).json()['response']
 
-    def ldap_query(self, ldap_id, dn, search_string):
+    def ldap_query(
+            self,
+            ldap_id: int,
+            dn: str,
+            search_string: str
+    ) -> Dict:
         '''
         Performs a LDAP test query on the specified LDAP service configured.
 
@@ -726,7 +762,7 @@ class AssetListAPI(SCEndpoint):
                 'ldap': {'id': str(self._check('ldap_id', ldap_id, int))}
             }}).json()['response']
 
-    def tags(self):
+    def tags(self) -> List:
         '''
         Retrieves the list of unique tags associated to asset lists.
 
@@ -741,7 +777,11 @@ class AssetListAPI(SCEndpoint):
         '''
         return self._api.get('asset/tag').json()['response']
 
-    def share(self, id, *groups):
+    def share(
+            self,
+            id: int,
+            *groups: int
+    ) -> Dict:
         '''
         Shares the specified asset list to another user group.
 
