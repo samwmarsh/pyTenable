@@ -19,12 +19,13 @@ Methods available on ``sc.scanners``:
     .. automethod:: list
     .. automethod:: update_status
 '''
+from typing import Dict, List
 from .base import SCEndpoint
 from tenable.utils import dict_merge
 
 
 class ScannerAPI(SCEndpoint):
-    def _constructor(self, **kw):
+    def _constructor(self, **kw) -> Dict:
         '''
         Handles parsing the keywords and returns a scanner definition document
         '''
@@ -117,7 +118,12 @@ class ScannerAPI(SCEndpoint):
 
         return kw
 
-    def create(self, name, address, **kw):
+    def create(
+            self,
+            name: str,
+            address: str,
+            **kw
+    ) -> Dict:
         '''
         Creates a scanner.
 
@@ -170,7 +176,11 @@ class ScannerAPI(SCEndpoint):
         payload = self._constructor(**dict_merge(payload, kw))
         return self._api.post('scanner', json=payload).json()['response']
 
-    def details(self, id, fields=None):
+    def details(
+            self,
+            id: int,
+            fields: List[str] = None
+    ) -> Dict:
         '''
         Returns the details for a specific scanner.
 
@@ -195,7 +205,11 @@ class ScannerAPI(SCEndpoint):
         return self._api.get('scanner/{}'.format(self._check('id', id, int)),
             params=params).json()['response']
 
-    def edit(self, id, **kw):
+    def edit(
+            self,
+            id: int,
+            **kw
+    ) -> Dict:
         '''
         Edits a scanner.
 
@@ -240,7 +254,7 @@ class ScannerAPI(SCEndpoint):
         return self._api.patch('scanner/{}'.format(id),
             json=payload).json()['response']
 
-    def delete(self, id):
+    def delete(self, id: int) -> str:
         '''
         Removes the specified scanner.
 
@@ -259,7 +273,7 @@ class ScannerAPI(SCEndpoint):
         return self._api.delete('scanner/{}'.format(
             self._check('id', id, int))).json()['response']
 
-    def list(self, fields=None):
+    def list(self, fields: List[str] = None) -> List:
         '''
         Retrieves the list of scanner definitions.
 
@@ -284,7 +298,12 @@ class ScannerAPI(SCEndpoint):
 
         return self._api.get('scanner', params=params).json()['response']
 
-    def agent_scans(self, id, search, results=None):
+    def agent_scans(
+            self,
+            id: int,
+            search: str,
+            results: List[int] = None
+    ) -> List:
         '''
         Retrieves the list of agent scans that meed the specified search
         criteria.
@@ -312,7 +331,7 @@ class ScannerAPI(SCEndpoint):
         return self._api.post('scanner/{}/testScansQuery'.format(
             self._check('id', id, int)), json=payload).json()['response']
 
-    def update_status(self):
+    def update_status(self) -> List:
         '''
         Starts an on-demand scanner status update.
 
