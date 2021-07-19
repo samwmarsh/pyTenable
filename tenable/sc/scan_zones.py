@@ -17,10 +17,11 @@ Methods available on ``sc.scan_zones``:
     .. automethod:: edit
     .. automethod:: list
 '''
+from typing import Dict, List
 from .base import SCEndpoint
 
 class ScanZoneAPI(SCEndpoint):
-    def _constructor(self, **kw):
+    def _constructor(self, **kw) -> Dict:
         '''
         Handles parsing the keywords and returns a scan zone definition document
         '''
@@ -48,7 +49,11 @@ class ScanZoneAPI(SCEndpoint):
 
         return kw
 
-    def create(self, name, **kw):
+    def create(
+            self,
+            name: str,
+            **kw
+    ) -> Dict:
         '''
         Creates a scan zone.
 
@@ -76,7 +81,11 @@ class ScanZoneAPI(SCEndpoint):
         payload = self._constructor(**kw)
         return self._api.post('zone', json=payload).json()['response']
 
-    def details(self, id, fields=None):
+    def details(
+            self,
+            id: int,
+            fields: List[str] = None
+    ) -> Dict:
         '''
         Returns the details for a specific scan zone.
 
@@ -101,7 +110,11 @@ class ScanZoneAPI(SCEndpoint):
         return self._api.get('zone/{}'.format(self._check('id', id, int)),
             params=params).json()['response']
 
-    def edit(self, id, **kw):
+    def edit(
+            self,
+            id: int,
+            **kw
+    ) -> Dict:
         '''
         Edits a scan zone.
 
@@ -130,7 +143,7 @@ class ScanZoneAPI(SCEndpoint):
             json=payload).json()['response']
 
 
-    def list(self, fields=None):
+    def list(self, fields: List[str] = None) -> List:
         '''
         Retrieves the list of scan zone definitions.
 
@@ -155,7 +168,7 @@ class ScanZoneAPI(SCEndpoint):
 
         return self._api.get('zone', params=params).json()['response']
 
-    def delete(self, id):
+    def delete(self, id: int) -> str:
         '''
         Removes the specified scan zone.
 
