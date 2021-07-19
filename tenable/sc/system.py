@@ -18,12 +18,13 @@ Methods available on ``sc.system``:
     .. automethod:: set_locale
     .. automethod:: status
 '''
+from typing import Dict, IO, List
 from .base import SCEndpoint
 from io import BytesIO
 import time
 
 class SystemAPI(SCEndpoint):
-    def details(self):
+    def details(self) -> Dict:
         '''
         Retrieves information about the Tenable.sc instance.  This method should
         only be called before authentication has occurred.  As most of the
@@ -41,7 +42,12 @@ class SystemAPI(SCEndpoint):
         '''
         return self._api.get('system').json()['response']
 
-    def diagnostics(self, task=None, options=None, fobj=None):
+    def diagnostics(
+            self,
+            task: str = None,
+            options: List[str] = None,
+            fobj: IO = None
+    ) -> IO:
         '''
         Generates and downloads a diagnostic file for the purpose of
         troubleshooting an ailing Tenable.sc instance.
@@ -119,7 +125,7 @@ class SystemAPI(SCEndpoint):
         resp.close()
         return fobj
 
-    def current_locale(self):
+    def current_locale(self) -> Dict:
         '''
         Retrieves the current system locale that Tenable.sc has been set to.
 
@@ -134,7 +140,7 @@ class SystemAPI(SCEndpoint):
         '''
         return self._api.get('system/locale').json()['response']
 
-    def list_locales(self):
+    def list_locales(self) -> Dict:
         '''
         Retrieves the available system locales that Tenable.sc can be set to.
 
@@ -149,7 +155,7 @@ class SystemAPI(SCEndpoint):
         '''
         return self._api.get('system/locales').json()['response']
 
-    def set_locale(self, locale):
+    def set_locale(self, locale: str) -> str:
         '''
         Sets the system locale to be used.  This requires an administrator to
         perform this task and will be a global change.  The locale determines
@@ -173,7 +179,7 @@ class SystemAPI(SCEndpoint):
                 'PluginLocale': self._check('locale', locale, str)
             }).json()['response']
 
-    def status(self):
+    def status(self) -> Dict:
         '''
         Retrieves the current system status
 
