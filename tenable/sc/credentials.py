@@ -17,10 +17,11 @@ Methods available on ``sc.credentials``:
     .. automethod:: edit
     .. automethod:: list
 '''
+from typing import Dict, List
 from .base import SCEndpoint
 
 class CredentialAPI(SCEndpoint):
-    def _constructor(self, **kw):
+    def _constructor(self, **kw) -> Dict:
         '''
         Handles parsing the keywords and returns a credential definition document
         '''
@@ -392,7 +393,7 @@ class CredentialAPI(SCEndpoint):
 
         return kw
 
-    def _upload_files(self, **kw):
+    def _upload_files(self, **kw) -> Dict:
         '''
         Uploads the file objects specified and returns the filename attributes
         associated to each keyword.
@@ -407,7 +408,13 @@ class CredentialAPI(SCEndpoint):
                 kw[key] = self._api.files.upload(kw[key])
         return kw
 
-    def create(self, name, cred_type, auth_type, **kw):
+    def create(
+            self,
+            name: str,
+            cred_type: str,
+            auth_type: str,
+            **kw
+    ) -> Dict:
         '''
         Creates a credential.
 
@@ -684,7 +691,11 @@ class CredentialAPI(SCEndpoint):
         # Making the call.
         return self._api.post('credential', json=payload).json()['response']
 
-    def details(self, id, fields=None):
+    def details(
+            self,
+            id: int,
+            fields: List[str] = None
+    ) -> Dict:
         '''
         Returns the details for a specific credential.
 
@@ -709,7 +720,11 @@ class CredentialAPI(SCEndpoint):
         return self._api.get('credential/{}'.format(self._check('id', id, int)),
             params=params).json()['response']
 
-    def edit(self, id, **kw):
+    def edit(
+            self,
+            id: int,
+            **kw
+    ) -> Dict:
         '''
         Edits a credential.
 
@@ -900,7 +915,7 @@ class CredentialAPI(SCEndpoint):
         return self._api.patch('credential/{}'.format(
             self._check('id', id, int)), json=payload).json()['response']
 
-    def delete(self, id):
+    def delete(self, id: int) -> str:
         '''
         Removes a credential.
 
@@ -919,7 +934,7 @@ class CredentialAPI(SCEndpoint):
         return self._api.delete('credential/{}'.format(
             self._check('id', id, int))).json()['response']
 
-    def list(self, fields=None):
+    def list(self, fields: List[str] = None) -> List:
         '''
         Retrieves the list of credential definitions.
 
@@ -959,7 +974,11 @@ class CredentialAPI(SCEndpoint):
         '''
         return self._api.get('credential/tag').json()['response']
 
-    def share(self, id, *groups):
+    def share(
+            self,
+            id: int,
+            *groups: int
+    ) -> Dict:
         '''
         Shares the specified credential to another user group.
 
