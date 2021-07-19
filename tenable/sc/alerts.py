@@ -22,6 +22,7 @@ Methods available on ``sc.alerts``:
 .. _iCal Recurrence Rule:
     https://tools.ietf.org/html/rfc5545#section-3.3.10
 '''
+from typing import List, Dict
 from .base import SCEndpoint
 from tenable.utils import dict_merge
 
@@ -87,7 +88,10 @@ class AlertAPI(SCEndpoint):
         #     normalizing the action document.
         return kw
 
-    def list(self, fields=None):
+    def list(
+            self,
+            fields: List[str] = None
+    ) -> Dict:
         '''
         Retrieves the list of alerts.
 
@@ -112,7 +116,11 @@ class AlertAPI(SCEndpoint):
 
         return self._api.get('alert', params=params).json()['response']
 
-    def details(self, id, fields=None):
+    def details(
+            self,
+            id: int,
+            fields: List[str] = None
+    ) -> Dict:
         '''
         Returns the details for a specific alert.
 
@@ -137,7 +145,11 @@ class AlertAPI(SCEndpoint):
         return self._api.get('alert/{}'.format(self._check('id', id, int)),
             params=params).json()['response']
 
-    def create(self, *filters, **kw):
+    def create(
+            self,
+            *filters,
+            **kw
+    ) -> Dict:
         '''
         Creates a new alert.  The fields below are explicitly checked, however
         any additional parameters mentioned in the API docs can be passed to the
@@ -248,7 +260,12 @@ class AlertAPI(SCEndpoint):
         payload = self._constructor(*filters, **kw)
         return self._api.post('alert', json=payload).json()['response']
 
-    def edit(self, id, *filters, **kw):
+    def edit(
+            self,
+            id,
+            *filters,
+            **kw
+    ) -> Dict:
         '''
         Updates an existing alert.  All fields are optional and will overwrite
         the existing value.
@@ -295,7 +312,7 @@ class AlertAPI(SCEndpoint):
         return self._api.patch('alert/{}'.format(
             self._check('id', id, int)), json=payload).json()['response']
 
-    def delete(self, id):
+    def delete(self, id: int) -> str:
         '''
         Deletes the specified alert.
 
@@ -314,7 +331,7 @@ class AlertAPI(SCEndpoint):
         return self._api.delete('alert/{}'.format(
             self._check('id', id, int))).json()['response']
 
-    def execute(self, id):
+    def execute(self, id: int) -> Dict:
         '''
         Executes the specified alert.
 
