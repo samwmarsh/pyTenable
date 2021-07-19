@@ -22,12 +22,13 @@ Methods available on ``sc.scans``:
     .. automethod:: launch
     .. automethod:: list
 '''
+from typing import Dict, List
 from .base import SCEndpoint
 from tenable.utils import dict_merge
 from tenable.errors import UnexpectedValueError
 
 class ScanAPI(SCEndpoint):
-    def _constructor(self, **kw):
+    def _constructor(self, **kw) -> Dict:
         '''
         Handles parsing the keywords and returns a scan definition document
         '''
@@ -197,7 +198,7 @@ class ScanAPI(SCEndpoint):
 
         return kw
 
-    def list(self, fields=None):
+    def list(self, fields: List[str] = None) -> List:
         '''
         Retrieves the list of scan definitions.
 
@@ -222,7 +223,12 @@ class ScanAPI(SCEndpoint):
 
         return self._api.get('scan', params=params).json()['response']
 
-    def create(self, name, repo, **kw):
+    def create(
+            self,
+            name: str,
+            repo: int,
+            **kw
+    ) -> Dict:
         '''
         Creates a scan definition.
 
@@ -311,7 +317,11 @@ class ScanAPI(SCEndpoint):
         scan = self._constructor(**kw)
         return self._api.post('scan', json=scan).json()['response']
 
-    def details(self, id, fields=None):
+    def details(
+            self,
+            id: int,
+            fields: List[str] = None
+    ) -> Dict:
         '''
         Returns the details for a specific scan.
 
@@ -336,7 +346,11 @@ class ScanAPI(SCEndpoint):
         return self._api.get('scan/{}'.format(self._check('id', id, int)),
             params=params).json()['response']
 
-    def edit(self, id, **kw):
+    def edit(
+            self,
+            id: int,
+            **kw
+    ) -> Dict:
         '''
         Edits an existing scan definition.
 
@@ -407,7 +421,7 @@ class ScanAPI(SCEndpoint):
         return self._api.patch('scan/{}'.format(self._check('id', id, int)),
             json=scan).json()['response']
 
-    def delete(self, id):
+    def delete(self, id: int) -> List:
         '''
         Removes the specified scan from SecurityCenter.
 
@@ -426,7 +440,12 @@ class ScanAPI(SCEndpoint):
         return self._api.delete('scan/{}'.format(self._check('id', id, int))
             ).json()['response']
 
-    def copy(self, id, name, user_id):
+    def copy(
+            self,
+            id: int,
+            name: str,
+            user_id: int
+    ) -> Dict:
         '''
         Copies an existing scan definition.
 
@@ -453,7 +472,12 @@ class ScanAPI(SCEndpoint):
         return self._api.post('scan/{}/copy'.format(
             self._check('id', id, int)), json=payload).json()['response']['scan']
 
-    def launch(self, id, diagnostic_target=None, diagnostic_password=None):
+    def launch(
+            self,
+            id: int,
+            diagnostic_target: str = None,
+            diagnostic_password: str = None
+    ) -> Dict:
         '''
         Launches a scan definition.
 
