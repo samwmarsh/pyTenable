@@ -19,11 +19,12 @@ Methods available on ``sc.queries``:
     .. automethod:: share
     .. automethod:: tags
 '''
+from typing import Dict, Tuple, List
 from .base import SCEndpoint
 from tenable.utils import dict_merge
 
 class QueryAPI(SCEndpoint):
-    def _constructor(self, *filters, **kw):
+    def _constructor(self, *filters, **kw) -> Dict:
         '''
         Handles parsing the keywords and returns a query definition document
         '''
@@ -85,7 +86,14 @@ class QueryAPI(SCEndpoint):
         return kw
 
 
-    def create(self, name, tool, data_type, *filters, **kw):
+    def create(
+            self,
+            name: str,
+            tool: str,
+            data_type: str,
+            *filters: Tuple,
+            **kw
+    ) -> Dict:
         '''
         Creates a query.
 
@@ -142,7 +150,11 @@ class QueryAPI(SCEndpoint):
         payload = self._constructor(*filters, **kw)
         return self._api.post('query', json=payload).json()['response']
 
-    def details(self, id, fields=None):
+    def details(
+            self,
+            id: int,
+            fields: List[str] = None
+    ) -> Dict:
         '''
         Returns the details for a specific query.
 
@@ -167,7 +179,12 @@ class QueryAPI(SCEndpoint):
         return self._api.get('query/{}'.format(self._check('id', id, int)),
             params=params).json()['response']
 
-    def edit(self, id, *filters, **kw):
+    def edit(
+            self,
+            id: int,
+            *filters: Tuple,
+            **kw
+    ) -> Dict:
         '''
         Edits a query.
 
@@ -220,7 +237,7 @@ class QueryAPI(SCEndpoint):
         return self._api.patch('query/{}'.format(
             self._check('id', id, int)), json=payload).json()['response']
 
-    def delete(self, id):
+    def delete(self, id: int) -> str:
         '''
         Removes a query.
 
@@ -239,7 +256,7 @@ class QueryAPI(SCEndpoint):
         return self._api.delete('query/{}'.format(
             self._check('id', id, int))).json()['response']
 
-    def list(self, fields=None):
+    def list(self, fields: List[str] = None) -> List:
         '''
         Retrieves the list of query definitions.
 
@@ -264,7 +281,11 @@ class QueryAPI(SCEndpoint):
 
         return self._api.get('query', params=params).json()['response']
 
-    def share(self, id, *groups):
+    def share(
+            self,
+            id: int,
+            *groups: int
+    ) -> Dict:
         '''
         Shares the specified query to another user group.
 
@@ -286,7 +307,7 @@ class QueryAPI(SCEndpoint):
                 'groups': [{'id': self._check('group:id', i, int)}
                     for i in groups]}).json()['response']
 
-    def tags(self):
+    def tags(self) -> List:
         '''
         Retrieves the list of unique tags associated to queries.
 
