@@ -13,10 +13,11 @@ Methods available on ``sc.status``:
 
     .. automethod:: status
 '''
+from typing import Dict
 from .base import SCEndpoint
 
 class StatusAPI(SCEndpoint):
-    def status(self):
+    def status(self) -> Dict:
         '''
         Retrieves license & status information about the Tenable.sc instance.
 
