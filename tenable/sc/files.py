@@ -13,10 +13,11 @@ Methods available on ``sc.files``:
     .. automethod:: clear
     .. automethod:: upload
 '''
+from typing import IO
 from .base import SCEndpoint
 
 class FileAPI(SCEndpoint):
-    def upload(self, fobj):
+    def upload(self, fobj: IO) -> str:
         '''
         Uploads a file into SecurityCenter and returns the file identifier
         to be used for subsequent calls.
@@ -34,7 +35,7 @@ class FileAPI(SCEndpoint):
         return self._api.post('file/upload', files={
             'Filedata': fobj}).json()['response']['filename']
 
-    def clear(self, filename):
+    def clear(self, filename: str) -> str:
         '''
         Removes the requested file from Tenable.sc.
 
