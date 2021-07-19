@@ -14,10 +14,11 @@ Methods available on ``sc.feeds``:
     .. automethod:: status
     .. automethod:: update
 '''
+from typing import Dict, IO
 from .base import SCEndpoint
 
 class FeedAPI(SCEndpoint):
-    def status(self, feed_type=None):
+    def status(self, feed_type: str = None) -> Dict:
         '''
         Returns the status of either a specific feed type (if requested) or all
         of the feed types if nothing is specifically asked.
@@ -55,7 +56,7 @@ class FeedAPI(SCEndpoint):
         else:
             return self._api.get('feed/{}'.format(feed_type)).json()['response']
 
-    def update(self, feed_type=None):
+    def update(self, feed_type: str = None) -> None:
         '''
         Initiates an on-line feed update based on the specified feed_type.  If
         no feed type is specified, then it will default to initiating an update
@@ -75,7 +76,11 @@ class FeedAPI(SCEndpoint):
             self._check('feed_type', feed_type, str, default='all', choices=[
                 'active', 'passive', 'lce', 'sc', 'all'])), json={})
 
-    def process(self, feed_type, fobj):
+    def process(
+            self,
+            feed_type: str,
+            fobj: IO
+    ) -> None:
         '''
         Initiates an off-line feed update based on the specified feed_type using
         the file object passed as the update file.
