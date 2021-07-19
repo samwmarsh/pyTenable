@@ -26,12 +26,12 @@ Methods available on ``sc.repositories``:
     .. automethod:: remote_sync
 '''
 import semver
-
+from typing import Dict, List, IO
 from .base import SCEndpoint
 
 
 class RepositoryAPI(SCEndpoint):
-    def _constructor(self, **kwargs):
+    def _constructor(self, **kwargs) -> Dict:
         '''
         Repository document constructor
         '''
@@ -126,7 +126,7 @@ class RepositoryAPI(SCEndpoint):
 
         return kwargs
 
-    def _rules_constructor(self, **kwargs):
+    def _rules_constructor(self, **kwargs) -> Dict:
         '''
         Accept/Recast Rule Query Creator
         '''
@@ -150,7 +150,11 @@ class RepositoryAPI(SCEndpoint):
                                      for f in kwargs['fields']])
         return kwargs
 
-    def list(self, fields=None, repo_type=None):
+    def list(
+            self,
+            fields: List[str] = None,
+            repo_type: str = None
+    ) -> List:
         '''
         Retrieves a list of repositories.
 
@@ -188,7 +192,7 @@ class RepositoryAPI(SCEndpoint):
                                          for f in fields])
         return self._api.get('repository', params=params).json()['response']
 
-    def create(self, **kwargs):
+    def create(self, **kwargs) -> Dict:
         '''
         Creates a new repository
 
@@ -348,7 +352,11 @@ class RepositoryAPI(SCEndpoint):
 
         return self._api.post('repository', json=kwargs).json()['response']
 
-    def details(self, repository_id, fields=None):
+    def details(
+            self,
+            repository_id: int,
+            fields: List[str] = None
+    ) -> Dict:
         '''
         Retrieves the details for the specified repository.
 
@@ -375,7 +383,7 @@ class RepositoryAPI(SCEndpoint):
         return self._api.get('repository/{}'.format(
             self._check('repository_id', repository_id, int)), params=params).json()['response']
 
-    def delete(self, repository_id):
+    def delete(self, repository_id: int) -> str:
         '''
         Remove the specified repository from Tenable.sc
 
@@ -394,7 +402,11 @@ class RepositoryAPI(SCEndpoint):
         return self._api.delete('repository/{}'.format(
             self._check('repository_id', repository_id, int))).json()['response']
 
-    def edit(self, repository_id, **kwargs):
+    def edit(
+            self,
+            repository_id: int,
+            **kwargs
+    ) -> Dict:
         '''
         Updates an existing repository
 
@@ -462,7 +474,11 @@ class RepositoryAPI(SCEndpoint):
         return self._api.patch('repository/{}'.format(
             self._check('repository_id', repository_id, int)), json=kwargs).json()['response']
 
-    def accept_risk_rules(self, repository_id, **kwargs):
+    def accept_risk_rules(
+            self,
+            repository_id: int,
+            **kwargs
+    ) -> List:
         '''
         Retrieves the accepted risk rules associated with the specified
         repository.
@@ -487,7 +503,11 @@ class RepositoryAPI(SCEndpoint):
         return self._api.get('repository/{}/acceptRiskRule'.format(
             self._check('repository_id', repository_id, int)), params=params).json()['response']
 
-    def recast_risk_rules(self, repository_id, **kwargs):
+    def recast_risk_rules(
+            self,
+            repository_id: int,
+            **kwargs
+    ) -> List:
         '''
         Retrieves the recast risk rules associated with the specified
         repository.
@@ -513,7 +533,13 @@ class RepositoryAPI(SCEndpoint):
         return self._api.get('repository/{}/recastRiskRule'.format(
             self._check('repository_id', repository_id, int)), params=params).json()['response']
 
-    def asset_intersections(self, repository_id, uuid=None, ip_address=None, dns=None):
+    def asset_intersections(
+            self,
+            repository_id: int,
+            uuid: str = None,
+            ip_address: str = None,
+            dns: str = None
+    ) -> List:
         '''
         Retrieves the asset lists that a UUID, DNS address, or IP exists in.
 
@@ -545,7 +571,11 @@ class RepositoryAPI(SCEndpoint):
             self._check('repository_id', repository_id, int)),
             params=params).json()['response'].get('assets')
 
-    def import_repository(self, repository_id, fobj):
+    def import_repository(
+            self,
+            repository_id: int,
+            fobj: IO
+    ) -> Dict:
         '''
         Imports the repository archive for an offline repository.
 
@@ -569,7 +599,11 @@ class RepositoryAPI(SCEndpoint):
             'file': self._api.files.upload(fobj)
         }).json()['response']
 
-    def export_repository(self, repository_id, fobj):
+    def export_repository(
+            self,
+            repository_id: int,
+            fobj: IO
+    ) -> IO:
         '''
         Exports the repository and writes the archive tarball into the file
         object passed.
@@ -600,7 +634,7 @@ class RepositoryAPI(SCEndpoint):
         resp.close()
         return fobj
 
-    def remote_sync(self, repository_id):
+    def remote_sync(self, repository_id: int) -> Dict:
         '''
         Initiates a remote synchronization with a downstream Tenable.sc
         instance.  This action can only be performed on an offline repository.
@@ -620,7 +654,7 @@ class RepositoryAPI(SCEndpoint):
         return self._api.post('repository/{}/sync'.format(
             self._check('repository_id', repository_id, int)), json={}).json()['response']
 
-    def mobile_sync(self, repository_id):
+    def mobile_sync(self, repository_id: int) -> Dict:
         '''
         Initiates a MDM synchronization with the configured MDM source on the
         mobile repository specified.
@@ -641,7 +675,14 @@ class RepositoryAPI(SCEndpoint):
         return self._api.post('repository/{}/updateMobileData'.format(
             self._check('repository_id', repository_id, int)), json={}).json()['response']
 
-    def device_info(self, repository_id, dns=None, ip_address=None, uuid=None, fields=None):
+    def device_info(
+            self,
+            repository_id: int,
+            dns: str = None,
+            ip_address: str = None,
+            uuid: str = None,
+            fields: List[str] = None
+    ) -> Dict:
         '''
         Retrieves the device information for the requested device on the
         associated repository.
@@ -688,7 +729,12 @@ class RepositoryAPI(SCEndpoint):
         return self._api.get('repository/{}/{}'.format(
             self._check('repository_id', repository_id, int), method), params=params).json()['response']
 
-    def remote_authorize(self, host, username, password):
+    def remote_authorize(
+            self,
+            host: str,
+            username: str,
+            password: str
+    ) -> str:
         '''
         Authorized communication to a downstream Tenable.sc instance with the
         provided username and password.
@@ -714,7 +760,7 @@ class RepositoryAPI(SCEndpoint):
             'password': self._check('password', password, str)
         }).json()['response']
 
-    def remote_fetch(self, host):
+    def remote_fetch(self, host: str) -> List:
         '''
         Retrieves the list of repositories from the specified downstream
         Tenable.sc instance.
