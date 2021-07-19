@@ -23,6 +23,7 @@ Methods available on ``sc.policies``:
     .. automethod:: template_details
     .. automethod:: template_list
 '''
+from typing import Dict, List, Optional, IO
 from .base import SCEndpoint
 from tenable.errors import UnexpectedValueError
 from tenable.utils import dict_merge, policy_settings
@@ -30,7 +31,7 @@ from io import BytesIO
 import json
 
 class ScanPolicyAPI(SCEndpoint):
-    def _constructor(self, **kw):
+    def _constructor(self, **kw) -> Dict:
         '''
         Document constructor for scan policies.
         '''
@@ -90,7 +91,7 @@ class ScanPolicyAPI(SCEndpoint):
             del(kw['owner_id'])
         return kw
 
-    def template_list(self, fields=None):
+    def template_list(self, fields: List[str] = None) -> List:
         '''
         Retrieved the list of scan policy templates.
 
@@ -118,7 +119,12 @@ class ScanPolicyAPI(SCEndpoint):
 
         return self._api.get('policyTemplate', params=params).json()['response']
 
-    def template_details(self, id, fields=None, remove_editor=True):
+    def template_details(
+            self,
+            id: int,
+            fields: List[str] = None,
+            remove_editor: Optional[bool] = True
+    ) -> Dict:
         '''
         Retrieves the details for a specified policy template.
 
@@ -175,7 +181,7 @@ class ScanPolicyAPI(SCEndpoint):
                 del(resp['editor'])
         return resp
 
-    def list(self, fields=None):
+    def list(self, fields: List[str] = None) -> Dict:
         '''
         Retrieved the list of Scan policies configured.
 
@@ -203,7 +209,11 @@ class ScanPolicyAPI(SCEndpoint):
 
         return self._api.get('policy', params=params).json()['response']
 
-    def details(self, id, fields=None):
+    def details(
+            self,
+            id: int,
+            fields: List[str] = None
+    ) -> Dict:
         '''
         Retrieves the details for a specified policy.
 
@@ -232,7 +242,7 @@ class ScanPolicyAPI(SCEndpoint):
         return self._api.get('policy/{}'.format(self._check('id', id, int)),
             params=params).json()['response']
 
-    def create(self, **kw):
+    def create(self, **kw) -> Dict:
         '''
         Creates a new scan policy
 
@@ -291,7 +301,11 @@ class ScanPolicyAPI(SCEndpoint):
         policy = self._constructor(**kw)
         return self._api.post('policy', json=policy).json()['response']
 
-    def edit(self, id, **kw):
+    def edit(
+            self,
+            id: int,
+            **kw
+    ) -> Dict:
         '''
         Edits an existing scan policy
 
@@ -350,7 +364,7 @@ class ScanPolicyAPI(SCEndpoint):
         return self._api.patch('policy/{}'.format(
             self._check('id', id, int)), json=policy).json()['response']
 
-    def delete(self, id):
+    def delete(self, id: int) -> str:
         '''
         Removes a configured scan policy.
 
@@ -369,7 +383,11 @@ class ScanPolicyAPI(SCEndpoint):
         return self._api.delete('policy/{}'.format(
             self._check('id', id, int))).json()['response']
 
-    def copy(self, id, name=None):
+    def copy(
+            self,
+            id: int,
+            name: str = None
+    ) -> Dict:
         '''
         Clones the specified scan policy
 
@@ -393,7 +411,11 @@ class ScanPolicyAPI(SCEndpoint):
         return self._api.post('policy/{}/copy'.format(
             self._check('id', id, int)), json=payload).json()['response']
 
-    def export_policy(self, id, fobj=None):
+    def export_policy(
+            self,
+            id: int,
+            fobj: IO = None
+    ) -> IO:
         '''
         Export the specified scan policy
 
@@ -433,7 +455,13 @@ class ScanPolicyAPI(SCEndpoint):
         resp.close()
         return fobj
 
-    def import_policy(self, name, fobj, description=None, tags=None):
+    def import_policy(
+            self,
+            name: str,
+            fobj: IO,
+            description: str = None,
+            tags: str = None
+    ) -> str:
         '''
         Imports a scan policy into Tenable.sc
 
@@ -461,7 +489,11 @@ class ScanPolicyAPI(SCEndpoint):
         payload['filename'] = self._api.files.upload(fobj)
         return self._api.post('policy/import', json=payload).json()['response']
 
-    def share(self, id, *groups):
+    def share(
+            self,
+            id: int,
+            *groups: int
+    ) -> Dict:
         '''
         Shares the policy with other user groups.
 
@@ -485,7 +517,7 @@ class ScanPolicyAPI(SCEndpoint):
                 'id': self._check('group_id', i, int)}
                     for i in groups]}).json()['response']
 
-    def tags(self):
+    def tags(self) -> List:
         '''
         Returns the list of unique tags associated to scan policies.
 
