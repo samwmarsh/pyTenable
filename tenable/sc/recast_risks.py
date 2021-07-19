@@ -16,11 +16,12 @@ Methods available on ``sc.recast_risks``:
     .. automethod:: details
     .. automethod:: list
 '''
+from typing import Dict, List
 from .base import SCEndpoint
 
 
 class RecastRiskAPI(SCEndpoint):
-    def _constructor(self, **kwargs):
+    def _constructor(self, **kwargs) -> Dict:
         '''
         document creator for recastRisk creation and update calls.
         '''
@@ -83,8 +84,14 @@ class RecastRiskAPI(SCEndpoint):
 
         return kwargs
 
-    def list(self, repo_ids=None, plugin_id=None, port=None,
-             org_ids=None, fields=None):
+    def list(
+            self,
+            repo_ids: List[int] = None,
+            plugin_id: int = None,
+            port: int = None,
+            org_ids: List[int] = None,
+            fields: List[str] = None
+    ) -> List:
         '''
         Retrieves the list of recasted risk rules.
 
@@ -141,7 +148,11 @@ class RecastRiskAPI(SCEndpoint):
 
         return self._api.get('recastRiskRule', params=params).json()['response']
 
-    def details(self, risk_id, fields=None):
+    def details(
+            self,
+            risk_id: int,
+            fields: List[str] = None
+    ) -> Dict:
         '''
         Retrieves the details of an recast risk rule.
 
@@ -168,7 +179,7 @@ class RecastRiskAPI(SCEndpoint):
         return self._api.get('recastRiskRule/{}'.format(self._check('risk_id', risk_id, int)),
                              params=params).json()['response']
 
-    def delete(self, risk_id):
+    def delete(self, risk_id: int) -> str:
         '''
         Removes the recast risk rule from Tenable.sc
 
@@ -187,7 +198,11 @@ class RecastRiskAPI(SCEndpoint):
         return self._api.delete('recastRiskRule/{}'.format(
             self._check('risk_id', risk_id, int))).json()['response']
 
-    def apply(self, risk_id, repo):
+    def apply(
+            self,
+            risk_id: int,
+            repo: int
+    ) -> str:
         '''
         Applies the recast risk rule for either all repositories, or the
         repository specified.
@@ -212,7 +227,13 @@ class RecastRiskAPI(SCEndpoint):
             'repository': {'id': self._check('repo', repo, int)}
         }).json()['response']
 
-    def create(self, plugin_id, repos, severity_id, **kwargs):
+    def create(
+            self,
+            plugin_id: int,
+            repos: List[int],
+            severity_id: int,
+            **kwargs
+    ) -> Dict:
         '''
         Creates a new recast risk rule.  Either ips, uuids, or asset_list must
         be specified.
