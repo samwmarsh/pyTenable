@@ -27,12 +27,17 @@ Methods available on ``sc.scan_instances``:
     .. automethod:: resume
     .. automethod:: stop
 '''
+from typing import Dict, List, IO, Optional
 from .base import SCEndpoint
 from tenable.utils import dict_merge
 from io import BytesIO
 
 class ScanResultAPI(SCEndpoint):
-    def copy(self, id, *users):
+    def copy(
+            self,
+            id: int,
+            *users: int
+    ) -> Dict:
         '''
         Clones the scan instance.
 
@@ -56,7 +61,7 @@ class ScanResultAPI(SCEndpoint):
         return self._api.post('scanResult/{}/copy'.format(
             self._check('id', id, int)), json=payload).json()['response']
 
-    def delete(self, id):
+    def delete(self, id: int) -> str:
         '''
         Removes the scan instance from TenableSC.
 
@@ -75,7 +80,11 @@ class ScanResultAPI(SCEndpoint):
         return self._api.delete('scanResult/{}'.format(
             self._check('id', id, int))).json()['response']
 
-    def details(self, id, fields=None):
+    def details(
+            self,
+            id: int,
+            fields: List[str] = None
+    ) -> Dict:
         '''
         Retrieves the details for the specified scan instance.
 
@@ -111,7 +120,11 @@ class ScanResultAPI(SCEndpoint):
         return self._api.get('scanResult/{}'.format(self._check('id', id, int)),
             params=params).json()['response']
 
-    def email(self, id, *emails):
+    def email(
+            self,
+            id: int,
+            *emails: str
+    ) -> str:
         '''
         Emails the scan results of the requested scan to the email addresses
         defined.
@@ -133,7 +146,12 @@ class ScanResultAPI(SCEndpoint):
             self._check('id', id, int)), json={'email': ','.join(
                 [self._check('address', e, str) for e in emails])}).json()['response']
 
-    def export_scan(self, id, fobj=None, export_format=None):
+    def export_scan(
+            self,
+            id: int,
+            fobj: IO = None,
+            export_format: str = None
+    ) -> IO:
         '''
         Downloads the results of the scan.
 
@@ -179,7 +197,12 @@ class ScanResultAPI(SCEndpoint):
         resp.close()
         return fobj
 
-    def import_scan(self, fobj, repo, **kw):
+    def import_scan(
+            self,
+            fobj: IO,
+            repo: int,
+            **kw
+    ) -> str:
         '''
         Imports a nessus file into Tenable.sc.
 
@@ -213,7 +236,11 @@ class ScanResultAPI(SCEndpoint):
         return self._api.post(
             'scanResult/import', json=payload).json()['response']
 
-    def reimport_scan(self, id, **kw):
+    def reimport_scan(
+            self,
+            id: int,
+            **kw
+    ) -> str:
         '''
         Re-imports an existing scan into the cumulative repository.
 
@@ -242,7 +269,13 @@ class ScanResultAPI(SCEndpoint):
         return self._api.post('scanResult/{}/import'.format(self._check(
             'id', id, int)), json=payload).json()['response']
 
-    def list(self, fields=None, start_time=None, end_time=None, optimize=True):
+    def list(
+            self,
+            fields: List[str] = None,
+            start_time: int = None,
+            end_time: int = None,
+            optimize: Optional[bool] = True
+    ) -> Dict:
         '''
         Retrieves the list of scan instances.
 
@@ -284,7 +317,7 @@ class ScanResultAPI(SCEndpoint):
 
         return self._api.get('scanResult', params=params).json()['response']
 
-    def pause(self, id):
+    def pause(self, id: int) -> Dict:
         '''
         Pauses a running scan instance.  Note that this will not impact agent
         scan instances.
@@ -304,7 +337,7 @@ class ScanResultAPI(SCEndpoint):
         return self._api.post('scanResult/{}/pause'.format(self._check(
             'id', id, int))).json()['response']
 
-    def resume(self, id):
+    def resume(self, id: int) -> Dict:
         '''
         Resumes a paused scan instance.  Note that this will not impact agent
         scan instances.
@@ -324,7 +357,7 @@ class ScanResultAPI(SCEndpoint):
         return self._api.post('scanResult/{}/resume'.format(self._check(
             'id', id, int))).json()['response']
 
-    def stop(self, id):
+    def stop(self, id: int) -> Dict:
         '''
         Stops a running scan instance.  Note that this will not impact agent
         scan instances.
