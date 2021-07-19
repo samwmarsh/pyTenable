@@ -17,10 +17,11 @@ Methods available on ``sc.groups``:
     .. automethod:: edit
     .. automethod:: list
 '''
+from typing import Dict, List
 from .base import SCEndpoint
 
 class GroupAPI(SCEndpoint):
-    def _constructor(self, **kw):
+    def _constructor(self, **kw) -> Dict:
         '''
         Handles parsing the keywords and returns a group definition document
         '''
@@ -53,7 +54,11 @@ class GroupAPI(SCEndpoint):
                 del(kw[k])
         return kw
 
-    def create(self, name, **kw):
+    def create(
+            self,
+            name: str,
+            **kw
+    ) -> Dict:
         '''
         Creates a group.
 
@@ -94,7 +99,11 @@ class GroupAPI(SCEndpoint):
         payload = self._constructor(**kw)
         return self._api.post('group', json=payload).json()['response']
 
-    def details(self, id, fields=None):
+    def details(
+            self,
+            id: int,
+            fields: List[str] = None
+    ) -> Dict:
         '''
         Returns the details for a specific group.
 
@@ -119,7 +128,11 @@ class GroupAPI(SCEndpoint):
         return self._api.get('group/{}'.format(self._check('id', id, int)),
             params=params).json()['response']
 
-    def edit(self, id, **kw):
+    def edit(
+            self,
+            id: int,
+            **kw
+    ) -> Dict:
         '''
         Edits a group.
 
@@ -161,7 +174,7 @@ class GroupAPI(SCEndpoint):
         return self._api.patch('group/{}'.format(
             self._check('id', id, int)), json=payload).json()['response']
 
-    def delete(self, id):
+    def delete(self, id: int) -> str:
         '''
         Removes a group.
 
@@ -180,7 +193,7 @@ class GroupAPI(SCEndpoint):
         return self._api.delete('group/{}'.format(
             self._check('id', id, int))).json()['response']
 
-    def list(self, fields=None):
+    def list(self, fields: List[str] = None) -> List:
         '''
         Retrieves the list of group definitions.
 
