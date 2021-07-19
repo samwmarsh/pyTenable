@@ -17,10 +17,11 @@ Methods available on ``sc.users``:
     .. automethod:: edit
     .. automethod:: list
 '''
+from typing import Dict, List
 from .base import SCEndpoint
 
 class UserAPI(SCEndpoint):
-    def _constructor(self, **kw):
+    def _constructor(self, **kw) -> Dict:
         '''
         Handles parsing the keywords and returns a user definition document
         '''
@@ -140,7 +141,13 @@ class UserAPI(SCEndpoint):
 
         return kw
 
-    def create(self, username, password, role, **kw):
+    def create(
+            self,
+            username: str,
+            password: str,
+            role: int,
+            **kw
+    ) -> Dict:
         '''
         Creates a user.
 
@@ -236,7 +243,11 @@ class UserAPI(SCEndpoint):
         payload = self._constructor(**kw)
         return self._api.post('user', json=payload).json()['response']
 
-    def details(self, id, fields=None):
+    def details(
+            self,
+            id: int,
+            fields: List[str] = None
+    ) -> Dict:
         '''
         Returns the details for a specific user.
 
@@ -261,7 +272,11 @@ class UserAPI(SCEndpoint):
         return self._api.get('user/{}'.format(self._check('id', id, int)),
             params=params).json()['response']
 
-    def edit(self, id, **kw):
+    def edit(
+            self,
+            id: int,
+            **kw
+    ) -> Dict:
         '''
         Edits a user.
 
@@ -353,7 +368,7 @@ class UserAPI(SCEndpoint):
         return self._api.patch('user/{}'.format(
             self._check('id', id, int)), json=payload).json()['response']
 
-    def delete(self, id):
+    def delete(self, id: int) -> str:
         '''
         Removes a user.
 
@@ -372,7 +387,7 @@ class UserAPI(SCEndpoint):
         return self._api.delete('user/{}'.format(
             self._check('id', id, int))).json()['response']
 
-    def list(self, fields=None):
+    def list(self, fields: List[str] = None) -> List:
         '''
         Retrieves the list of user definitions.
 
