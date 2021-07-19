@@ -202,7 +202,7 @@ class AnalysisAPI(SCEndpoint):
                 _pages_total=pages,
             )
 
-    def vulns(self, *filters, **kw):
+    def vulns(self, *filters, **kw) -> 'AnalysisResultsIterator':
         '''
         Query's the analysis API for vulnerability data within the cumulative
         repositories.
@@ -353,7 +353,12 @@ class AnalysisAPI(SCEndpoint):
         # call the _analysis method and return the results to the caller.
         return self._analysis(*filters, **kw)
 
-    def scan(self, scan_id, *filters, **kw):
+    def scan(
+            self,
+            scan_id: int,
+            *filters,
+            **kw
+    ) -> 'AnalysisResultsIterator':
         '''
         Queries the analysis API for vulnerability data from a specific scan.
 
@@ -434,7 +439,7 @@ class AnalysisAPI(SCEndpoint):
         kw['scan_id'] = self._check('scan_id', scan_id, int)
         return self.vulns(*filters, **kw)
 
-    def events(self, *filters, **kw):
+    def events(self, *filters, **kw) -> 'AnalysisResultsIterator':
         '''
         Queries the analysis API for event data from the Log Correlation Engine
 
@@ -534,7 +539,7 @@ class AnalysisAPI(SCEndpoint):
     #    kw['type'] = 'user'
     #    return self._analysis(*filters, **kw)
 
-    def console(self, *filters, **kw):
+    def console(self, *filters, **kw) -> 'AnalysisResultsIterator':
         '''
         Queries the analysis API for log data from the Tenable.sc Console itself.
 
@@ -574,7 +579,7 @@ class AnalysisAPI(SCEndpoint):
         kw['type'] = 'scLog'
         return self._analysis(*filters, **kw)
 
-    def mobile(self, *filters, **kw):
+    def mobile(self, *filters, **kw) -> 'AnalysisResultsIterator':
         '''
         Queries the analysis API for mobile data collected from querying one or
         many MDM solutions.
