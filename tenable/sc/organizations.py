@@ -20,11 +20,12 @@ Methods available on ``sc.organizations``:
     .. automethod:: manager_edit
     .. automethod:: managers_list
 '''
+from typing import Dict, List
 from tenable.sc.base import SCEndpoint
 
 
 class OrganizationAPI(SCEndpoint):
-    def _constructor(self, **kwargs):
+    def _constructor(self, **kwargs) -> Dict:
         '''
         Organization document constructor
         '''
@@ -137,7 +138,11 @@ class OrganizationAPI(SCEndpoint):
 
         return kwargs
 
-    def create(self, name, **kwargs):
+    def create(
+            self,
+            name: str,
+            **kwargs
+    ) -> Dict:
         '''
         Create a new organization
         :sc-api:`SC Organization Create <Organization.html#organization_POST>`
@@ -200,7 +205,7 @@ class OrganizationAPI(SCEndpoint):
         kwargs = self._constructor(**kwargs)
         return self._api.post('organization', json=kwargs).json()['response']
 
-    def list(self, fields=None):
+    def list(self, fields: List[str] = None) -> List:
         '''
         Retrieves a list of organizations.
         :sc-api:`SC organization List <Organization.html#OrganizationRESTReference-/organization>`
@@ -222,7 +227,11 @@ class OrganizationAPI(SCEndpoint):
                                          for f in fields])
         return self._api.get('organization', params=params).json()['response']
 
-    def details(self, organization_id, fields=None):
+    def details(
+            self,
+            organization_id: int,
+            fields: List[str] = None
+    ) -> Dict:
         '''
         Retrieves the details for the specified organization.
         :sc-api:`SC Organization Details <Organization.html#organization_id_GET>`
@@ -245,7 +254,11 @@ class OrganizationAPI(SCEndpoint):
         return self._api.get('organization/{}'.format(
             self._check('organization_id', organization_id, int)), params=params).json()['response']
 
-    def edit(self, organization_id, **kwargs):
+    def edit(
+            self,
+            organization_id: int,
+            **kwargs
+    ) -> Dict:
         '''Updates an existing organization
         Edits the Organization associated with {organization_id}, changing only the passed
         in fields.
@@ -302,7 +315,7 @@ class OrganizationAPI(SCEndpoint):
         return self._api.patch('organization/{}'.format(
             self._check('organization_id', organization_id, int)), json=kwargs).json()['response']
 
-    def delete(self, organization_id):
+    def delete(self, organization_id: int) -> str:
         '''
         Remove the specified organization from Tenable.sc
         :sc-api:`SC organization Delete <Organization.html#organization_id_DELETE>`
@@ -317,7 +330,13 @@ class OrganizationAPI(SCEndpoint):
         return self._api.delete('organization/{}'.format(
             self._check('organization_id', organization_id, int))).json()['response']
 
-    def accept_risk_rules(self, organization_id, repos=None, plugin=None, port=None):
+    def accept_risk_rules(
+            self,
+            organization_id: int,
+            repos: List[int] = None,
+            plugin: int = None,
+            port: int = None
+    ) -> List:
         '''
         Retrieves the accepted risk rules for the organization and optionally
         will filter based on the parameters specified.
@@ -349,7 +368,13 @@ class OrganizationAPI(SCEndpoint):
         return self._api.get('organization/{}/acceptRiskRule'.format(
             self._check('organization_id', organization_id, int)), params=params).json()['response']
 
-    def recast_risk_rules(self, organization_id, repos=None, plugin=None, port=None):
+    def recast_risk_rules(
+            self,
+            organization_id: int,
+            repos: List[int] = None,
+            plugin: int = None,
+            port: int = None
+    ) -> List:
         '''
         Retrieves the recasted risk rules for the organization and optionally
         will filter based on the parameters specified.
@@ -381,7 +406,11 @@ class OrganizationAPI(SCEndpoint):
         return self._api.get('organization/{}/recastRiskRule'.format(
             self._check('organization_id', organization_id, int)), params=params).json()['response']
 
-    def managers_list(self, org_id, fields=None):
+    def managers_list(
+            self,
+            org_id: int,
+            fields: List[str] = None
+    ) -> List:
         '''
         Retrieves a list of security managers.
         :sc-api:`organization-security-manager: list <Organization-Security-Manager.html#OrganizationSecurityManagerRESTReference-/organization/{orgID}/securityManager>`
@@ -406,7 +435,14 @@ class OrganizationAPI(SCEndpoint):
         return self._api.get('organization/{}/securityManager'.format(
             self._check('org_id', org_id, int)), params=params).json()['response']
 
-    def manager_create(self, org_id, username, password, role, **kwargs):
+    def manager_create(
+            self,
+            org_id: int,
+            username: str,
+            password: str,
+            role: int,
+            **kwargs
+    ) -> Dict:
         '''
         Creates a new security manager for the given org.  For a complete list
         of parameters that are supported for this call, please refer to
@@ -439,7 +475,12 @@ class OrganizationAPI(SCEndpoint):
         return self._api.post('organization/{}/securityManager'.format(
             self._check('org_id', org_id, int)), json=payload).json()['response']
 
-    def manager_details(self, org_id, user_id, fields=None):
+    def manager_details(
+            self,
+            org_id: int,
+            user_id: int,
+            fields: List[str] = None
+    ) -> Dict:
         '''
         Retrieves the details of a specified security manager within a
         specified organization.
@@ -468,7 +509,12 @@ class OrganizationAPI(SCEndpoint):
             self._check('user_id', user_id, int)),
             params=params).json()['response']
 
-    def manager_edit(self, org_id, user_id, **kwargs):
+    def manager_edit(
+            self,
+            org_id: int,
+            user_id: int,
+            **kwargs
+    ) -> Dict:
         '''
         Edits the specified security manager within the specified organization.
         For details on the supported arguments that may be passed, please refer
@@ -494,7 +540,12 @@ class OrganizationAPI(SCEndpoint):
             self._check('user_id', user_id, int)
         ), json=payload).json()['response']
 
-    def manager_delete(self, org_id, user_id, migrate_to=None):
+    def manager_delete(
+            self,
+            org_id: int,
+            user_id: int,
+            migrate_to: int = None
+    ) -> None:
         '''
         Removes the user specified.
         :sc-api:`organization-security-manager: delete <Organization-Security-Manager.html#organization_orgID_securityManager_id_DELETE>`
