@@ -17,10 +17,11 @@ Methods available on ``sc.roles``:
     .. automethod:: edit
     .. automethod:: list
 '''
+from typing import Dict, List
 from .base import SCEndpoint
 
 class RoleAPI(SCEndpoint):
-    def _constructor(self, **kw):
+    def _constructor(self, **kw) -> Dict:
         '''
         Handles parsing the keywords and returns a role definition document
         '''
@@ -73,7 +74,11 @@ class RoleAPI(SCEndpoint):
 
         return kw
 
-    def create(self, name, **kw):
+    def create(
+            self,
+            name: str,
+            **kw
+    ) -> Dict:
         '''
         Creates a role.
 
@@ -155,7 +160,11 @@ class RoleAPI(SCEndpoint):
         payload = self._constructor(**kw)
         return self._api.post('role', json=payload).json()['response']
 
-    def details(self, id, fields=None):
+    def details(
+            self,
+            id: int,
+            fields: List[str] = None
+    ) -> Dict:
         '''
         Returns the details for a specific role.
 
@@ -180,7 +189,11 @@ class RoleAPI(SCEndpoint):
         return self._api.get('role/{}'.format(self._check('id', id, int)),
             params=params).json()['response']
 
-    def edit(self, id, **kw):
+    def edit(
+            self,
+            id: int,
+            **kw
+    ) -> Dict:
         '''
         Edits a role.
 
@@ -262,7 +275,7 @@ class RoleAPI(SCEndpoint):
         return self._api.patch('role/{}'.format(
             self._check('id', id, int)), json=payload).json()['response']
 
-    def delete(self, id):
+    def delete(self, id: int) -> str:
         '''
         Removes a role.
 
@@ -282,7 +295,7 @@ class RoleAPI(SCEndpoint):
             self._check('id', id, int))).json()['response']
 
 
-    def list(self, fields=None):
+    def list(self, fields: List[str] = None) -> List:
         '''
         Retrieves the list of role definitions.
 
