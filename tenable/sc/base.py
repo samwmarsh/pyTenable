@@ -77,10 +77,11 @@ these recurrence rules.  Further there are some packages out there to aid in
 converting more human-readable text into recurrence rules, such as the
 `recurrent package <https://pypi.org/project/recurrent/>`_ for example.
 '''
+from typing import Dict
 from tenable.base import APIEndpoint, APIResultsIterator
 
 class SCEndpoint(APIEndpoint):
-    def _combo_expansion(self, item):
+    def _combo_expansion(self, item) -> Dict:
         '''
         Expands the asset combination expressions from nested tuples to the
         nested dictionary structure that's expected.
@@ -136,7 +137,7 @@ class SCEndpoint(APIEndpoint):
         # return the response to the caller.
         return resp
 
-    def _query_constructor(self, *filters, **kw):
+    def _query_constructor(self, *filters, **kw) -> Dict:
         '''
         Constructs an analysis query.  This part has been pulled out of the
         _analysis method and placed here so that it can be re-used in other
@@ -216,7 +217,7 @@ class SCEndpoint(APIEndpoint):
             del(kw['type'])
         return kw
 
-    def _schedule_constructor(self, item):
+    def _schedule_constructor(self, item: Dict) -> Dict:
         '''
         Handles creation of the schedule sub-document.
         '''
