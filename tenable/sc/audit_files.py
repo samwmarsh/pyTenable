@@ -21,12 +21,13 @@ Methods available on ``sc.audit_files``:
     .. automethod:: template_details
     .. automethod:: template_list
 '''
+from typing import Dict, List, IO
 from .base import SCEndpoint
 from io import BytesIO
 from os.path import basename
 
 class AuditFileAPI(SCEndpoint):
-    def _constructor(self, **kw):
+    def _constructor(self, **kw) -> Dict:
         '''
         Handles parsing the keywords and returns a audit file definition document
         '''
@@ -107,7 +108,13 @@ class AuditFileAPI(SCEndpoint):
 
         return kw
 
-    def create(self, name, audit_file=None, tailoring_file=None, **kw):
+    def create(
+            self,
+            name: str,
+            audit_file: IO = None,
+            tailoring_file: IO = None,
+            **kw
+    ) -> Dict:
         '''
         Creates a audit file.
 
@@ -177,7 +184,11 @@ class AuditFileAPI(SCEndpoint):
         payload = self._constructor(**kw)
         return self._api.post('auditFile', json=payload).json()['response']
 
-    def details(self, id, fields=None):
+    def details(
+            self,
+            id: int,
+            fields: List[str] = None
+    ) -> Dict:
         '''
         Returns the details for a specific audit file.
 
@@ -202,7 +213,13 @@ class AuditFileAPI(SCEndpoint):
         return self._api.get('auditFile/{}'.format(self._check('id', id, int)),
             params=params).json()['response']
 
-    def edit(self, id, audit_file=None, tailoring_file=None, **kw):
+    def edit(
+            self,
+            id: int,
+            audit_file: IO = None,
+            tailoring_file: IO = None,
+            **kw
+    ) -> Dict:
         '''
         Edits a audit file.
 
@@ -272,7 +289,7 @@ class AuditFileAPI(SCEndpoint):
         return self._api.patch('auditFile/{}'.format(
             self._check('id', id, int)), json=payload).json()['response']
 
-    def delete(self, id):
+    def delete(self, id: int) -> str:
         '''
         Removes a audit file.
 
@@ -291,7 +308,7 @@ class AuditFileAPI(SCEndpoint):
         return self._api.delete('auditFile/{}'.format(
             self._check('id', id, int))).json()['response']
 
-    def list(self, fields=None):
+    def list(self, fields: List[str] = None) -> List:
         '''
         Retrieves the list of audit file definitions.
 
@@ -316,7 +333,11 @@ class AuditFileAPI(SCEndpoint):
 
         return self._api.get('auditFile', params=params).json()['response']
 
-    def export_audit(self, id, fobj=None):
+    def export_audit(
+            self,
+            id: int,
+            fobj: IO = None
+    ) -> IO:
         '''
         Exports an Audit File.
 
@@ -356,7 +377,7 @@ class AuditFileAPI(SCEndpoint):
         resp.close()
         return fobj
 
-    def template_categories(self):
+    def template_categories(self) -> List:
         '''
         Returns the audit file template categories
 
@@ -372,7 +393,11 @@ class AuditFileAPI(SCEndpoint):
         '''
         return self._api.get('auditFileTemplate/categories').json()['response']
 
-    def template_details(self, id, fields=None):
+    def template_details(
+            self,
+            id: int,
+            fields: List[str] = None
+    ) -> Dict:
         '''
         Returns the details for the specified audit file template id.
 
@@ -399,7 +424,12 @@ class AuditFileAPI(SCEndpoint):
         return self._api.get('auditFileTemplate/{}'.format(
             self._check('id', id, int)), params=params).json()['response']
 
-    def template_list(self, category=None, search=None, fields=None):
+    def template_list(
+            self,
+            category: int = None,
+            search: str = None,
+            fields: List[str] = None
+    ) -> List:
         '''
         Returns the list of audit file templates.
 
