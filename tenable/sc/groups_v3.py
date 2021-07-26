@@ -177,7 +177,7 @@ class GroupAPI(SCEndpoint):
         Examples:
             >>> sc.groups.delete(1)
         '''
-        return self._api.delete('group/{}'.format(
+        return self._api.delete('v3/group/{}'.format(
             self._check('id', id, int))).json()['response']
 
     def list(self, fields=None):
@@ -203,4 +203,4 @@ class GroupAPI(SCEndpoint):
             params['fields'] = ','.join([self._check('field', f, str)
                 for f in fields])
 
-        return self._api.get('group', params=params).json()['response']
+        return self._api.get('v3/group', params=params).json()['response']

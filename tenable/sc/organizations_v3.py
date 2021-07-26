@@ -378,7 +378,7 @@ class OrganizationAPI(SCEndpoint):
             params['pluginID'] = self._check('plugin', plugin, int)
         if port:
             params['port'] = self._check('port', port, int)
-        return self._api.get('organization/{}/recastRiskRule'.format(
+        return self._api.get('v3/organization/{}/recastRiskRule'.format(
             self._check('organization_id', organization_id, int)), params=params).json()['response']
 
     def managers_list(self, org_id, fields=None):
@@ -403,7 +403,7 @@ class OrganizationAPI(SCEndpoint):
         if fields:
             params['fields'] = ','.join([self._check('field', f, str)
                                          for f in fields])
-        return self._api.get('organization/{}/securityManager'.format(
+        return self._api.get('v3/organization/{}/securityManager'.format(
             self._check('org_id', org_id, int)), params=params).json()['response']
 
     def manager_create(self, org_id, username, password, role, **kwargs):
@@ -436,7 +436,7 @@ class OrganizationAPI(SCEndpoint):
         kwargs['auth_type'] = kwargs.get('auth_type', 'tns')
         kwargs['responsibleAssetID'] = -1
         payload = self._api.users._constructor(**kwargs)
-        return self._api.post('organization/{}/securityManager'.format(
+        return self._api.post('v3/organization/{}/securityManager'.format(
             self._check('org_id', org_id, int)), json=payload).json()['response']
 
     def manager_details(self, org_id, user_id, fields=None):
@@ -463,7 +463,7 @@ class OrganizationAPI(SCEndpoint):
         if fields:
             params['fields'] = ','.join([self._check('field', f, str)
                                          for f in fields])
-        return self._api.get('organization/{}/securityManager/{}'.format(
+        return self._api.get('v3/organization/{}/securityManager/{}'.format(
             self._check('org_id', org_id, int),
             self._check('user_id', user_id, int)),
             params=params).json()['response']
@@ -489,7 +489,7 @@ class OrganizationAPI(SCEndpoint):
             ...     username='updated')
         '''
         payload = self._api.users._constructor(**kwargs)
-        return self._api.patch('organization/{}/securityManager/{}'.format(
+        return self._api.patch('v3/organization/{}/securityManager/{}'.format(
             self._check('org_id', org_id, int),
             self._check('user_id', user_id, int)
         ), json=payload).json()['response']
@@ -510,7 +510,7 @@ class OrganizationAPI(SCEndpoint):
         if migrate_to:
             payload['migrateUserID'] = self._check('migrate_to', migrate_to, int)
 
-        self._api.delete('organization/{}/securityManager/{}'.format(
+        self._api.delete('v3/organization/{}/securityManager/{}'.format(
             self._check('org_id', org_id, int),
             self._check('user_id', user_id, int)
         ), json=payload)

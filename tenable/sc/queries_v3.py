@@ -2,6 +2,7 @@
 queries
 =======
 
+
 The following methods allow for interaction into the Tenable.sc
 :sc-api:`Query <Query.html>` API.  These items are typically seen
 under the **Workflow -> Query** section of Tenable.sc.
