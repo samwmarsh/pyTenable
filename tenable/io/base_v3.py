@@ -114,10 +114,10 @@ class TIOEndpoint(APIEndpoint):
         recheck every two and a half seconds after that.  Once the status
         returns one of the completed states, we will return the status.
         '''
-        status = self._api.get(path, **kw).json()['status']
+        status = self._api.get("{}/v3".format(path), **kw).json()['status']
         while status not in ['error', 'ready']:
             time.sleep(2.5)
-            status = self._api.get(path, **kw).json()['v3/status']
+            status = self._api.get("{}/v3".format(path), **kw).json()['status']
 
         # If the status that has been reported back is "error", then we will
         # need to throw the appropriate error back to the user.

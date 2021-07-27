@@ -55,7 +55,7 @@ class TargetGroupsAPI(TIOEndpoint):
         else:
             raise UnexpectedValueError('No members in members list')
 
-        return self._api.post('/v3target-groups', json=payload).json()
+        return self._api.post('v3/target-groups', json=payload).json()
 
     def delete(self, id):
         '''
