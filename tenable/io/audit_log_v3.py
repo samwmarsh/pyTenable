@@ -17,6 +17,7 @@ from .base import TIOEndpoint
 class AuditLogAPI(TIOEndpoint):
     def events(self, *filters, **kw):
         '''
+        This is a Deprecated API.
         Retrieve audit logs from Tenable.io.
 
         :devportal:`audit-log: events <audit-log-events>`
@@ -47,7 +48,7 @@ class AuditLogAPI(TIOEndpoint):
             >>> for e in events:
             ...     pprint(e)
         '''
-        return self._api.get('v3/audit-log/v1/events', params={
+        return self._api.get('audit-log/v1/events', params={
             'f': ['{}.{}:{}'.format(
                 self._check('filter_field_name', f[0], str),
                 self._check('filter_operator', f[1], str),

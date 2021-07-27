@@ -117,7 +117,7 @@ class TIOEndpoint(APIEndpoint):
         status = self._api.get(path, **kw).json()['status']
         while status not in ['error', 'ready']:
             time.sleep(2.5)
-            status = self._api.get(path, **kw).json()['status']
+            status = self._api.get(path, **kw).json()['v3/status']
 
         # If the status that has been reported back is "error", then we will
         # need to throw the appropriate error back to the user.
