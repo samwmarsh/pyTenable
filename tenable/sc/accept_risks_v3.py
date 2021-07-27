@@ -135,7 +135,7 @@ class AcceptRiskAPI(SCEndpoint):
             params['repositoryIDs'] = ','.join([str(self._check('repo:id', i, int))
                 for i in self._check('repo_ids', repo_ids, list)])
 
-        return self._api.get('v3/acceptRiskRule/v3', params=params).json()['response']
+        return self._api.get('v3/acceptRiskRule', params=params).json()['response']
 
     def details(self, id, fields=None):
         '''
