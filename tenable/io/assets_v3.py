@@ -1,261 +1,282 @@
 '''
-agents
+assets
 ======
 
 The following methods allow for interaction into the Tenable.io
-:devportal:`agents <agents>` API endpoints.
+:devportal:`assets <assets>` API endpoints.
 
-Methods available on ``tio.agents``:
+Methods available on ``tio.assets``:
 
 .. rst-class:: hide-signature
-.. autoclass:: AgentsAPI
+.. autoclass:: AssetsAPI
 
+    .. automethod:: asset_import
+    .. automethod:: delete
     .. automethod:: details
+    .. automethod:: import_job_details
     .. automethod:: list
-    .. automethod:: unlink
-    .. automethod:: task_status
-
+    .. automethod:: list_import_jobs
+    .. automethod:: tags
+    .. automethod:: bulk_delete
 '''
-from .base import TIOIterator, TIOEndpoint
+from tenable.io.base import TIOEndpoint
 
-class AgentsIterator(TIOIterator):
+class AssetsAPI(TIOEndpoint):
     '''
-    The agents iterator provides a scalable way to work through agent result
-    sets of any size.  The iterator will walk through each page of data,
-    returning one record at a time.  If it reaches the end of a page of
-    records, then it will request the next page of information and then continue
-    to return records from the next page (and the next, and the next) until the
-    counter reaches the total number of records that the API has reported.
-
-    Attributes:
-        count (int): The current number of records that have been returned
-        page (list):
-            The current page of data being walked through.  pages will be
-            cycled through as the iterator requests more information from the
-            API.
-        page_count (int): The number of record returned from the current page.
-        total (int):
-            The total number of records that exist for the current request.
+    This will contain all methods related to Assets
     '''
-    pass
-
-
-class AgentsAPI(TIOEndpoint):
-    def list(self, *filters, **kw):
+    def list(self):
         '''
-        Get the listing of configured agents from Tenable.io.
+        Returns a list of assets.
 
-        :devportal:`agents: list <agents-list>`
+        :devportal:`assets: list-assets <assets-list-assets>`
+
+        Returns:
+            :obj:`list`:
+                List of asset records.
+
+        Examples:
+            >>> for asset in tio.assets.list():
+            ...     pprint(asset)
+        '''
+        return self._api.get('v3/assets').json()['assets']
+
+    def delete(self, uuid):
+        '''
+        Deletes the asset.
+
+        :devportal:`workbenches: asset-delete <workbenches-asset-delete>`
 
         Args:
-            *filters (tuple, optional):
-                Filters are tuples in the form of ('NAME', 'OPERATOR', 'VALUE').
-                Multiple filters can be used and will filter down the data being
-                returned from the API.
+            asset_uuid (str): The unique identifier for the asset.
 
-                Examples:
-                    - ``('distro', 'match', 'win')``
-                    - ``('name', 'nmatch', 'home')``
+        Returns:
+            :obj:`None`:
 
-                As the filters may change and sortable fields may change over
-                time, it's highly recommended that you look at the output of
-                the `filters:agents-filters <https://cloud.tenable.com/api#/resources/filters/agents-filters>`_
-                endpoint to get more details.
+        Examples:
+            >>> asset_id = '00000000-0000-0000-0000-000000000000'
+            >>> tio.asset.delete(asset_id)
+        '''
+        self._api.delete('v3/workbenches/assets/{}'.format(
+            self._check('uuid', uuid, 'uuid')))
+
+    def details(self, uuid):
+        '''
+        Retrieves the details about a specific asset.
+
+        :devportal:`assets: asset-info <assets-asset-info>`
+
+        Args:
+            uuid (str):
+                The UUID (unique identifier) for the asset.
+
+        Returns:
+            :obj:`dict`:
+                Asset resource definition.
+
+        Examples:
+            >>> asset = tio.assets.details(
+            ...     '00000000-0000-0000-0000-000000000000')
+        '''
+        return self._api.get(
+            'v3/assets/{}'.format(
+                self._check('uuid', uuid, str)
+            )).json()
+
+    def assign_tags(self, action, assets, tags):
+        '''
+        Add/remove tags for asset(s).
+
+        :devportal:`tags: assign-asset-tags <tags-assign-asset-tags>`
+
+        Args:
+            action (str):
+                Specifies whether to add or remove tags. Valid values: add, remove.
+            assets (List[str]):
+                An array of asset UUIDs.
+            tags (List[str]):
+                An array of tag value UUIDs.
+
+        Returns:
+            :obj:`dict`:
+                The job Resource record.
+
+        Examples:
+            >>> asset = tio.assets.assign_tags(
+            ...     'add', ['00000000-0000-0000-0000-000000000000'],
+            ...     ['00000000-0000-0000-0000-000000000000'])
+        '''
+        return self._api.post(
+            'v3/tags/assets/assignments', json={
+                'action': self._check('action', action, str, choices=['add', 'remove']),
+                'assets': [self._check('asset', i, 'uuid') for i in assets],
+                'tags': [self._check('source', i, 'uuid') for i in tags]
+            }).json()
+
+    def tags(self, uuid):
+        '''
+        Retrieves the details about a specific asset.
+
+        :devportal:`tags: asset-tags <tags-list-asset-tags>`
+
+        Args:
+            uuid (str):
+                The UUID (unique identifier) for the asset.
+
+        Returns:
+            :obj:`dict`:
+                Asset resource definition.
+
+        Examples:
+            >>> asset = tio.assets.tags(
+            ...     '00000000-0000-0000-0000-000000000000')
+        '''
+        return self._api.get(
+            'v3/tags/assets/{}/assignments'.format(
+                self._check('uuid', uuid, 'uuid')
+            )).json()
+
+    def asset_import(self, source, *assets):
+        '''
+        Imports asset information into Tenable.io from an external source.
+
+        :devportal:`assets: import <assets-import>`
+
+        Imports a list of asset definition dictionaries.  Each asset record must
+        contain at least one of the following attributes: ``fqdn``, ``ipv4``,
+        ``netbios_name``, ``mac_address``.  Each record may also contain
+        additional properties.
+
+        Args:
+            *assets (list):
+                The list of asset dictionaries
+            source (str):
+                An identifier to be used to upload the assets.
+
+        Returns:
+            :obj:`str`:
+                The job UUID.
+
+        Examples:
+            >>> tio.assets.asset_import('example_source', {
+            ...     'fqdn': ['example.py.test'],
+            ...     'ipv4': ['192.168.254.1'],
+            ...     'netbios_name': 'example',
+            ...     'mac_address': ['00:00:00:00:00:00']
+            ... })
+        '''
+        # We will likely want to perform some more stringent checking of the
+        # asset resources that are being defined, however a simple type check
+        # should suffice for now.
+        return self._api.post(
+            'v3/import/assets', json={
+                'assets': [self._check('asset', i, dict) for i in assets],
+                'source': self._check('source', source, str)
+            }).json()['asset_import_job_uuid']
+
+    def list_import_jobs(self):
+        '''
+        Returns a list of asset import jobs.
+
+        :devportal:`assets: list-import-jobs <assets-list-import-jobs>`
+
+        Returns:
+            :obj:`list`:
+                List of job records.
+
+        Examples:
+            >>> for job in tio.assets.list_import_jobs():
+            ...     pprint(job)
+        '''
+        return self._api.get('v3/import/asset-jobs').json()['asset_import_jobs']
+
+    def import_job_details(self, uuid):
+        '''
+        Returns the details about a specific asset import job.
+
+        :devportal:`assets: import-job-info <assets-import-job-info>`
+
+        uuid (str):
+            The UUID (unique identifier) for the job.
+
+        Returns:
+            :obj:`dict`:
+                The job Resource record.
+
+        Examples:
+            >>> job = tio.assets.import_job_details(
+            ...     '00000000-0000-0000-0000-000000000000')
+            >>> pprint(job)
+        '''
+        return self._api.get(
+            'v3/import/asset-jobs/{}'.format(
+                self._check('uuid', uuid, str)
+            )).json()
+
+    def move_assets(self, source, destination, targets):
+        '''
+        Moves assets from the specified network to another network.
+
+        :devportal:`assets: move-assets <assets-bulk-move>`
+
+        source (str):
+            The UUID of the network currently associated with the assets.
+        destination (str):
+            The UUID of the network to associate with the specified assets.
+        targets (list):
+            The IPv4 addresses of the assets to move.
+
+        Returns:
+            :obj:`int`:
+                Returns the number of moved assets.
+
+        Examples:
+            >>> asset = tio.assets.move_assets('00000000-0000-0000-0000-000000000000',
+            ...         '10000000-0000-0000-0000-000000000001', ["127.0.0.1"])
+            >>> pprint(asset)
+        '''
+        payload = {
+            'source': self._check('source', source, 'uuid'),
+            'destination': self._check('destination', destination, 'uuid'),
+            'targets': ','.join(self._check('targets', targets, list))
+        }
+
+        return self._api.post('api/v3/assets/bulk-jobs/move-to-network', json=payload).json()
+
+    def bulk_delete(self, *filters, filter_type=None):
+        '''
+        Deletes the specified assets.
+
+        :devportal:`assets: bulk_delete <assets-bulk-delete>`
+
+        Args:
+             *filters (tuple):
+                A defined filter tuple consisting of the name, operator, and
+                value.  Example: ``('host.hostname', 'match', 'asset.com')``.
             filter_type (str, optional):
-                The filter_type operator determines how the filters are combined
-                together.  ``and`` will inform the API that all of the filter
-                conditions must be met for an agent to be returned, whereas
-                ``or`` would mean that if any of the conditions are met, the
-                agent record will be returned.
-            limit (int, optional):
-                The number of records to retrieve.  Default is 50
-            offset (int, optional):
-                The starting record to retrieve.  Default is 0.
-            scanner_id (int, optional):
-                The identifier the scanner that the agent communicates to.
-            sort (tuple, optional):
-                A tuple of tuples identifying the the field and sort order of
-                the field.
-            wildcard (str, optional):
-                A string to pattern match against all available fields returned.
-            wildcard_fields (list, optional):
-                A list of fields to optionally restrict the wild-card matching
-                to.
-
-        Returns:
-            :obj:`AgentsIterator`:
-                An iterator that handles the page management of the requested
-                records.
-
-        Examples:
-            Getting the listing of all agents:
-
-            >>> for agent in tio.agents.list():
-            ...     pprint(agent)
-
-            Retrieving all of the windows agents:
-
-            >>> for agent in tio.agents.list(('distro', 'match', 'win')):
-            ...     pprint(agent)
-        '''
-        scanner_id = 1
-        limit = 50
-        offset = 0
-        pages = None
-        query = self._parse_filters(filters,
-            self._api.filters.agents_filters(), rtype='colon')
-
-        # Overload the scanner_id with a new value if it has been requested
-        # to do so.
-        if 'scanner_id' in kw:
-            scanner_id = self._check('scanner_id', kw['scanner_id'], int)
-
-        # If the offset was set to something other than the default starting
-        # point of 0, then we will update offset to reflect that.
-        if 'offset' in kw and self._check('offset', kw['offset'], int):
-            offset = kw['offset']
-
-        # The limit parameter affects how many records at a time we will pull
-        # from the API.  The default in the API is set to 50, however we can
-        # pull any variable amount.
-        if 'limit' in kw and self._check('limit', kw['limit'], int):
-            limit = kw['limit']
-
-        # For the sorting fields, we are converting the tuple that has been
-        # provided to us and converting it into a comma-delimited string with
-        # each field being represented with its sorting order.  e.g. If we are
-        # presented with the following:
-        #
-        #   sort=(('field1', 'asc'), ('field2', 'desc'))
-        #
-        # we will generate the following string:
-        #
-        #   sort=field1:asc,field2:desc
-        #
-        if 'sort' in kw and self._check('sort', kw['sort'], tuple):
-            query['sort'] = ','.join(['{}:{}'.format(
-                self._check('sort_field', i[0], str),
-                self._check('sort_direction', i[1], str, choices=['asc', 'desc'])
-            ) for i in kw['sort']])
-
-        # The filter_type determines how the filters are combined together.
-        # The default is 'and', however you can always explicitly define 'and'
-        # or 'or'.
-        if 'filter_type' in kw and self._check(
-            'filter_type', kw['filter_type'], str, choices=['and', 'or']):
-            query['ft'] = kw['filter_type']
-
-        # The wild-card filter text refers to how the API will pattern match
-        # within all fields, or specific fields using the wildcard_fields param.
-        if 'wildcard' in kw and self._check('wildcard', kw['wildcard'], str):
-            query['w'] = kw['wildcard']
-
-        # The wildcard_fields parameter allows the user to restrict the fields
-        # that the wild-card pattern match pertains to.
-        if 'wildcard_fields' in kw and self._check(
-            'wildcard_fields', kw['wildcard_fields'], list):
-            query['wf'] = ','.join(kw['wildcard_fields'])
-
-        # Return the Iterator.
-        return AgentsIterator(self._api,
-            _limit=limit,
-            _offset=offset,
-            _pages_total=pages,
-            _query=query,
-            _path='v3/scanners/{}/agents'.format(scanner_id),
-            _resource='agents'
-        )
-
-    def details(self, agent_id, scanner_id=1):
-        '''
-        Retrieves the details of an agent.
-
-        :devportal:`agents: get <agents-get>`
-
-        Args:
-            agent_id (int):
-                The identifier of the agent.
-            scanner_id (int, optional):
-                The identifier of the scanner.  Default is 1.
+                If multiple filters are defined, the filter_type toggles the
+                behavior as to how these filters are used.  Either all of the
+                filters have to match (``AND``) or any of the filters have to
+                match (``OR``).  If not specified, the default behavior is to
+                assume filter_type is ``AND``.
 
         Returns:
             :obj:`dict`:
-                The agent dictionary record.
+                Returns the number of deleted assets.
 
         Examples:
-            >>> agent = tio.agents.details(1)
-            >>> pprint(agent)
+            >>> asset = tio.assets.bulk_delete(
+            ...     ('host.hostname', 'match', 'asset.com'), filter_type='or')
+            >>> pprint(asset)
         '''
-        return self._api.get(
-            'v3/scanners/{}/agents/{}'.format(
-                self._check('scanner_id', scanner_id, int),
-                self._check('agent_id', agent_id, int)
-            )).json()
+        payload = dict()
 
-    def unlink(self, *agent_ids, **kw):
-        '''
-        Unlink one or multiple agents from the Tenable.io instance.
+        # run the rules through the filter parser...
+        filter_type = self._check('filter_type', filter_type, str,
+            choices=['and', 'or'], default='and', case='lower')
+        parsed = self._parse_filters(
+            filters, self._api.filters.workbench_asset_filters(), rtype='assets')['asset']
 
-        :devportal:`agents: delete <agents-delete>`
+        payload['query'] = {filter_type: parsed}
 
-        Args:
-            *agent_ids (int):
-                The ID of the agent to delete
-            scanner_id (int, optional):
-                The identifier the scanner that the agent communicates to.
-
-        Returns:
-            :obj:`dict` or :obj:`None`:
-                If unlinking a singular agent, a :obj:`None` response will be
-                returned.  If unlinking multiple agents, a :obj:`dict` response
-                will be returned with a task record.
-
-        Examples:
-            Unlink a singular agent:
-
-            >>> tio.agents.unlink(1)
-
-            Unlink many agents:
-
-            >>> tio.agents.unlink(1, 2, 3)
-        '''
-        scanner_id = 1
-        if 'scanner_id' in kw:
-            scanner_id = kw['scanner_id']
-
-        if len(agent_ids) <= 1:
-            # as only a singular agent_id was sent over, we can call the delete
-            # API
-            self._api.delete('v3/scanners/{}/agents/{}'.format(
-                self._check('scanner_id', scanner_id, int),
-                self._check('agent_id', agent_ids[0], int)
-            ))
-        else:
-            return self._api.post('v3/scanners/{}/agents/_bulk/unlink'.format(
-                self._check('scanner_id', scanner_id, int)),
-                json={'items': [self._check('agent_ids', i, int) for i in agent_ids]}).json()
-
-    def task_status(self, task_uuid, scanner_id=1):
-        '''
-        Retrieves the current status of the task requested.
-
-        :devportal:`bulk-operations: bulk-agent-status <bulk-task-agent-status>`
-
-        Args:
-            task_uuid (str): The id of the agent
-            scanner_id (int, optional): The id of the scanner
-
-        Returns:
-            :obj:`dict`:
-                Task resource
-
-        Examples:
-            >>> item = tio.agents.unlink(21, 22, 23)
-            >>> task = tio.agent.task_status(item['task_uuid'])
-            >>> pprint(task)
-        '''
-        return self._api.get(
-            'v3/scanners/{}/agents/_bulk/{}'.format(
-                self._check('scanner_id', scanner_id, int),
-                self._check('task_uuid', task_uuid, 'uuid')
-            )).json()
+        return self._api.post('api/v3/assets/bulk-jobs/delete', json=payload).json()
