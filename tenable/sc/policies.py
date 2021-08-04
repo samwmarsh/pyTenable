@@ -23,11 +23,16 @@ Methods available on ``sc.policies``:
     .. automethod:: template_details
     .. automethod:: template_list
 '''
+from pprint import pprint
+from marshmallow import ValidationError, EXCLUDE
 from .base import SCEndpoint
 from tenable.errors import UnexpectedValueError
 from tenable.utils import dict_merge, policy_settings
 from io import BytesIO
 import json
+from .schema.policies.template_details.template_details import PolicyTemplateDetailsSchema
+from .schema.policies.template_list.template_list import PolicyTemplateListSchema
+
 
 class ScanPolicyAPI(SCEndpoint):
     def _constructor(self, **kw):
@@ -116,7 +121,12 @@ class ScanPolicyAPI(SCEndpoint):
             params['fields'] = ','.join([self._check('field', f, str)
                 for f in fields])
 
-        return self._api.get('policyTemplate', params=params).json()['response']
+        response = self._api.get('policyTemplate', params=params).json()['response']
+
+        try:
+            return PolicyTemplateListSchema(many=True, unknown=EXCLUDE).dump(response)
+        except ValidationError as error:
+            pprint(error.messages)
 
     def template_details(self, id, fields=None, remove_editor=True):
         '''
@@ -173,7 +183,11 @@ class ScanPolicyAPI(SCEndpoint):
                         policy_settings(section))
             if remove_editor:
                 del(resp['editor'])
-        return resp
+
+        try:
+            return PolicyTemplateDetailsSchema(unknown=EXCLUDE).dump(resp)
+        except ValidationError as error:
+            pprint(error.messages)
 
     def list(self, fields=None):
         '''
