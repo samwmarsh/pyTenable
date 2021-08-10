@@ -25,7 +25,7 @@ Methods available on ``sc.policies``:
 '''
 from .base import SCEndpoint
 from tenable.errors import UnexpectedValueError
-from tenable.utils import dict_merge, policy_settings
+from tenable.utils import dict_merge, policy_settings, serialize_types
 from io import BytesIO
 import json
 
@@ -55,7 +55,7 @@ class ScanPolicyAPI(SCEndpoint):
             for key in self._check('preferences', kw['preferences'], dict):
                 self._check('preference:{}'.format(key), key, str)
                 self._check('preference:{}:value'.format(key),
-                    kw['preferences'][key], str)
+                    kw['preferences'][key], (str, bool, int))
 
         if 'audit_files' in kw:
             # unflatten the audit_files list into a list of dictionaries.
@@ -116,7 +116,8 @@ class ScanPolicyAPI(SCEndpoint):
             params['fields'] = ','.join([self._check('field', f, str)
                 for f in fields])
 
-        return self._api.get('policyTemplate', params=params).json()['response']
+        response = self._api.get('policyTemplate', params=params).json()['response']
+        return serialize_types(response)
 
     def template_details(self, id, fields=None, remove_editor=True):
         '''
@@ -173,7 +174,7 @@ class ScanPolicyAPI(SCEndpoint):
                         policy_settings(section))
             if remove_editor:
                 del(resp['editor'])
-        return resp
+        return serialize_types(resp)
 
     def list(self, fields=None):
         '''
@@ -201,7 +202,8 @@ class ScanPolicyAPI(SCEndpoint):
             params['fields'] = ','.join([self._check('field', f, str)
                 for f in self._check('fields', fields, list)])
 
-        return self._api.get('policy', params=params).json()['response']
+        response = self._api.get('policy', params=params).json()['response']
+        return serialize_types(response)
 
     def details(self, id, fields=None):
         '''
@@ -229,8 +231,9 @@ class ScanPolicyAPI(SCEndpoint):
             params['fields'] = ','.join([self._check('field', f, str)
                 for f in self._check('fields', fields, list)])
 
-        return self._api.get('policy/{}'.format(self._check('id', id, int)),
+        response = self._api.get('policy/{}'.format(self._check('id', id, int)),
             params=params).json()['response']
+        return serialize_types(response)
 
     def create(self, **kw):
         '''
@@ -289,7 +292,8 @@ class ScanPolicyAPI(SCEndpoint):
             kw.get('preferences', dict()))
 
         policy = self._constructor(**kw)
-        return self._api.post('policy', json=policy).json()['response']
+        response = self._api.post('policy', json=policy).json()['response']
+        return serialize_types(response)
 
     def edit(self, id, **kw):
         '''
@@ -347,8 +351,9 @@ class ScanPolicyAPI(SCEndpoint):
                 for a in self._check('remove_prefs', policy['remove_prefs'], list)]
             del(policy['remove_prefs'])
 
-        return self._api.patch('policy/{}'.format(
+        response = self._api.patch('policy/{}'.format(
             self._check('id', id, int)), json=policy).json()['response']
+        return serialize_types(response)
 
     def delete(self, id):
         '''
@@ -390,8 +395,9 @@ class ScanPolicyAPI(SCEndpoint):
         payload = dict()
         if name:
             payload['name'] = self._check('name', name, str)
-        return self._api.post('policy/{}/copy'.format(
+        response = self._api.post('policy/{}/copy'.format(
             self._check('id', id, int)), json=payload).json()['response']
+        return serialize_types(response)
 
     def export_policy(self, id, fobj=None):
         '''
@@ -480,10 +486,11 @@ class ScanPolicyAPI(SCEndpoint):
 
             >>> sc.policies.share(10001, 1, 2, 3)
         '''
-        return self._api.post('policy/{}/share'.format(
+        response = self._api.post('policy/{}/share'.format(
             self._check('id', id, int)), json={'groups': [{
                 'id': self._check('group_id', i, int)}
                     for i in groups]}).json()['response']
+        return serialize_types(response)
 
     def tags(self):
         '''
