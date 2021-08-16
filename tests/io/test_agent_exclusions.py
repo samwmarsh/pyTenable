@@ -3,10 +3,9 @@ test agent exclusions
 '''
 import uuid
 from datetime import datetime as dtime, timedelta
-
 import pytest
-
-from tenable.errors import NotFoundError, UnexpectedValueError, PermissionError
+from marshmallow import ValidationError
+from tenable.errors import NotFoundError, PermissionError
 from tests.pytenable_log_handler import log_exception
 from ..checker import check
 
@@ -29,15 +28,6 @@ def agentexclusion(request, api):
 
     request.addfinalizer(teardown)
     return excl
-
-
-@pytest.mark.vcr()
-def test_agentexclusions_create_no_times(api):
-    '''
-    test to create the exclusion
-    '''
-    with pytest.raises(AttributeError):
-        api.agent_exclusions.create(str(uuid.uuid4()))
 
 
 @pytest.mark.vcr()
@@ -66,36 +56,36 @@ def test_agentexclusions_create_name_typeerror(api):
 
 
 @pytest.mark.vcr()
-def test_agentexclusions_create_starttime_typerror(api):
+def test_agentexclusions_create_starttime_type_validationerror(api):
     '''
     test to raise the exception while creating the exclusion when type of
     starttime is not passed as defined
     '''
-    with pytest.raises(TypeError):
+    with pytest.raises(ValidationError):
         api.agent_exclusions.create(str(uuid.uuid4()),
                                     start_time='fail',
                                     end_time=dtime.utcnow() + timedelta(hours=1))
 
 
 @pytest.mark.vcr()
-def test_agentexclusions_create_endtime_typerror(api):
+def test_agentexclusions_create_endtime_type_validationerror(api):
     '''
     test to raise the exception while creating the exclusion when type of
     endtime is not passed as defined
     '''
-    with pytest.raises(TypeError):
+    with pytest.raises(ValidationError):
         api.agent_exclusions.create(str(uuid.uuid4()),
                                     start_time=dtime.utcnow(),
                                     end_time='nope')
 
 
 @pytest.mark.vcr()
-def test_agentexclusions_create_timezone_typerror(api):
+def test_agentexclusions_create_timezone_type_validationerror(api):
     '''
     test to raise the exception while creating the exclusion when type of
     timezone is not passed as defined
     '''
-    with pytest.raises(TypeError):
+    with pytest.raises(ValidationError):
         api.agent_exclusions.create(str(uuid.uuid4()),
                                     timezone=1,
                                     start_time=dtime.utcnow(),
@@ -103,25 +93,12 @@ def test_agentexclusions_create_timezone_typerror(api):
 
 
 @pytest.mark.vcr()
-def test_agentexclusions_create_timezone_unexpectedvalue(api):
-    '''
-    test to raise the exception while creating the exclusion when value of
-    timezone is not passed as defined
-    '''
-    with pytest.raises(UnexpectedValueError):
-        api.agent_exclusions.create(str(uuid.uuid4()),
-                                    timezone='not a real timezone',
-                                    start_time=dtime.utcnow(),
-                                    end_time=dtime.utcnow() + timedelta(hours=1))
-
-
-@pytest.mark.vcr()
-def test_agentexclusions_create_description_typeerror(api):
+def test_agentexclusions_create_description_type_validationerrorr(api):
     '''
     test to raise the exception while creating the exclusion when type of
     description is not passed as defined
     '''
-    with pytest.raises(TypeError):
+    with pytest.raises(ValidationError):
         api.agent_exclusions.create(str(uuid.uuid4()),
                                     description=True,
                                     start_time=dtime.utcnow(),
@@ -129,12 +106,12 @@ def test_agentexclusions_create_description_typeerror(api):
 
 
 @pytest.mark.vcr()
-def test_agentexclusions_create_frequency_typeerror(api):
+def test_agentexclusions_create_frequency_type_validationerror(api):
     '''
     test to raise the exception while creating the exclusion when type of
     frequency is not passed as defined
     '''
-    with pytest.raises(TypeError):
+    with pytest.raises(ValidationError):
         api.agent_exclusions.create(str(uuid.uuid4()),
                                     frequency=True,
                                     start_time=dtime.utcnow(),
@@ -142,12 +119,12 @@ def test_agentexclusions_create_frequency_typeerror(api):
 
 
 @pytest.mark.vcr()
-def test_agentexclusions_create_frequency_unexpectedvalue(api):
+def test_agentexclusions_create_frequency_value_validationerror(api):
     '''
     test to raise the exception while creating the exclusion when value of
     frequency is not passed as defined
     '''
-    with pytest.raises(UnexpectedValueError):
+    with pytest.raises(ValidationError):
         api.agent_exclusions.create(str(uuid.uuid4()),
                                     frequency='nope',
                                     start_time=dtime.utcnow(),
@@ -155,12 +132,12 @@ def test_agentexclusions_create_frequency_unexpectedvalue(api):
 
 
 @pytest.mark.vcr()
-def test_agentexclusions_create_interval_typeerror(api):
+def test_agentexclusions_create_interval_type_validationerror(api):
     '''
     test to raise the exception while creating the exclusion when type of
     interval is not passed as defined
     '''
-    with pytest.raises(TypeError):
+    with pytest.raises(ValidationError):
         api.agent_exclusions.create(str(uuid.uuid4()),
                                     interval='nope',
                                     start_time=dtime.utcnow(),
@@ -168,12 +145,12 @@ def test_agentexclusions_create_interval_typeerror(api):
 
 
 @pytest.mark.vcr()
-def test_agentexclusions_create_weekdays_typerror(api):
+def test_agentexclusions_create_weekdays_type_validationerror(api):
     '''
     test to raise the exception while creating the exclusion when type of
     weekdays is not passed as defined
     '''
-    with pytest.raises(TypeError):
+    with pytest.raises(ValidationError):
         api.agent_exclusions.create(str(uuid.uuid4()),
                                     weekdays='nope',
                                     frequency='weekly',
@@ -182,12 +159,12 @@ def test_agentexclusions_create_weekdays_typerror(api):
 
 
 @pytest.mark.vcr()
-def test_agentexclusions_create_weekdays_unexpectedvalue(api):
+def test_agentexclusions_create_weekdays_value_validationerror(api):
     '''
     test to raise the exception while creating the exclusion when value of
     weekdays is not passed as defined
     '''
-    with pytest.raises(UnexpectedValueError):
+    with pytest.raises(ValidationError):
         api.agent_exclusions.create(str(uuid.uuid4()),
                                     weekdays=['MO', 'TU', 'nope'],
                                     frequency='weekly',
@@ -196,12 +173,12 @@ def test_agentexclusions_create_weekdays_unexpectedvalue(api):
 
 
 @pytest.mark.vcr()
-def test_agentexclusions_create_dayofmonth_typeerror(api):
+def test_agentexclusions_create_dayofmonth_type_validationerrorr(api):
     '''
     test to raise the exception while creating the exclusion when type of
     day of month is not passed as defined
     '''
-    with pytest.raises(TypeError):
+    with pytest.raises(ValidationError):
         api.agent_exclusions.create(str(uuid.uuid4()),
                                     day_of_month='nope',
                                     frequency='monthly',
@@ -210,12 +187,12 @@ def test_agentexclusions_create_dayofmonth_typeerror(api):
 
 
 @pytest.mark.vcr()
-def test_agentexclusions_create_dayofmonth_unexpectedvalue(api):
+def test_agentexclusions_create_dayofmonth_value_validationerror(api):
     '''
     test to raise the exception while creating the exclusion when value of
     day of month is not passed as defined
     '''
-    with pytest.raises(UnexpectedValueError):
+    with pytest.raises(ValidationError):
         api.agent_exclusions.create(str(uuid.uuid4()),
                                     day_of_month=0,
                                     frequency='monthly',
@@ -435,112 +412,103 @@ def test_agentexclusions_edit_scanner_id_typeerror(api, agentexclusion):
 
 
 @pytest.mark.vcr()
-def test_agentexclusions_edit_name_typeerror(api, agentexclusion):
+def test_agentexclusions_edit_name_type_validationerror(api, agentexclusion):
     '''
     test to raise the exception when expected type of name is not passed
     '''
-    with pytest.raises(TypeError):
+    with pytest.raises(ValidationError):
         api.agent_exclusions.edit(agentexclusion['id'], name=1.02)
 
 
 @pytest.mark.vcr()
-def test_agentexclusions_edit_starttime_typerror(api, agentexclusion):
+def test_agentexclusions_edit_starttime_type_validationerror(api, agentexclusion):
     '''
     test to raise the exception when expected type of starttime is not passed
     '''
-    with pytest.raises(TypeError):
+    with pytest.raises(ValidationError):
         api.agent_exclusions.edit(agentexclusion['id'], start_time='nope')
 
 
 @pytest.mark.vcr()
-def test_agentexclusions_edit_timezone_typerror(api, agentexclusion):
+def test_agentexclusions_edit_timezone_type_validationerror(api, agentexclusion):
     '''
     test to raise the exception when expected type of timezone is not passed
     '''
-    with pytest.raises(TypeError):
+    with pytest.raises(ValidationError):
         api.agent_exclusions.edit(agentexclusion['id'], timezone=1)
 
 
 @pytest.mark.vcr()
-def test_agentexclusions_edit_timezone_unexpectedvalue(api, agentexclusion):
-    '''
-    test to raise the exception when expected value of timezone is not passed
-    '''
-    with pytest.raises(UnexpectedValueError):
-        api.agent_exclusions.edit(agentexclusion['id'], timezone='nope')
-
-
-@pytest.mark.vcr()
-def test_agentexclusions_edit_description_typerror(api, agentexclusion):
+def test_agentexclusions_edit_description_type_validationerror(api, agentexclusion):
     '''
     test to raise the exception when expected type of description is not passed
     '''
-    with pytest.raises(TypeError):
+    with pytest.raises(ValidationError):
         api.agent_exclusions.edit(agentexclusion['id'], description=1)
 
 
 @pytest.mark.vcr()
-def test_agentexclusions_edit_frequency_typerror(api, agentexclusion):
+def test_agentexclusions_edit_frequency_type_validationerror(api, agentexclusion):
     '''
     test to raise the exception when expected type of frequency is not passed
     '''
-    with pytest.raises(TypeError):
+    with pytest.raises(ValidationError):
         api.agent_exclusions.edit(agentexclusion['id'], frequency=1)
 
 
 @pytest.mark.vcr()
-def test_agentexclusions_edit_frequency_unexpectedvalue(api, agentexclusion):
+def test_agentexclusions_edit_frequency_value_validationerror(api, agentexclusion):
     '''
     test to raise the exception when expected value of frequency is not passed
     '''
-    with pytest.raises(UnexpectedValueError):
+    with pytest.raises(ValidationError):
         api.agent_exclusions.edit(agentexclusion['id'], frequency='nope')
 
 
 @pytest.mark.vcr()
-def test_agentexclusions_edit_interval_typerror(api, agentexclusion):
+def test_agentexclusions_edit_interval_type_validationerror(api, agentexclusion):
     '''
     test to raise the exception when expected type of interval is not passed
     '''
-    with pytest.raises(TypeError):
+    with pytest.raises(ValidationError):
         api.agent_exclusions.edit(agentexclusion['id'], interval='nope')
 
 
 @pytest.mark.vcr()
-def test_agentexclusions_edit_weekdays_typerror(api, agentexclusion):
+def test_agentexclusions_edit_weekdays_type_validationerror(api, agentexclusion):
     '''
     test to raise the exception when expected type of weekdays is not passed
     '''
-    with pytest.raises(TypeError):
+    with pytest.raises(ValidationError):
         api.agent_exclusions.edit(agentexclusion['id'], frequency='weekly', weekdays='nope')
 
 
 @pytest.mark.vcr()
-def test_agentexclusions_edit_weekdays_unexpectedvalue(api, agentexclusion):
+def test_agentexclusions_edit_weekdays_value_validationerror(api, agentexclusion):
     '''
     test to raise the exception when expected value of weekdays is not passed
     '''
-    with pytest.raises(UnexpectedValueError):
+    with pytest.raises(ValidationError):
         api.agent_exclusions.edit(agentexclusion['id'],
                                   frequency='weekly',
                                   weekdays=['MO', 'WE', 'nope'])
 
 
 @pytest.mark.vcr()
-def test_agentexclusions_edit_dayofmonth_typerror(api, agentexclusion):
+def test_agentexclusions_edit_dayofmonth_type_validationerror(api, agentexclusion):
     '''
     test to raise the exception when expected type of day of month is not passed
     '''
-    with pytest.raises(TypeError):
+    with pytest.raises(ValidationError):
         api.agent_exclusions.edit(agentexclusion['id'], frequency='monthly', day_of_month='nope')
 
 
 @pytest.mark.vcr()
-def test_agentexclusions_edit_dayofmonth_unexpectedvalue(api, agentexclusion):
+def test_agentexclusions_edit_dayofmonth_value_validationerror(api, agentexclusion):
     '''
     test to raise the exception when expected value of day of month is not passed
     '''
-    with pytest.raises(UnexpectedValueError):
+    with pytest.raises(ValidationError):
         api.agent_exclusions.edit(agentexclusion['id'], frequency='monthly', day_of_month=0)
 
 

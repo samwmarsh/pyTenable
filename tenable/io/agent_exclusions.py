@@ -16,15 +16,32 @@ Methods available on ``tio.agent_exclusions``:
     .. automethod:: edit
     .. automethod:: list
 '''
+from typing import *
 from restfly.utils import dict_merge, dict_clean
 from .base import TIOEndpoint
 from datetime import date, datetime, timedelta
+from .schemas.agent_exclusion_schema import AgentExclusionSchema
+
 
 class AgentExclusionsAPI(TIOEndpoint):
-    def create(self, name, scanner_id=1, start_time=None, end_time=None,
-               timezone=None, description=None, frequency=None,
-               interval=None, weekdays=None, day_of_month=None,
-               enabled=True):
+    '''
+    This class contain all methods related to agent exclusions
+    '''
+    _path: ClassVar[str] = 'scanners'
+
+    def _validate(
+            self,
+            data: Dict[Any, Any],
+            validator=AgentExclusionSchema
+    ) -> Dict:
+        return validator().load(data)
+
+    def create(
+            self,
+            name: str,
+            scanner_id: Optional[int] = 1,
+            **kwargs
+    ) -> Dict:
         '''
         Creates a new agent exclusion.
 
@@ -111,26 +128,22 @@ class AgentExclusionsAPI(TIOEndpoint):
             ...     start_time=datetime.utcnow(),
             ...     end_time=datetime.utcnow() + timedelta(hours=1))
         '''
+        # validate user inputs
+        kwargs = self._validate(kwargs)
+
         # Starting with the innermost part of the payload, lets construct the
         # rrules dictionary.
-        frequency = self._check('frequency', frequency, str,
-            choices=['ONETIME', 'DAILY', 'WEEKLY', 'MONTHLY', 'YEARLY'],
-            default='ONETIME',
-            case='upper')
+        frequency = kwargs.get('frequency', 'ONETIME')
 
         rrules = {
             'freq': frequency,
-            'interval': self._check('interval', interval, int, default=1)
+            'interval': kwargs.get('interval', 1)
         }
 
         # if the frequency is a weekly one, then we will need to specify the
         # days of the week that the exclusion is run on.
         if frequency == 'WEEKLY':
-            rrules['byweekday'] = ','.join(self._check(
-                'weekdays', weekdays, list,
-                choices=['SU', 'MO', 'TU', 'WE', 'TH', 'FR', 'SA'],
-                default=['SU', 'MO', 'TU', 'WE', 'TH', 'FR', 'SA'],
-                case='upper'))
+            rrules['byweekday'] = kwargs.get('weekdays', ['SU', 'MO', 'TU', 'WE', 'TH', 'FR', 'SA'])
             # In the same vein as the frequency check, we're accepting
             # case-insensitive input, comparing it to our known list of
             # acceptable responses, then joining them all together into a
@@ -139,23 +152,18 @@ class AgentExclusionsAPI(TIOEndpoint):
         # if the frequency is monthly, then we will need to specify the day of
         # the month that the rule will run on.
         if frequency == 'MONTHLY':
-            rrules['bymonthday'] = self._check('day_of_month', day_of_month, int,
-                choices=list(range(1,32)),
-                default=datetime.today().day)
+            rrules['bymonthday'] = kwargs.get('day_of_month', datetime.today().day)
 
+        # kwargs['enabled'] = kwargs.get('enabled', True)
         # Next we need to construct the rest of the payload
         payload = {
             'name': self._check('name', name, str),
-            'description': self._check('description', description, str, default=''),
+            'description': kwargs.get('description', ''),
             'schedule': {
-                'enabled': self._check('enabled', enabled, bool, default=True),
-                'starttime': self._check('start_time', start_time, datetime).strftime('%Y-%m-%d %H:%M:%S')
-                    if enabled is True else datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S'),
-                'endtime': self._check('end_time', end_time, datetime).strftime('%Y-%m-%d %H:%M:%S')
-                    if enabled is True else (datetime.utcnow() + timedelta(hours=1)).strftime('%Y-%m-%d %H:%M:%S'),
-                'timezone': self._check('timezone', timezone, str,
-                    choices=self._api._tz,
-                    default='Etc/UTC'),
+                'enabled': kwargs.get('enabled', True),
+                'starttime': kwargs.get('start_time', datetime.utcnow()).strftime('%Y-%m-%d %H:%M:%S'),
+                'endtime': kwargs.get('start_time', (datetime.utcnow() + timedelta(hours=1))).strftime('%Y-%m-%d %H:%M:%S'),
+                'timezone': kwargs.get('timezone', 'Etc/UTC'),
                 'rrules': rrules
             }
         }
@@ -163,12 +171,14 @@ class AgentExclusionsAPI(TIOEndpoint):
         # Lets check to make sure that the scanner_id is an integer as the API
         # documentation requests and if we don't raise an error, then lets make
         # the call.
-        return self._api.post(
-            'scanners/{}/agents/exclusions'.format(
-                self._check('scanner_id', scanner_id, int)
-            ), json=payload).json()
+        self._check('scanner_id', scanner_id, int)
+        return self._api.post(f'{self._path}/{scanner_id}/agents/exclusions', json=payload).json()
 
-    def delete(self, exclusion_id, scanner_id=1):
+    def delete(
+            self,
+            exclusion_id: int,
+            scanner_id: Optional[int] = 1
+    ) -> None:
         '''
         Delete an agent exclusion.
 
@@ -184,12 +194,15 @@ class AgentExclusionsAPI(TIOEndpoint):
         Examples:
             >>> tio.agent_exclusions.delete(1)
         '''
-        self._api.delete('scanners/{}/agents/exclusions/{}'.format(
-            self._check('scanner_id', scanner_id, int),
-            self._check('exclusion_id', exclusion_id, int)
-        ))
+        self._check('scanner_id', scanner_id, int),
+        self._check('exclusion_id', exclusion_id, int)
+        self._api.delete(f'{self._path}/{scanner_id}/agents/exclusions/{exclusion_id}')
 
-    def details(self, exclusion_id, scanner_id=1):
+    def details(
+            self,
+            exclusion_id: int,
+            scanner_id: Optional[int] = 1
+    ) -> Dict:
         '''
         Retrieve the details for a specific agent exclusion.
 
@@ -205,15 +218,16 @@ class AgentExclusionsAPI(TIOEndpoint):
         Examples:
             >>> exclusion = tio.agent_exclusions.details(1)
         '''
-        return self._api.get(
-            'scanners/{}/agents/exclusions/{}'.format(
-                self._check('scanner_id', scanner_id, int),
-                self._check('exclusion_id', exclusion_id, int)
-            )).json()
+        self._check('scanner_id', scanner_id, int),
+        self._check('exclusion_id', exclusion_id, int)
+        return self._api.get(f'{self._path}/{scanner_id}/agents/exclusions/{exclusion_id}').json()
 
-    def edit(self, exclusion_id, scanner_id=1, name=None, start_time=None,
-            end_time=None, timezone=None, description=None, frequency=None,
-            interval=None, weekdays=None, day_of_month=None, enabled=None):
+    def edit(
+            self,
+            exclusion_id: int,
+            scanner_id: Optional[int] = 1,
+            **kwargs
+    ) -> Dict:
         '''
         Edit an existing agent exclusion.
 
@@ -254,86 +268,91 @@ class AgentExclusionsAPI(TIOEndpoint):
         Examples:
             >>> exclusion = tio.agent_exclusions.edit(1, name='New Name')
         '''
+        # validate user inputs
+        kwargs = self._validate(kwargs)
 
         # Lets start constructing the payload to be sent to the API...
         payload = self.details(exclusion_id, scanner_id=scanner_id)
+        payload['schedule'] = dict_clean(payload['schedule'])
 
-        if name:
-            payload['name'] = self._check('name', name, str)
+        if kwargs.get('name'):
+            payload['name'] = kwargs.get('name')
 
-        if description:
-            payload['description'] = self._check('description', description, str)
+        if kwargs.get('description'):
+            payload['description'] = kwargs.get('description')
 
-        if enabled is not None:
-            payload['schedule']['enabled'] = self._check('enabled', enabled, bool)
+        if kwargs.get('enabled'):
+            payload['schedule']['enabled'] = kwargs.get('enabled')
 
         if payload['schedule']['enabled']:
-            frequency = self._check('frequency', frequency, str,
-                                    choices=['ONETIME', 'DAILY', 'WEEKLY', 'MONTHLY', 'YEARLY'],
-                                    default=payload['schedule']['rrules']['freq'],
-                                    case='upper')
+            # we will create a dict of default values from existing payload or
+            # set individually if not existing schedule exist
+            if payload['schedule'].get('rrules') is not None:
+                default_rrule_values = {
+                    'frequency': payload['schedule']['rrules'].get('freq'),
+                    'interval': payload['schedule']['rrules'].get('interval', 1),
+                    'weekdays': payload['schedule']['rrules'].get(
+                        'byweekday', ','.join(['SU', 'MO', 'TU', 'WE', 'TH', 'FR', 'SA'])),
+                    'day_of_month': payload['schedule']['rrules'].get(
+                        'bymonthday', datetime.today().day),
+                }
+            else:
+                default_rrule_values = {
+                    'frequency': 'ONETIME',
+                    'interval': 1,
+                    'weekdays': ','.join(['SU', 'MO', 'TU', 'WE', 'TH', 'FR', 'SA']),
+                    'day_of_month': datetime.today().day,
+                }
+
+            frequency = kwargs.get('frequency', default_rrule_values.get('frequency'))
 
             rrules = {
                 'freq': frequency,
-                'interval': payload['schedule']['rrules']['interval'],
+                'interval': default_rrule_values.get('interval'),
                 'byweekday': None,
                 'bymonthday': None,
             }
 
-            # frequency default value is designed for weekly and monthly based on below conditions
-            # - if schedule rrules is not None and not defined in edit params,
-            #   and byweekday/bymonthday key already exist, assign old values
-            # - if schedule rrules is not None and not defined in edit params
-            #   and byweekday/bymonthday key not already exist, assign default values
-            # - if schedule rrules is not None and defined in edit params, assign new values
             if frequency == 'WEEKLY':
-                rrules['byweekday'] = ','.join(self._check(
-                    'weekdays', weekdays, list,
-                    choices=['SU', 'MO', 'TU', 'WE', 'TH', 'FR', 'SA'],
-                    default=payload['schedule']['rrules'].get('byweekday', '').split()
-                            or ['SU', 'MO', 'TU', 'WE', 'TH', 'FR', 'SA'],
-                    case='upper'))
+                rrules['byweekday'] = kwargs.get('weekdays', default_rrule_values.get('weekdays'))
                 # In the same vein as the frequency check, we're accepting
                 # case-insensitive input, comparing it to our known list of
                 # acceptable responses, then joining them all together into a
                 # comma-separated string.
 
             if frequency == 'MONTHLY':
-                rrules['bymonthday'] = self._check(
-                    'day_of_month', day_of_month, int, choices=list(range(1, 32)),
-                    default=payload['schedule']['rrules'].get('bymonthday', datetime.today().day))
+                rrules['bymonthday'] = kwargs.get(
+                    'day_of_month', default_rrule_values.get('day_of_month'))
 
             # update new rrules in existing payload
             dict_merge(payload['schedule']['rrules'], rrules)
             # remove null values from payload
             payload = dict_clean(payload)
 
-            if start_time:
-                payload['schedule']['starttime'] = self._check(
-                    'start_time', start_time, datetime).strftime('%Y-%m-%d %H:%M:%S')
+            if kwargs.get('start_time'):
+                payload['schedule']['starttime'] = kwargs.get('start_time').strftime('%Y-%m-%d %H:%M:%S')
 
-            if end_time:
-                payload['schedule']['endtime'] = self._check(
-                    'end_time', end_time, datetime).strftime('%Y-%m-%d %H:%M:%S')
+            if kwargs.get('end_time'):
+                payload['schedule']['endtime'] = kwargs.get('end_time').strftime('%Y-%m-%d %H:%M:%S')
 
-            if interval:
-                payload['schedule']['rrules']['interval'] = self._check(
-                    'interval', interval, int)
+            if kwargs.get('interval'):
+                payload['schedule']['rrules']['interval'] = kwargs.get('interval')
 
-            if timezone:
-                payload['schedule']['timezone'] = self._check(
-                    'timezone', timezone, str, choices=self._api._tz)
+            if kwargs.get('timezone'):
+                payload['schedule']['timezone'] = kwargs.get(
+                    'timezone', payload['schedule'].get('timezone'))
 
         # Lets check to make sure that the scanner_id  and exclusion_id are
         # integers as the API documentation requests and if we don't raise an
         # error, then lets make the call.
-        return self._api.put(
-            'scanners/{}/agents/exclusions/{}'.format(
-                self._check('scanner_id', scanner_id, int),
-                self._check('exclusion_id', exclusion_id, int)
-        ), json=payload).json()
+        self._check('scanner_id', scanner_id, int),
+        self._check('exclusion_id', exclusion_id, int)
+        return self._api.put(f'{self._path}/{scanner_id}/agents/exclusions/{exclusion_id}', json=payload).json()
 
-    def list(self, scanner_id=1):
+    def list(
+            self,
+            scanner_id: Optional[int] = 1
+    ) -> List[Dict]:
         '''
         Lists all of the currently configured agent exclusions.
 
@@ -349,7 +368,5 @@ class AgentExclusionsAPI(TIOEndpoint):
             >>> for exclusion in tio.agent_exclusions.list():
             ...     pprint(exclusion)
         '''
-        return self._api.get(
-            'scanners/{}/agents/exclusions'.format(
-                self._check('scanner_id', scanner_id, int)
-            )).json()['exclusions']
+        self._check('scanner_id', scanner_id, int)
+        return self._api.get(f'{self._path}/{scanner_id}/agents/exclusions').json()['exclusions']
