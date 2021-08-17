@@ -60,7 +60,7 @@ class AgentExclusionSchema(Schema):
     @post_load()
     def combine(self, data: dict, **kwargs) -> dict:
         # join list of weekdays and members to single string
-        keys = ['weekdays', 'members']
+        keys = ['weekdays']
         for key in keys:
             if self.check(data, key, list):
                 data[key] = ','.join(data[key])
