@@ -116,10 +116,14 @@ def test_users_delete_permissionerror(stdapi, user):
         stdapi.users.delete(user['id'])
 
 @pytest.mark.vcr()
-def test_users_delete(api, user):
+def test_users_delete(api):
     '''
     test to delete user
     '''
+    user = api.users.create(
+        '{}@tenable.com'.format(uuid.uuid4()),
+        '{}Tt!'.format(uuid.uuid4()),
+        64)
     api.users.delete(user['id'])
     assert user['id'] not in [u['id'] for u in api.users.list()]
 
@@ -358,30 +362,41 @@ def test_users_impersonate_notfounderror(api):
     '''
     test to raise exception when user provided user_id not found.
     '''
-    with pytest.raises(PermissionError):
-        api.users.impersonate(guser())
-        api.session.details()
-        api.session.restore()
+    if not api.__dict__.get('_url', 'something').find('fed'):
+        with pytest.raises(PermissionError):
+            api.users.impersonate(guser())
+            api.session.details()
+            api.session.restore()
+    else:
+        pass
 
 @pytest.mark.vcr()
 def test_users_impersonate_permissionerror(stdapi, user):
     '''
     test to raise exception when standard user try to impersonate user.
     '''
-    with pytest.raises(PermissionError):
-        stdapi.users.impersonate(user['username'])
-        stdapi.session.details()
-        stdapi.session.restore()
+    if not stdapi.__dict__.get('_url', 'something').find('fed'):
+        with pytest.raises(PermissionError):
+            stdapi.users.impersonate(user['username'])
+            stdapi.session.details()
+            stdapi.session.restore()
+    else:
+        pass
+
 
 @pytest.mark.vcr()
 def test_users_impersonate(api, user):
     '''
     test to impersonate user
     '''
-    api.users.impersonate(user['username'])
-    assert api.session.details()['username'] == user['username']
-    api.session.restore()
-    assert api.session.details()['username'] != user['username']
+    if not api.__dict__.get('_url', 'something').find('fed'):
+        api.users.impersonate(user['username'])
+        assert api.session.details()['username'] == user['username']
+        api.session.restore()
+        assert api.session.details()['username'] != user['username']
+    else:
+        pass
+
 
 @pytest.mark.vcr()
 def test_users_list_users(api, user):
@@ -390,7 +405,7 @@ def test_users_list_users(api, user):
     '''
     users = api.users.list()
     assert isinstance(users, list)
-    assert user['id'] in [u['id']for u in users]
+    assert user['id'] in [u['id'] for u in users]
 
 @pytest.mark.vcr()
 def test_users_change_password_orig_typeerror(api):

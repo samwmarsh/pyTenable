@@ -7,6 +7,7 @@ from tenable.errors import UnexpectedValueError, APIError
 from tests.checker import check
 from tests.pytenable_log_handler import log_exception
 
+
 @pytest.fixture(name='rules')
 def fixture_rules():
     '''
@@ -14,12 +15,14 @@ def fixture_rules():
     '''
     return [('ipv4', 'eq', ['192.168.0.0/24'])]
 
+
 @pytest.fixture(name='agroup')
 def fixture_agroup(request, api, rules):
     '''
     Fixture to create access_group
     '''
     group = api.access_groups.create('Example', rules)
+
     def teardown():
         '''
         cleanup function to delete access_group
@@ -41,6 +44,7 @@ def test_access_group_principal_constructor_type_typeerror(api):
     with pytest.raises(TypeError):
         getattr(api.access_groups, '_principal_constructor')([(1, 'something')])
 
+
 def test_access_group_principal_constructor_type_unexpectedvalueerror(api):
     '''
     test to raise exception when type param value does not match the choices.
@@ -48,12 +52,14 @@ def test_access_group_principal_constructor_type_unexpectedvalueerror(api):
     with pytest.raises(UnexpectedValueError):
         getattr(api.access_groups, '_principal_constructor')([('something', 'something')])
 
+
 def test_access_group_principal_constructor_id_typeerror(api):
     '''
     test to raise exception when type of id param does not match the expected type.
     '''
     with pytest.raises(TypeError):
         getattr(api.access_groups, '_principal_constructor')([('user', 1)])
+
 
 def test_access_group_principal_constructor_dict_type_typeerror(api):
     '''
@@ -116,6 +122,7 @@ def test_access_group_principal_constructor_tuple_pass(api):
         ('user', user)
     ]) == [{'type': 'user', 'principal_id': user}]
 
+
 def test_access_group_principal_constructor_dict_pass(api):
     '''
     test to parse dict type principals
@@ -128,6 +135,7 @@ def test_access_group_principal_constructor_dict_pass(api):
     assert getattr(api.access_groups, '_principal_constructor')([
         {'type': 'user', 'principal_id': user}
     ]) == [{'type': 'user', 'principal_id': user}]
+
 
 @pytest.mark.vcr()
 def test_access_groups_create_name_typeerror(api, rules):
@@ -233,6 +241,7 @@ def test_access_group_edit_success(api, agroup):
     check(group, 'updated_by_name', str)
     check(group, 'processing_percent_complete', int)
 
+
 @pytest.mark.vcr()
 def test_access_groups_details_success(api, agroup):
     '''
@@ -262,6 +271,7 @@ def test_access_groups_details_success(api, agroup):
     check(group, 'created_by_name', str)
     check(group, 'updated_by_name', str)
     check(group, 'processing_percent_complete', int)
+
 
 @pytest.mark.vcr()
 def test_access_groups_list_offset_typeerror(api):
@@ -379,13 +389,15 @@ def test_access_groups_list(api):
         check(group, 'name', str)
         check(group, 'all_assets', bool)
         check(group, 'all_users', bool)
-        #check(group, 'created_by_uuid', 'uuid') # Will not return for default group
-        check(group, 'updated_by_uuid', 'uuid')
+        # check(group, 'created_by_uuid', 'uuid') # Will not return for default group
+        if 'updated_by_uuid' in group:
+            check(group, 'updated_by_uuid', 'uuid')
         check(group, 'created_by_name', str)
         check(group, 'updated_by_name', str)
         check(group, 'processing_percent_complete', int)
         check(group, 'status', str)
     assert count == access_groups.total
+
 
 @pytest.mark.vcr()
 def test_access_groups_list_fields(api):
