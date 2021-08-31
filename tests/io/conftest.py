@@ -8,37 +8,27 @@ from tests.pytenable_log_handler import setup_logging_to_file, log_exception
 
 SCAN_ID_WITH_RESULTS = 6799
 
-
-@pytest.fixture(scope='module')
-def vcr_config():
-    '''vcr config fixture'''
-    return {
-        'filter_headers': [
-            ('X-APIKeys', 'accessKey=TIO_ACCESS_KEY;secretKey=TIO_SECRET_KEY'),
-            ('x-request-uuid', 'ffffffffffffffffffffffffffffffff'),
-        ],
-    }
-
-
 @pytest.fixture
 def api():
     '''api keys fixture'''
     setup_logging_to_file()
     return TenableIO(
-        os.getenv('TIO_TEST_ADMIN_ACCESS', 'ffffffffffffffffffffffffffffffff'),
-        os.getenv('TIO_TEST_ADMIN_SECRET', 'ffffffffffffffffffffffffffffffff'),
+        os.getenv('TIO_TEST_ADMIN_ACCESS'),
+        os.getenv('TIO_TEST_ADMIN_SECRET'),
         vendor='pytest',
-        product='pytenable-automated-testing')
+        product='pytenable-automated-testing',
+        url=os.getenv('TIO_URL'))
 
 
 @pytest.fixture
 def stdapi():
     '''std api keys fixture'''
     return TenableIO(
-        os.getenv('TIO_TEST_STD_ACCESS', 'ffffffffffffffffffffffffffffffff'),
-        os.getenv('TIO_TEST_STD_SECRET', 'ffffffffffffffffffffffffffffffff'),
+        os.getenv('TIO_TEST_STD_ACCESS'),
+        os.getenv('TIO_TEST_STD_SECRET'),
         vendor='pytest',
-        product='pytenable-automated-testing')
+        product='pytenable-automated-testing',
+        url=os.getenv('TIO_URL'))
 
 
 @pytest.fixture

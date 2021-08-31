@@ -35,7 +35,6 @@ def fixture_filterdefs():
 
 
 @pytest.fixture(name='tagvalue')
-@pytest.mark.vcr()
 def fixture_tagvalue(request, api):
     '''
     Fixture to create tag value. Please note that If the tag value already exist
@@ -55,7 +54,6 @@ def fixture_tagvalue(request, api):
 
 
 @pytest.fixture(name='tagcat')
-@pytest.mark.vcr()
 def fixture_tagcat(request, api):
     '''
     Fixture to create tag category
@@ -73,7 +71,6 @@ def fixture_tagcat(request, api):
 
 
 @pytest.fixture(name='custom_tagvalue')
-@pytest.mark.vcr()
 def fixture_custom_tagvalue(request, api, user, tagfilters):
     '''
     Fixture to create tag value. Please note that If the tag value already exist
@@ -304,7 +301,7 @@ def test_tags_tag_value_constructor_pass(api, tagfilters, filterdefs):
     ) == {'asset': {'and': [{'field': 'ipv4', 'operator': 'eq', 'value': '192.168.0.0/24'}]}}
 
 
-@pytest.mark.vcr()
+
 def test_tags_create_category_typeerror(api):
     '''
     test to raise exception when type of category param does not match the expected type.
@@ -313,7 +310,7 @@ def test_tags_create_category_typeerror(api):
         api.tags.create(1, '')
 
 
-@pytest.mark.vcr()
+
 def test_tags_create_value_typerror(api):
     '''
     test to raise exception when type of value param does not match the expected type.
@@ -322,7 +319,7 @@ def test_tags_create_value_typerror(api):
         api.tags.create('', 1)
 
 
-@pytest.mark.vcr()
+
 def test_tags_create_value_description_typerror(api):
     '''
     test to raise exception when type of description param does not match the expected type.
@@ -331,7 +328,7 @@ def test_tags_create_value_description_typerror(api):
         api.tags.create('', '', description=1)
 
 
-@pytest.mark.vcr()
+
 def test_tags_create_value_category_description_typeerror(api):
     '''
     test to raise exception when type of category_description
@@ -341,7 +338,7 @@ def test_tags_create_value_category_description_typeerror(api):
         api.tags.create('a7b7ebf6-8aaf-4509-a5b3-872b7647fa86', '', category_description=1)
 
 
-@pytest.mark.vcr()
+
 def test_tags_create_all_users_permissions_typeerror(api):
     '''
     test to raise exception when type of all_users_permissions param
@@ -351,7 +348,7 @@ def test_tags_create_all_users_permissions_typeerror(api):
         api.tags.create('', '', all_users_permissions=1)
 
 
-@pytest.mark.vcr()
+
 def test_tags_create_all_users_permissions_unexpectedvalueerror(api):
     '''
     test to raise exception when all_users_permission param value does not match the choices.
@@ -360,7 +357,7 @@ def test_tags_create_all_users_permissions_unexpectedvalueerror(api):
         api.tags.create('', '', all_users_permissions=['something'])
 
 
-@pytest.mark.vcr()
+
 def test_tags_create_current_domain_permissions_typeerror(api):
     '''
     test to raise exception when type of current_domain_permission param
@@ -370,7 +367,7 @@ def test_tags_create_current_domain_permissions_typeerror(api):
         api.tags.create('', '', current_domain_permissions=1)
 
 
-@pytest.mark.vcr()
+
 def test_tags_create_filters_typeerror(api):
     '''
     test to raise exception when type of filters param does not match the expected type.
@@ -379,7 +376,7 @@ def test_tags_create_filters_typeerror(api):
         api.tags.create('', '', filters=1)
 
 
-@pytest.mark.vcr()
+
 def test_tags_create_success(tagvalue):
     '''
     test to create tag value.
@@ -401,7 +398,7 @@ def test_tags_create_success(tagvalue):
     # check(tagvalue, 'filters', str, allow_none=True)
 
 
-@pytest.mark.vcr()
+
 def test_tags_create_filters_and_access_control_success(api, tagfilters, user, custom_tagvalue):
     '''
     test to create tag value and assign all_users_permissions,
@@ -429,7 +426,7 @@ def test_tags_create_filters_and_access_control_success(api, tagfilters, user, c
         'asset': '{"and":[{"field":"ipv4","operator":"eq","value":"192.168.0.0/24"}]}'}
 
 
-@pytest.mark.vcr()
+
 def test_tags_create_category_name_typeerror(api):
     '''
     test to raise exception when type of name param does not match the expected type.
@@ -441,7 +438,7 @@ def test_tags_create_category_name_typeerror(api):
         log_exception(err)
 
 
-@pytest.mark.vcr()
+
 def test_tags_create_category_description_typeerror(api):
     '''
     test to raise exception when type of description param does not match the expected type.
@@ -453,7 +450,7 @@ def test_tags_create_category_description_typeerror(api):
         log_exception(err)
 
 
-@pytest.mark.vcr()
+
 def test_tags_create_category_success(tagcat):
     '''
     test to create tag category.
@@ -468,7 +465,7 @@ def test_tags_create_category_success(tagcat):
     check(tagcat, 'reserved', bool)
 
 
-@pytest.mark.vcr()
+
 def test_tags_delete_uuid_typeerror(api):
     '''
     test to raise exception when type of tag_value_uuid param does not match the expected type.
@@ -477,7 +474,7 @@ def test_tags_delete_uuid_typeerror(api):
         api.tags.delete(1)
 
 
-@pytest.mark.vcr()
+
 def test_tags_delete_uuid_unexpectedvalueerror(api):
     '''
     test to raise exception when type of tag_value_uuid param does not match the expected type.
@@ -486,7 +483,7 @@ def test_tags_delete_uuid_unexpectedvalueerror(api):
         api.tags.delete('1')
 
 
-@pytest.mark.vcr()
+
 def test_tags_delete_success(api, tagvalue):
     '''
     test to delete tag value.
@@ -494,7 +491,7 @@ def test_tags_delete_success(api, tagvalue):
     api.tags.delete(tagvalue['uuid'])
 
 
-@pytest.mark.vcr()
+
 def test_tags_delete_bulk_typeerror(api, tagvalue):
     '''
     test to raise exception when type of tag_value_uuid param does not match the expected type.
@@ -503,7 +500,7 @@ def test_tags_delete_bulk_typeerror(api, tagvalue):
         api.tags.delete(tagvalue['uuid'], 1)
 
 
-@pytest.mark.vcr()
+
 def test_tags_delete_bulk_unexpectedvalueerror(api, tagvalue):
     '''
     test to raise exception when type of tag_value_uuid param does not match the expected type.
@@ -512,7 +509,7 @@ def test_tags_delete_bulk_unexpectedvalueerror(api, tagvalue):
         api.tags.delete(tagvalue['uuid'], 'nope')
 
 
-@pytest.mark.vcr()
+
 def test_tags_delete_bulk_success(api):
     '''
     test to delete multiple tags .
@@ -522,7 +519,7 @@ def test_tags_delete_bulk_success(api):
     api.tags.delete(tag1['uuid'], tag2['uuid'])
 
 
-@pytest.mark.vcr()
+
 def test_tags_delete_category_uuid_typeerror(api):
     '''
     test to raise exception when type of tag_category_uuid param does not match the expected type.
@@ -531,7 +528,7 @@ def test_tags_delete_category_uuid_typeerror(api):
         api.tags.delete_category(1)
 
 
-@pytest.mark.vcr()
+
 def test_tags_delete_category_uuid_unexpectedvalueerror(api):
     '''
     test to raise exception when type of tag_category_uuid param does not match the expected type.
@@ -540,7 +537,7 @@ def test_tags_delete_category_uuid_unexpectedvalueerror(api):
         api.tags.delete_category('1')
 
 
-@pytest.mark.vcr()
+
 def test_tags_delete_category_success(api, tagcat):
     '''
     test to delete tag category.
@@ -548,7 +545,7 @@ def test_tags_delete_category_success(api, tagcat):
     api.tags.delete_category(tagcat['uuid'])
 
 
-@pytest.mark.vcr()
+
 def test_tags_details_uuid_typeerror(api):
     '''
     test to raise exception when type of tag_value_uuid param does not match the expected type.
@@ -557,7 +554,7 @@ def test_tags_details_uuid_typeerror(api):
         api.tags.details(1)
 
 
-@pytest.mark.vcr()
+
 def test_tags_details_unexpectedvalueerror(api):
     '''
     test to raise exception when type of tag_value_uuid param does not match the expected type.
@@ -566,7 +563,7 @@ def test_tags_details_unexpectedvalueerror(api):
         api.tags.details('1')
 
 
-@pytest.mark.vcr()
+
 def test_tags_details_success(api, tagvalue):
     '''
     test to get details for a specific tag category/value pair.
@@ -586,7 +583,7 @@ def test_tags_details_success(api, tagvalue):
     # check(t, 'category_description', str, allow_none=True)
 
 
-@pytest.mark.vcr()
+
 def test_tags_details_category_uuid_typeerror(api):
     '''
     test to raise exception when type of tag_category_uuid param does not match the expected type.
@@ -595,7 +592,7 @@ def test_tags_details_category_uuid_typeerror(api):
         api.tags.details_category(1)
 
 
-@pytest.mark.vcr()
+
 def test_tags_details_category_unexpectedvalueerror(api):
     '''
     test to raise exception when type of tag_category_uuid param does not match the expected type.
@@ -604,7 +601,7 @@ def test_tags_details_category_unexpectedvalueerror(api):
         api.tags.details_category('1')
 
 
-@pytest.mark.vcr()
+
 def test_tags_details_category_success(api, tagcat):
     '''
     test to get details for a specific tag category.
@@ -621,7 +618,7 @@ def test_tags_details_category_success(api, tagcat):
     check(details, 'reserved', bool)
 
 
-@pytest.mark.vcr()
+
 def test_tags_edit_uuid_typeerror(api):
     '''
     test to raise exception when type of tag_value_uuid param does not match the expected type.
@@ -630,7 +627,7 @@ def test_tags_edit_uuid_typeerror(api):
         api.tags.edit(1)
 
 
-@pytest.mark.vcr()
+
 def test_tags_edit_uuid_unexpectedvalueerror(api):
     '''
     test to raise exception when type of tag_value_uuid param does not match the expected type.
@@ -639,7 +636,7 @@ def test_tags_edit_uuid_unexpectedvalueerror(api):
         api.tags.edit('1')
 
 
-@pytest.mark.vcr()
+
 def test_tags_edit_value_typeerror(api):
     '''
     test to raise exception when type of value param does not match the expected type.
@@ -648,7 +645,7 @@ def test_tags_edit_value_typeerror(api):
         api.tags.edit(uuid.uuid4(), value=1)
 
 
-@pytest.mark.vcr()
+
 def test_tags_edit_description_typeerror(api):
     '''
     test to raise exception when type of description param does not match the expected type.
@@ -657,7 +654,7 @@ def test_tags_edit_description_typeerror(api):
         api.tags.edit(uuid.uuid4(), description=1)
 
 
-@pytest.mark.vcr()
+
 def test_tags_edit_all_users_permissions_typeerror(api, tagvalue):
     '''
     test to raise exception when type of all_users_permission param
@@ -667,7 +664,7 @@ def test_tags_edit_all_users_permissions_typeerror(api, tagvalue):
         api.tags.edit(tagvalue['uuid'], all_users_permissions=1)
 
 
-@pytest.mark.vcr()
+
 def test_tags_edit_all_users_permissions_unexpectedvalueerror(api, tagvalue):
     '''
     test to raise exception when all_users_permission param value does not match the choices.
@@ -676,7 +673,7 @@ def test_tags_edit_all_users_permissions_unexpectedvalueerror(api, tagvalue):
         api.tags.edit(tagvalue['uuid'], all_users_permissions=['something'])
 
 
-@pytest.mark.vcr()
+
 def test_tags_edit_current_domain_permissions_typeerror(api, tagvalue):
     '''
     test to raise exception when type of current_domain_permission param
@@ -686,7 +683,7 @@ def test_tags_edit_current_domain_permissions_typeerror(api, tagvalue):
         api.tags.edit(tagvalue['uuid'], current_domain_permissions=1)
 
 
-@pytest.mark.vcr()
+
 def test_tags_edit_filters_typeerror(api, tagvalue):
     '''
     test to raise exception when type of filters param does not match the expected type.
@@ -695,7 +692,7 @@ def test_tags_edit_filters_typeerror(api, tagvalue):
         api.tags.edit(tagvalue['uuid'], filters=1)
 
 
-@pytest.mark.vcr()
+
 def test_tags_edit_success(api, tagvalue):
     '''
     test to edit tag category/value pair information.
@@ -722,7 +719,7 @@ def test_tags_edit_success(api, tagvalue):
     assert resp['value'] == 'Edited'
 
 
-@pytest.mark.vcr()
+
 def test_tags_edit_filters_and_access_control_success(api, user, tagfilters, custom_tagvalue):
     '''
     test to edit tag value and update all_users_permissions,
@@ -758,7 +755,7 @@ def test_tags_edit_filters_and_access_control_success(api, user, tagfilters, cus
     assert resp['access_control']['version'] == 1
 
 
-@pytest.mark.vcr()
+
 def test_tags_edit_category_uuid_typeerror(api):
     '''
     test to raise exception when type of tag_category_uuid param does not match the expected type.
@@ -767,7 +764,7 @@ def test_tags_edit_category_uuid_typeerror(api):
         api.tags.edit_category(1)
 
 
-@pytest.mark.vcr()
+
 def test_tags_edit_category_uuid_unexpectedvalueerror(api):
     '''
     test to raise exception when type of tag_category_uuid param does not match the expected type.
@@ -776,7 +773,7 @@ def test_tags_edit_category_uuid_unexpectedvalueerror(api):
         api.tags.edit_category('1')
 
 
-@pytest.mark.vcr()
+
 def test_tags_edit_category_value_typeerror(api):
     '''
     test to raise exception when type of value param does not match the expected type.
@@ -785,7 +782,7 @@ def test_tags_edit_category_value_typeerror(api):
         api.tags.edit_category(uuid.uuid4(), value=1)
 
 
-@pytest.mark.vcr()
+
 def test_tags_edit_category_description_typeerror(api):
     '''
     test to raise exception when type of description param does not match the expected type.
@@ -794,7 +791,7 @@ def test_tags_edit_category_description_typeerror(api):
         api.tags.edit_category(uuid.uuid4(), description=1)
 
 
-@pytest.mark.vcr()
+
 def test_tags_edit_category_success(api, tagcat):
     '''
     test to edit tag category information.
@@ -876,7 +873,7 @@ def test_tags_list_constructor_filter_success(api):
     assert resp['f'] == ['value:eq:Test']
 
 
-@pytest.mark.vcr()
+
 def test_tags_list_success(api):
     '''
     test to get list of tags.
@@ -897,7 +894,7 @@ def test_tags_list_success(api):
     # check(t, 'category_description', str, allow_none=True)
 
 
-@pytest.mark.vcr()
+
 def test_tags_list_category_success(api):
     '''
     test to list of tag categories.
@@ -915,7 +912,7 @@ def test_tags_list_category_success(api):
     # check(t, 'reserved', bool)
 
 
-@pytest.mark.vcr()
+
 def test_tags_list_date_failure(api):
     '''
     test to raise exception when value of filter tuple does not match the expected.
@@ -924,7 +921,7 @@ def test_tags_list_date_failure(api):
         api.tags.list(('updated_at', 'eq', 'something_else'))
 
 
-@pytest.mark.vcr()
+
 def test_tags_assign_assets_typeerror_list(api):
     '''
     test to raise exception when type of asset param does not match the expected type.
@@ -933,7 +930,7 @@ def test_tags_assign_assets_typeerror_list(api):
         api.tags.assign(1, [])
 
 
-@pytest.mark.vcr()
+
 def test_tags_assign_assets_typeerror_entity(api):
     '''
     test to raise exception when type of asset param does not match the expected type.
@@ -942,7 +939,7 @@ def test_tags_assign_assets_typeerror_entity(api):
         api.tags.assign([1, ], [])
 
 
-@pytest.mark.vcr()
+
 def test_tags_assign_assets_unexpectedvalueerror_entity(api):
     '''
     test to raise exception when asset param value does not match the expected.
@@ -951,7 +948,7 @@ def test_tags_assign_assets_unexpectedvalueerror_entity(api):
         api.tags.assign(['something'], [])
 
 
-@pytest.mark.vcr()
+
 def test_tags_assign_tags_typeerror_list(api):
     '''
     test to raise exception when type of tags param does not match the expected type.
@@ -960,7 +957,7 @@ def test_tags_assign_tags_typeerror_list(api):
         api.tags.assign([], 1)
 
 
-@pytest.mark.vcr()
+
 def test_tags_assign_tags_typeerror_entity(api):
     '''
     test to raise exception when type of tags param does not match the expected type.
@@ -969,7 +966,7 @@ def test_tags_assign_tags_typeerror_entity(api):
         api.tags.assign([], [1, ])
 
 
-@pytest.mark.vcr()
+
 def test_tags_assign_tags_unexpectedvalueerror_entity(api):
     '''
     test to raise exception when tags param value does not match the expected.
@@ -978,7 +975,7 @@ def test_tags_assign_tags_unexpectedvalueerror_entity(api):
         api.tags.assign([], ['something', ])
 
 
-@pytest.mark.vcr()
+
 def test_tags_assign_success(api, tagvalue):
     '''
     test to assign tags to assets.
@@ -988,7 +985,7 @@ def test_tags_assign_success(api, tagvalue):
     single(resp, str)
 
 
-@pytest.mark.vcr()
+
 def test_tags_unassign_assets_typeerror_list(api):
     '''
     test to raise exception when type of asstes param does not match the expected type.
@@ -997,7 +994,7 @@ def test_tags_unassign_assets_typeerror_list(api):
         api.tags.unassign(1, [])
 
 
-@pytest.mark.vcr()
+
 def test_tags_unassign_assets_typeerror_entity(api):
     '''
     test to raise exception when type of assets param does not match the expected type.
@@ -1006,7 +1003,7 @@ def test_tags_unassign_assets_typeerror_entity(api):
         api.tags.unassign([1, ], [])
 
 
-@pytest.mark.vcr()
+
 def test_tags_unassign_assets_unexpectedvalueerror_entity(api):
     '''
     test to raise exception when assets param value does not match the expected.
@@ -1015,7 +1012,7 @@ def test_tags_unassign_assets_unexpectedvalueerror_entity(api):
         api.tags.unassign(['something'], [])
 
 
-@pytest.mark.vcr()
+
 def test_tags_unassign_tags_typeerror_list(api):
     '''
     test to unassign tags from assets.
@@ -1024,7 +1021,7 @@ def test_tags_unassign_tags_typeerror_list(api):
         api.tags.unassign([], 1)
 
 
-@pytest.mark.vcr()
+
 def test_tags_unassign_tags_typeerror_entity(api):
     '''
     test to raise exception when type of tags param does not match the expected type.
@@ -1033,7 +1030,7 @@ def test_tags_unassign_tags_typeerror_entity(api):
         api.tags.unassign([], [1, ])
 
 
-@pytest.mark.vcr()
+
 def test_tags_unassign_tags_unexpectedvalueerror_entity(api):
     '''
     test to raise exception when type of tags param does not match the expected type.
@@ -1042,7 +1039,7 @@ def test_tags_unassign_tags_unexpectedvalueerror_entity(api):
         api.tags.unassign([], ['something', ])
 
 
-@pytest.mark.vcr()
+
 def test_tags_unassign_success(api, tagvalue):
     '''
     test to raise exception when tags param value does not match the expected.
@@ -1052,7 +1049,7 @@ def test_tags_unassign_success(api, tagvalue):
     single(resp, str)
 
 
-@pytest.mark.vcr()
+
 def test_tags_edit_without_filters(api):
     '''
     test to apply filters that are available in current payload when filter parameter is not passed.

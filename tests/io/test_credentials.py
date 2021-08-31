@@ -133,20 +133,18 @@ def test_credentials_permissions_constructor_dict_success(api):
 
 
 @pytest.fixture
-def cred(request, api, vcr):
+def cred(request, api):
     '''fixture credential'''
-    with vcr.use_cassette('test_credentials_create_success'):
-        cred = api.credentials.create('Example Cred', 'SSH',
-                                      username='root',
-                                      password='something',
-                                      auth_method='password',
-                                      elevate_privileges_with='Nothing',
-                                      custom_password_prompt='')
+    cred = api.credentials.create('Example Cred', 'SSH',
+                                  username='root',
+                                  password='something',
+                                  auth_method='password',
+                                  elevate_privileges_with='Nothing',
+                                  custom_password_prompt='')
 
     def teardown():
         try:
-            with vcr.use_cassette('test_credentials_delete_success'):
-                api.credentials.delete(cred)
+            api.credentials.delete(cred)
         except APIError as err:
             log_exception(err)
 
@@ -172,7 +170,7 @@ def test_credentials_create_description_typeerror(api):
         api.credentials.create('something', 'something', 1)
 
 
-@pytest.mark.vcr()
+
 def test_credentials_create_success(cred):
     '''test to create the credential'''
     single(cred, 'uuid')
@@ -190,7 +188,7 @@ def test_credentials_delete_id_unexpectedvalueerror(api):
         api.credentials.delete('something')
 
 
-@pytest.mark.vcr()
+
 def test_credentials_delete_success(api, cred):
     '''test to delete the credential'''
     api.credentials.delete(cred)
@@ -208,7 +206,7 @@ def test_credentials_edit_id_unexpectedvalueerror(api):
         api.credentials.edit('something')
 
 
-@pytest.mark.vcr()
+
 def test_credentials_edit_success(api, cred):
     '''test to edit the credentials'''
     creds = api.credentials.edit(cred, cred_name='updated cred')
@@ -227,7 +225,7 @@ def test_credentials_details_id_unexpectedvalueerror(api):
         api.credentials.details('something')
 
 
-@pytest.mark.vcr()
+
 def test_credentials_details_success(api, cred):
     '''test to get the details of the credentials'''
     creds = api.credentials.details(cred)
@@ -253,35 +251,35 @@ def test_credentials_details_success(api, cred):
         check(permission, 'name', str)
 
 
-@pytest.mark.vcr()
+
 def test_credentials_list_offset_typeerror(api):
     '''test to raise the exception when type of offset is not as defined'''
     with pytest.raises(TypeError):
         api.credentials.list(offset='nope')
 
 
-@pytest.mark.vcr()
+
 def test_credentials_list_limit_typeerror(api):
     '''test to raise the exception when type of limit is not as defined'''
     with pytest.raises(TypeError):
         api.credentials.list(limit='nope')
 
 
-@pytest.mark.vcr()
+
 def test_credentials_list_sort_field_typeerror(api):
     '''test to raise the exception when type of sort_field are not as defined'''
     with pytest.raises(TypeError):
         api.credentials.list(sort=((1, 'asc'),))
 
 
-@pytest.mark.vcr()
+
 def test_credentials_list_sort_direction_typeerror(api):
     '''test to raise the exception when type of sort direction are not as defined'''
     with pytest.raises(TypeError):
         api.credentials.list(sort=(('uuid', 1),))
 
 
-@pytest.mark.vcr()
+
 def test_credentials_list_sort_direction_unexpectedvalue(api):
     '''
     test to raise the exception when value of sort_direction are not as defined
@@ -290,7 +288,7 @@ def test_credentials_list_sort_direction_unexpectedvalue(api):
         api.credentials.list(sort=(('uuid', 'nope'),))
 
 
-@pytest.mark.vcr()
+
 def test_credentials_list_filter_name_typeerror(api):
     '''
     test to raise the exception when type of filter name are not as defined
@@ -299,7 +297,7 @@ def test_credentials_list_filter_name_typeerror(api):
         api.credentials.list((1, 'match', 'win'))
 
 
-@pytest.mark.vcr()
+
 def test_credentials_list_filter_operator_typeerror(api):
     '''
     test to raise the exception when type of filter operator are not as defined
@@ -308,7 +306,7 @@ def test_credentials_list_filter_operator_typeerror(api):
         api.credentials.list(('name', 1, 'win'))
 
 
-@pytest.mark.vcr()
+
 def test_credentials_list_filter_value_typeerror(api):
     '''
     test to raise the exception when type of filter value are not as defined
@@ -317,7 +315,7 @@ def test_credentials_list_filter_value_typeerror(api):
         api.credentials.list(('name', 'match', 1))
 
 
-@pytest.mark.vcr()
+
 def test_credentials_list_filter_type_typeerror(api):
     '''
     test to raise the exception when type of filter type are not as defined
@@ -326,7 +324,7 @@ def test_credentials_list_filter_type_typeerror(api):
         api.credentials.list(filter_type=1)
 
 
-@pytest.mark.vcr()
+
 def test_credentials_list_wildcard_typeerror(api):
     '''
     test to raise the exception when type of wildcard are not as defined
@@ -335,7 +333,7 @@ def test_credentials_list_wildcard_typeerror(api):
         api.credentials.list(wildcard=1)
 
 
-@pytest.mark.vcr()
+
 def test_credentials_list_wildcard_fields_typeerror(api):
     '''
     test to raise the exception when type of wildcard_fields are not as defined
@@ -344,7 +342,7 @@ def test_credentials_list_wildcard_fields_typeerror(api):
         api.credentials.list(wildcard_fields='nope')
 
 
-@pytest.mark.vcr()
+
 def test_credentials_list(api):
     '''
     test to get credentials list
@@ -375,7 +373,7 @@ def test_credentials_list(api):
     assert count == credentials.total
 
 
-@pytest.mark.vcr()
+
 def test_credentials_upload(api):
     '''
     test to upload the credentials
@@ -383,7 +381,7 @@ def test_credentials_upload(api):
     api.credentials.upload('ExampleDataGoesHere')
 
 
-@pytest.mark.vcr()
+
 def test_credentials_permissions_constructor_typeerror(api):
     """
     test to raise the exception when the required type of variable is not passed
@@ -392,7 +390,7 @@ def test_credentials_permissions_constructor_typeerror(api):
         getattr(api.credentials, '_permissions_constructor')('string')
 
 
-@pytest.mark.vcr()
+
 def test_credentials_types_success(api):
     """
     test to check the types of credentials

@@ -4,7 +4,7 @@ test server
 import pytest
 from tests.checker import check
 
-@pytest.mark.vcr()
+
 def test_server_properties(api):
     '''
     test to get server properties
@@ -58,7 +58,7 @@ def test_server_properties(api):
     if 'update' in resp:
         check(resp, 'update', dict)
 
-@pytest.mark.vcr()
+
 def test_server_status(api):
     '''
     test to get server status

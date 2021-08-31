@@ -129,7 +129,7 @@ def test_access_group_principal_constructor_dict_pass(api):
         {'type': 'user', 'principal_id': user}
     ]) == [{'type': 'user', 'principal_id': user}]
 
-@pytest.mark.vcr()
+
 def test_access_groups_create_name_typeerror(api, rules):
     '''
     test to raise exception when type of name param does not match the expected type.
@@ -138,7 +138,7 @@ def test_access_groups_create_name_typeerror(api, rules):
         api.access_groups.create(1, rules)
 
 
-@pytest.mark.vcr()
+
 def test_access_groups_create_all_users_typeerror(api, rules):
     '''
     test to raise exception when type of all_users param does not match the expected type.
@@ -147,7 +147,7 @@ def test_access_groups_create_all_users_typeerror(api, rules):
         api.access_groups.create('Test', rules, all_users='nope')
 
 
-@pytest.mark.vcr()
+
 def test_access_groups_create_success(agroup):
     '''
    test to create access group
@@ -177,7 +177,7 @@ def test_access_groups_create_success(agroup):
     check(agroup, 'processing_percent_complete', int)
 
 
-@pytest.mark.vcr()
+
 def test_access_groups_delete_success(api, agroup):
     '''
     test to delete access group
@@ -185,7 +185,7 @@ def test_access_groups_delete_success(api, agroup):
     api.access_groups.delete(agroup['id'])
 
 
-@pytest.mark.vcr()
+
 def test_access_group_edit_id_typeerror(api):
     '''
     test to raise exception when type of group_id param does not match the expected type.
@@ -194,7 +194,7 @@ def test_access_group_edit_id_typeerror(api):
         api.access_groups.edit(1)
 
 
-@pytest.mark.vcr()
+
 def test_access_group_edit_id_unexpectedvalueerror(api):
     '''
     test to raise exception when group_id param value does not match the choices.
@@ -203,7 +203,7 @@ def test_access_group_edit_id_unexpectedvalueerror(api):
         api.access_groups.edit('something')
 
 
-@pytest.mark.vcr()
+
 def test_access_group_edit_success(api, agroup):
     '''
     test to edit access group
@@ -233,7 +233,7 @@ def test_access_group_edit_success(api, agroup):
     check(group, 'updated_by_name', str)
     check(group, 'processing_percent_complete', int)
 
-@pytest.mark.vcr()
+
 def test_access_groups_details_success(api, agroup):
     '''
     test to get details of specific access group
@@ -263,7 +263,7 @@ def test_access_groups_details_success(api, agroup):
     check(group, 'updated_by_name', str)
     check(group, 'processing_percent_complete', int)
 
-@pytest.mark.vcr()
+
 def test_access_groups_list_offset_typeerror(api):
     '''
     test to raise exception when type of offset param does not match the expected type.
@@ -272,7 +272,7 @@ def test_access_groups_list_offset_typeerror(api):
         api.access_groups.list(offset='nope')
 
 
-@pytest.mark.vcr()
+
 def test_access_groups_list_limit_typeerror(api):
     '''
     test to raise exception when type of limit param does not match the expected type.
@@ -281,7 +281,7 @@ def test_access_groups_list_limit_typeerror(api):
         api.access_groups.list(limit='nope')
 
 
-@pytest.mark.vcr()
+
 def test_access_groups_list_sort_field_typeerror(api):
     '''
     test to raise exception when type of sort field_name param does not match the expected type.
@@ -290,7 +290,7 @@ def test_access_groups_list_sort_field_typeerror(api):
         api.access_groups.list(sort=((1, 'asc'),))
 
 
-@pytest.mark.vcr()
+
 def test_access_groups_list_sort_direction_typeerror(api):
     '''
     test to raise exception when type of sort field_direction param
@@ -300,7 +300,7 @@ def test_access_groups_list_sort_direction_typeerror(api):
         api.access_groups.list(sort=(('uuid', 1),))
 
 
-@pytest.mark.vcr()
+
 def test_access_groups_list_sort_direction_unexpectedvalue(api):
     '''
     test to raise exception when sort_firection param value does not match the choices.
@@ -309,7 +309,7 @@ def test_access_groups_list_sort_direction_unexpectedvalue(api):
         api.access_groups.list(sort=(('uuid', 'nope'),))
 
 
-@pytest.mark.vcr()
+
 def test_access_groups_list_filter_name_typeerror(api):
     '''
     test to raise exception when type of filter_name param does not match the expected type.
@@ -318,7 +318,7 @@ def test_access_groups_list_filter_name_typeerror(api):
         api.access_groups.list((1, 'match', 'win'))
 
 
-@pytest.mark.vcr()
+
 def test_access_groups_list_filter_operator_typeerror(api):
     '''
     test to raise exception when type of filter_operator param does not match the expected type.
@@ -327,7 +327,7 @@ def test_access_groups_list_filter_operator_typeerror(api):
         api.access_groups.list(('name', 1, 'win'))
 
 
-@pytest.mark.vcr()
+
 def test_access_groups_list_filter_value_typeerror(api):
     '''
     test to raise exception when type of filter_value param does not match the expected type.
@@ -336,7 +336,7 @@ def test_access_groups_list_filter_value_typeerror(api):
         api.access_groups.list(('name', 'match', 1))
 
 
-@pytest.mark.vcr()
+
 def test_access_groups_list_filter_type_typeerror(api):
     '''
     test to raise exception when type of filter_type param does not match the expected type.
@@ -345,7 +345,7 @@ def test_access_groups_list_filter_type_typeerror(api):
         api.access_groups.list(filter_type=1)
 
 
-@pytest.mark.vcr()
+
 def test_access_groups_list_wildcard_typeerror(api):
     '''
     test to raise exception when type of wildcard param does not match the expected type.
@@ -354,7 +354,7 @@ def test_access_groups_list_wildcard_typeerror(api):
         api.access_groups.list(wildcard=1)
 
 
-@pytest.mark.vcr()
+
 def test_access_groups_list_wildcard_fields_typeerror(api):
     '''
     test to raise exception when type of wildcard_fields param does not match the expected type.
@@ -363,7 +363,7 @@ def test_access_groups_list_wildcard_fields_typeerror(api):
         api.access_groups.list(wildcard_fields='nope')
 
 
-@pytest.mark.vcr()
+
 def test_access_groups_list(api):
     '''
     test to get list of access groups
@@ -387,7 +387,7 @@ def test_access_groups_list(api):
         check(group, 'status', str)
     assert count == access_groups.total
 
-@pytest.mark.vcr()
+
 def test_access_groups_list_fields(api):
     '''
     test to raise the exception to list the access groups

@@ -5,7 +5,7 @@ import pytest
 from tenable.errors import PermissionError
 from tests.checker import check
 
-@pytest.mark.vcr()
+
 def test_auditlog_event_field_name_typeerror(api):
     '''
     test to raise exception when type of filter_name param does not match the expected type.
@@ -13,7 +13,7 @@ def test_auditlog_event_field_name_typeerror(api):
     with pytest.raises(TypeError):
         api.audit_log.events((1, 'gt', '2018-01-01'))
 
-@pytest.mark.vcr()
+
 def test_auditlog_event_filter_operator_typeerror(api):
     '''
     test to raise exception when type of filter_operator param does not match the expected type.
@@ -21,7 +21,7 @@ def test_auditlog_event_filter_operator_typeerror(api):
     with pytest.raises(TypeError):
         api.audit_log.events(('date', 1, '2018-01-01'))
 
-@pytest.mark.vcr()
+
 def test_auditlog_event_filter_value_typeerror(api):
     '''
     test to raise exception when type of filter_value param does not match the expected type.
@@ -29,7 +29,7 @@ def test_auditlog_event_filter_value_typeerror(api):
     with pytest.raises(TypeError):
         api.audit_log.events(('date', 'gt', 1))
 
-@pytest.mark.vcr()
+
 def test_auditlog_event_limit_typeerror(api):
     '''
     test to raise exception when type of limit param does not match the expected type.
@@ -37,7 +37,7 @@ def test_auditlog_event_limit_typeerror(api):
     with pytest.raises(TypeError):
         api.audit_log.events(limit='nope')
 
-@pytest.mark.vcr()
+
 def test_auditlog_events_standard_user_permissionerror(stdapi):
     '''
     test to raise exception when standard_user tries to get audit log.
@@ -45,7 +45,7 @@ def test_auditlog_events_standard_user_permissionerror(stdapi):
     with pytest.raises(PermissionError):
         stdapi.audit_log.events()
 
-@pytest.mark.vcr()
+
 def test_auditlog_events(api):
     '''
     test to get audit log

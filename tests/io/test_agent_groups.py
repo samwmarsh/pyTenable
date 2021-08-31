@@ -10,7 +10,6 @@ from tests.pytenable_log_handler import log_exception
 
 
 @pytest.fixture
-@pytest.mark.vcr()
 def agentgroup(request, api):
     '''
     agent group fixture
@@ -28,7 +27,7 @@ def agentgroup(request, api):
     return group
 
 
-@pytest.mark.vcr()
+
 def test_agentgroups_add_agent_to_group_group_id_typeerror(api):
     '''
     test to raise the exception when type of group_id is not as defined
@@ -37,7 +36,7 @@ def test_agentgroups_add_agent_to_group_group_id_typeerror(api):
         api.agent_groups.add_agent('nope', 1)
 
 
-@pytest.mark.vcr()
+
 def test_agentgroups_add_agent_to_group_agent_id_typeerror(api):
     '''
     test to raise the exception when type of agent_id is not as defined
@@ -46,7 +45,7 @@ def test_agentgroups_add_agent_to_group_agent_id_typeerror(api):
         api.agent_groups.add_agent(1, 'nope')
 
 
-@pytest.mark.vcr()
+
 def test_agentgroups_add_agent_to_group_scanner_id_typeerror(api):
     '''
     test to raise the exception when type of scanner_id is not as defined
@@ -55,7 +54,7 @@ def test_agentgroups_add_agent_to_group_scanner_id_typeerror(api):
         api.agent_groups.add_agent(1, 1, scanner_id='nope')
 
 
-@pytest.mark.vcr()
+
 def test_agentgroups_add_agent_to_group_notfounderror(api):
     '''
     test to add agent to group and agent not found
@@ -64,7 +63,7 @@ def test_agentgroups_add_agent_to_group_notfounderror(api):
         api.agent_groups.add_agent(1, 1)
 
 
-@pytest.mark.vcr()
+
 def test_agentgroups_add_agent_to_group_standard_user_permissionerror(stdapi):
     '''
     test to raise the exception when standard user adds agent to group
@@ -73,7 +72,7 @@ def test_agentgroups_add_agent_to_group_standard_user_permissionerror(stdapi):
         stdapi.agent_groups.add_agent(1, 1)
 
 
-@pytest.mark.vcr()
+
 def test_agentgroups_add_agent_to_group(api, agentgroup, agent):
     '''
     test to add single agent to the group
@@ -81,7 +80,7 @@ def test_agentgroups_add_agent_to_group(api, agentgroup, agent):
     api.agent_groups.add_agent(agentgroup['id'], agent['id'])
 
 
-@pytest.mark.vcr()
+
 def test_agentgroups_add_mult_agents_to_group(api, agentgroup):
     '''
     test to add multiple agents to group
@@ -97,7 +96,7 @@ def test_agentgroups_add_mult_agents_to_group(api, agentgroup):
     check(task, 'task_id', str)
 
 
-@pytest.mark.vcr()
+
 def test_agentgroups_configure_group_id_typeerror(api):
     '''
     test to raise the exception when type of group_id is not as defined
@@ -106,7 +105,7 @@ def test_agentgroups_configure_group_id_typeerror(api):
         api.agent_groups.configure('nope', 1)
 
 
-@pytest.mark.vcr()
+
 def test_agentgroups_configure_name_typeerror(api):
     '''
     test to raise the exception when type of name is not as defined
@@ -115,12 +114,12 @@ def test_agentgroups_configure_name_typeerror(api):
         api.agent_groups.configure(1, 1)
 
 
-# @pytest.mark.vcr()
+# 
 # def test_agentgroups_configure_scanner_id_typeerror(api):
 #    with pytest.raises(TypeError):
 #        api.agent_groups.configure(1, 1, scanner_id='nope')
 
-@pytest.mark.vcr()
+
 def test_agentgroups_configure_standard_user_permissionerror(stdapi, agentgroup):
     '''
     test to raise the exception when standard user tries to configure
@@ -130,7 +129,7 @@ def test_agentgroups_configure_standard_user_permissionerror(stdapi, agentgroup)
         stdapi.agent_groups.configure(agentgroup['id'], str(uuid.uuid4()))
 
 
-@pytest.mark.vcr()
+
 def test_agentgroups_configure_change_name(api, agentgroup):
     '''
     test to configure name
@@ -138,7 +137,7 @@ def test_agentgroups_configure_change_name(api, agentgroup):
     api.agent_groups.configure(agentgroup['id'], str(uuid.uuid4()))
 
 
-@pytest.mark.vcr()
+
 def test_agentgroups_create_name_typeerror(api):
     '''
     test to raise the exception when type of name is not as defined
@@ -147,7 +146,7 @@ def test_agentgroups_create_name_typeerror(api):
         api.agent_groups.create(True)
 
 
-@pytest.mark.vcr()
+
 def test_agentgroups_create_scanner_id_typeerror(api):
     '''
     test to raise the exception when type of scanner_id is not as defined
@@ -156,7 +155,7 @@ def test_agentgroups_create_scanner_id_typeerror(api):
         api.agent_groups.create(str(uuid.uuid4()), 'nope')
 
 
-@pytest.mark.vcr()
+
 def test_agentgroups_create_standard_user_permissionerror(stdapi):
     '''
     test to raise the exception for standard user for creating agent group
@@ -165,7 +164,7 @@ def test_agentgroups_create_standard_user_permissionerror(stdapi):
         stdapi.agent_groups.create(str(uuid.uuid4()))
 
 
-@pytest.mark.vcr()
+
 def test_agentgroups_create_agent_group(agentgroup):
     '''
     test to create agent group
@@ -185,7 +184,7 @@ def test_agentgroups_create_agent_group(agentgroup):
     check(agentgroup, 'uuid', 'uuid')
 
 
-@pytest.mark.vcr()
+
 def test_agentgroups_delete_attributeerror(api):
     '''
     test to raise the exception when no arguments are passed
@@ -194,7 +193,7 @@ def test_agentgroups_delete_attributeerror(api):
         api.agent_groups.delete()
 
 
-@pytest.mark.vcr()
+
 def test_agentgroups_delete_group_id_typeerror(api):
     '''
     test to raise the exception when type of group_id is not as defined
@@ -203,7 +202,7 @@ def test_agentgroups_delete_group_id_typeerror(api):
         api.agent_groups.delete('nope')
 
 
-@pytest.mark.vcr()
+
 def test_agentgroups_delete_scanner_id_typerror(api):
     '''
     test to raise the exception when type of scanner_id is not as defined
@@ -212,7 +211,7 @@ def test_agentgroups_delete_scanner_id_typerror(api):
         api.agent_groups.delete(1, scanner_id='nope')
 
 
-@pytest.mark.vcr()
+
 def test_agentgroups_delete_agent_group(api, agentgroup):
     '''
     test to delete the agent group
@@ -222,7 +221,7 @@ def test_agentgroups_delete_agent_group(api, agentgroup):
         api.agent_groups.details(agentgroup['id'])
 
 
-@pytest.mark.vcr()
+
 def test_agentgroups_delete_agent_from_group_group_id_typeerror(api):
     '''
     test to raise the exception when type of group_id is not as defined
@@ -231,7 +230,7 @@ def test_agentgroups_delete_agent_from_group_group_id_typeerror(api):
         api.agent_groups.delete_agent('nope', 1)
 
 
-@pytest.mark.vcr()
+
 def test_agentgroups_delete_agent_from_group_agent_id_typeerror(api):
     '''
     test to raise the exception when type of agent_id is not as defined
@@ -240,7 +239,7 @@ def test_agentgroups_delete_agent_from_group_agent_id_typeerror(api):
         api.agent_groups.delete_agent(1, 'nope')
 
 
-@pytest.mark.vcr()
+
 def test_agentgroups_delete_agent_from_group_scanner_id_typeerror(api):
     '''
     test to raise the exception when type of scanner_id is not as defined
@@ -249,7 +248,7 @@ def test_agentgroups_delete_agent_from_group_scanner_id_typeerror(api):
         api.agent_groups.delete_agent(1, 1, scanner_id='nope')
 
 
-@pytest.mark.vcr()
+
 def test_agentgroups_delete_agent_from_group_notfounderror(api):
     '''
     test to delete agent from the group and agent is not found to delete
@@ -258,7 +257,7 @@ def test_agentgroups_delete_agent_from_group_notfounderror(api):
         api.agent_groups.delete_agent(1, 1)
 
 
-@pytest.mark.vcr()
+
 def test_agentgroups_delete_agent_from_group_standard_user_permissionerror(stdapi):
     '''
     test to raise the exception when standard user tris to delete the agent from the group
@@ -267,7 +266,7 @@ def test_agentgroups_delete_agent_from_group_standard_user_permissionerror(stdap
         stdapi.agent_groups.delete_agent(1, 1)
 
 
-@pytest.mark.vcr()
+
 def test_agentgroups_delete_agent_from_group(api, agent, agentgroup):
     '''
     test to delete single agent from the group
@@ -277,7 +276,7 @@ def test_agentgroups_delete_agent_from_group(api, agent, agentgroup):
     api.agent_groups.delete_agent(agentgroup['id'], agent['id'])
 
 
-@pytest.mark.vcr()
+
 def test_agentgroups_delete_mult_agents_from_group(api, agentgroup):
     '''
     test to delete the multiple agents from the group
@@ -293,7 +292,7 @@ def test_agentgroups_delete_mult_agents_from_group(api, agentgroup):
     check(task, 'task_id', str)
 
 
-@pytest.mark.vcr()
+
 def test_agentgroups_details_group_id_typeerror(api):
     '''
     test to raise the exception when type of task_uuid is not as defined
@@ -302,12 +301,12 @@ def test_agentgroups_details_group_id_typeerror(api):
         api.agent_groups.details('nope')
 
 
-# @pytest.mark.vcr()
+# 
 # def test_agentgroups_details_scanner_id_typeerror(api):
 #    with pytest.raises(TypeError):
 #        api.agent_groups.details(1, scanner_id='nope')
 
-@pytest.mark.vcr()
+
 def test_agentgroups_details_nonexistant_group(api):
     '''
     test to raise the exception when group doesnt exist to get its details
@@ -316,7 +315,7 @@ def test_agentgroups_details_nonexistant_group(api):
         api.agent_groups.details(1)
 
 
-@pytest.mark.vcr()
+
 def test_agentgroups_details_standard_user_permissionserror(stdapi, agentgroup):
     '''
     test to raise the exception when standard user tries to get the details of agent group
@@ -325,7 +324,7 @@ def test_agentgroups_details_standard_user_permissionserror(stdapi, agentgroup):
         stdapi.agent_groups.details(agentgroup['id'])
 
 
-@pytest.mark.vcr()
+
 def test_agentgroups_details_of_an_agent_group(api, agentgroup):
     '''
     test to get the details of agent group
@@ -346,7 +345,7 @@ def test_agentgroups_details_of_an_agent_group(api, agentgroup):
     assert group['id'] == agentgroup['id']
 
 
-@pytest.mark.vcr()
+
 def test_agentgroups_task_status_group_id_typerror(api):
     '''
     test to raise the exception when type of group id is not as defined
@@ -355,7 +354,7 @@ def test_agentgroups_task_status_group_id_typerror(api):
         api.agent_groups.task_status('no', 'nope')
 
 
-@pytest.mark.vcr()
+
 def test_agentgroups_task_status_task_uuid_typeerror(api):
     '''
     test to raise the exception when type of task_uuid is not as defined
@@ -364,7 +363,7 @@ def test_agentgroups_task_status_task_uuid_typeerror(api):
         api.agent_groups.task_status(1, 1)
 
 
-@pytest.mark.vcr()
+
 def test_agentgroups_task_status_task_uuid_unexpectedvalueerror(api):
     '''
     test to raise the exception when value of task_uuid is not as defined
@@ -373,7 +372,7 @@ def test_agentgroups_task_status_task_uuid_unexpectedvalueerror(api):
         api.agent_groups.task_status(1, 'nope')
 
 
-@pytest.mark.vcr()
+
 def test_agentgroups_task_status(api, agentgroup):
     '''
     test to get the task status of the agent group
@@ -392,7 +391,7 @@ def test_agentgroups_task_status(api, agentgroup):
     check(task, 'task_id', str)
 
 
-@pytest.mark.vcr()
+
 def test_agentgroups_list(api):
     '''
     test to get the agent group list
@@ -415,7 +414,7 @@ def test_agentgroups_list(api):
         check(agentgroup, 'uuid', str)
 
 
-@pytest.mark.vcr()
+
 def test_agentgroups_details_of_an_agent_group_fields(api, agentgroup):
     '''
     test to get the details of agent groups

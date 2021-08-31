@@ -10,7 +10,7 @@ def fixture_fitem():
     '''
     return [('distro', 'match', 'win')]
 
-@pytest.mark.vcr()
+
 @pytest.fixture(name='fset')
 def fixture_fset(api):
     '''

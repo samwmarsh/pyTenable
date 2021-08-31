@@ -10,7 +10,6 @@ from tests.pytenable_log_handler import log_exception
 
 
 @pytest.fixture
-@pytest.mark.vcr()
 def targetgroup(request, api):
     '''
     target group fixture
@@ -28,7 +27,7 @@ def targetgroup(request, api):
     return group
 
 
-@pytest.mark.vcr()
+
 def test_targetgroups_create_type_unexpectedvalue(api):
     '''
     test to raise the exception when value of type is not as defined
@@ -37,7 +36,7 @@ def test_targetgroups_create_type_unexpectedvalue(api):
         api.target_groups.create('nope', [], type='nope')
 
 
-@pytest.mark.vcr()
+
 def test_targetgroups_create_acls_typeerror(api):
     '''
     test to raise the exception when value of acls is not as defined
@@ -46,7 +45,7 @@ def test_targetgroups_create_acls_typeerror(api):
         api.target_groups.create('nope', [], acls='nope')
 
 
-@pytest.mark.vcr()
+
 def test_targetgroups_create_members_unexpectedvalue(api):
     '''
     test to raise the exception when value of members is not as defined
@@ -55,7 +54,7 @@ def test_targetgroups_create_members_unexpectedvalue(api):
         api.target_groups.create('nope', [])
 
 
-@pytest.mark.vcr()
+
 def test_targetgroups_create(api, targetgroup):
     '''
     test to create the targetgroups
@@ -81,7 +80,7 @@ def test_targetgroups_create(api, targetgroup):
     check(targetgroup, 'user_permissions', int)
 
 
-@pytest.mark.vcr()
+
 def test_targetgroups_delete_id_typeerror(api):
     '''
     test to raise the exception when the type of target group
@@ -91,7 +90,7 @@ def test_targetgroups_delete_id_typeerror(api):
         api.target_groups.delete('nope')
 
 
-@pytest.mark.vcr()
+
 def test_targetgroups_delete(api, targetgroup):
     '''
     test to delete the target group
@@ -99,7 +98,7 @@ def test_targetgroups_delete(api, targetgroup):
     pass
 
 
-@pytest.mark.vcr()
+
 def test_targetgroups_details_id_typeerror(api):
     '''
     test to raise the exception when type of id is not as defined
@@ -108,7 +107,7 @@ def test_targetgroups_details_id_typeerror(api):
         api.target_groups.details('nope')
 
 
-@pytest.mark.vcr()
+
 def test_targetgroups_details(api, targetgroup):
     '''
     test to get the target groups details
@@ -136,7 +135,7 @@ def test_targetgroups_details(api, targetgroup):
     check(group, 'user_permissions', int)
 
 
-@pytest.mark.vcr()
+
 def test_targetgroups_edit_id_typeerror(api):
     '''
     test to raise the exception when type of id is not as defined
@@ -145,7 +144,7 @@ def test_targetgroups_edit_id_typeerror(api):
         api.target_groups.delete('nope')
 
 
-@pytest.mark.vcr()
+
 def test_targetgroups_edit_name_typeerror(api):
     '''
     test to raise the exception when type of name is not as defined
@@ -154,7 +153,7 @@ def test_targetgroups_edit_name_typeerror(api):
         api.target_groups.edit(1, 1)
 
 
-@pytest.mark.vcr()
+
 def test_targetgroups_edit_acls_typeerror(api):
     '''
     test to raise the exception when type of acls is not as defined
@@ -163,7 +162,7 @@ def test_targetgroups_edit_acls_typeerror(api):
         api.target_groups.edit(1, acls=False)
 
 
-@pytest.mark.vcr()
+
 def test_targetgroups_edit(api, targetgroup):
     '''
     test to edit the target groups
@@ -193,7 +192,7 @@ def test_targetgroups_edit(api, targetgroup):
     assert resp['members'] == ', '.join(members)
 
 
-@pytest.mark.vcr()
+
 def test_targetgroups_list(api):
     '''
     test to verify the types of target groups list
@@ -201,7 +200,7 @@ def test_targetgroups_list(api):
     assert isinstance(api.target_groups.list(), list)
 
 
-@pytest.mark.vcr()
+
 def test_targetgroups_edit_fields(api, targetgroup):
     """
     test to edit the target groups

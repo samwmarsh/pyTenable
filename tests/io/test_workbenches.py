@@ -7,7 +7,7 @@ import pytest
 from tenable.errors import UnexpectedValueError, NotFoundError
 from tests.checker import check
 
-@pytest.mark.vcr()
+
 def test_workbench_assets_age_typeerror(api):
     '''
     test to raise exception when type of age param does not match the expected type.
@@ -15,7 +15,7 @@ def test_workbench_assets_age_typeerror(api):
     with pytest.raises(TypeError):
         api.workbenches.assets(age='onetwothree')
 
-@pytest.mark.vcr()
+
 def test_workbench_assets_filter_tyype_typeerror(api):
     '''
     test to raise exception when type of filter param does not match the expected type.
@@ -23,7 +23,7 @@ def test_workbench_assets_filter_tyype_typeerror(api):
     with pytest.raises(TypeError):
         api.workbenches.assets(filter_type=1)
 
-@pytest.mark.vcr()
+
 def test_workbench_assets_filter_type_unexpectedvalueerror(api):
     '''
     test to raise exception when filter_type param value does not match the choices.
@@ -32,7 +32,7 @@ def test_workbench_assets_filter_type_unexpectedvalueerror(api):
         api.workbenches.assets(filter_type='NOT')
 
 
-@pytest.mark.vcr()
+
 def test_workbench_assets(api):
     '''
     test to get workbench assets
@@ -110,7 +110,7 @@ def test_workbench_assets(api):
         check(asset, 'terminated_by', str, allow_none=True)
         check(asset, 'updated_at', 'datetime')
 
-@pytest.mark.vcr()
+
 def test_workbench_assets_filtered(api):
     '''
     test to get filtered workbench assets
@@ -119,7 +119,7 @@ def test_workbench_assets_filtered(api):
     assert isinstance(assets, list)
 
 
-@pytest.mark.vcr()
+
 def test_workbench_assets_bad_filter(api):
     '''
     test to raise exception when any of filter param value does not match the choices.
@@ -128,7 +128,7 @@ def test_workbench_assets_bad_filter(api):
         api.workbenches.assets(('operating_system', 'contains', 'Linux'))
 
 
-@pytest.mark.vcr()
+
 def test_workbench_asset_activity_uuid_typeerror(api):
     '''
     test to raise exception when type of uuid param does not match the expected type.
@@ -137,7 +137,7 @@ def test_workbench_asset_activity_uuid_typeerror(api):
         api.workbenches.asset_activity(1)
 
 
-@pytest.mark.vcr()
+
 def test_workbench_asset_activity_uuid_unexpectedvalueerror(api):
     '''
     test to raise exception when uuid param value does not match the choices.
@@ -146,7 +146,7 @@ def test_workbench_asset_activity_uuid_unexpectedvalueerror(api):
         api.workbenches.asset_activity('This should fail')
 
 
-@pytest.mark.vcr()
+
 def test_workbench_asset_activity(api):
     '''
     test to get workbench asset activity
@@ -190,7 +190,7 @@ def test_workbench_asset_activity(api):
     except NotFoundError:
         print('Activity for the asset uuid is not found')
 
-@pytest.mark.vcr()
+
 def test_workbench_asset_info_uuid_typeerror(api):
     '''
     test to raise exception when type of uuid param does not match the expected type.
@@ -199,7 +199,7 @@ def test_workbench_asset_info_uuid_typeerror(api):
         api.workbenches.asset_info(1)
 
 
-@pytest.mark.vcr()
+
 def test_workbench_asset_info_unexpectedvalueerror(api):
     '''
     test to raise exception when uuid param value does not match the choices.
@@ -208,7 +208,7 @@ def test_workbench_asset_info_unexpectedvalueerror(api):
         api.workbenches.asset_info('abnc-1234-somethinginvalid')
 
 
-@pytest.mark.vcr()
+
 def test_workbench_asset_info_all_fields_typeerror(api):
     '''
     test to raise exception when type of all_fields param does not match the expected type.
@@ -217,7 +217,7 @@ def test_workbench_asset_info_all_fields_typeerror(api):
         api.workbenches.asset_info('', all_fields='one')
 
 
-@pytest.mark.vcr()
+
 def test_workbench_asset_info(api):
     '''
     test to get workbench assets info
@@ -225,7 +225,7 @@ def test_workbench_asset_info(api):
     assets = api.workbenches.assets()
     api.workbenches.asset_info(assets[0]['id'])
 
-@pytest.mark.vcr()
+
 def test_workbench_asset_vulns_uuid_typeerror(api):
     '''
     test to raise exception when type of uuid param does not match the expected type.
@@ -234,7 +234,7 @@ def test_workbench_asset_vulns_uuid_typeerror(api):
         api.workbenches.asset_vulns(1)
 
 
-@pytest.mark.vcr()
+
 def test_workbench_asset_vulns_age_typeerror(api):
     '''
     test to raise exception when type of age param does not match the expected type.
@@ -243,7 +243,7 @@ def test_workbench_asset_vulns_age_typeerror(api):
         api.workbenches.asset_vulns(str(uuid.uuid4()), age='none')
 
 
-@pytest.mark.vcr()
+
 def test_workbench_asset_vulns_filter_type_typeerror(api):
     '''
     test to raise exception when type of filter_type param does not match the expected type.
@@ -252,7 +252,7 @@ def test_workbench_asset_vulns_filter_type_typeerror(api):
         api.workbenches.asset_vulns(str(uuid.uuid4()), filter_type=123)
 
 
-@pytest.mark.vcr()
+
 def test_workbench_asset_vulns_filter_type_unexpectedvalueerror(api):
     '''
     test to raise exception when filter_type param value does not match the choices.
@@ -261,7 +261,7 @@ def test_workbench_asset_vulns_filter_type_unexpectedvalueerror(api):
         api.workbenches.asset_vulns(str(uuid.uuid4()), filter_type='NOT')
 
 
-@pytest.mark.vcr()
+
 def test_workbench_asset_vulns_invalid_filter(api):
     '''
     test to raise exception when any of filter param value does not match the choices.
@@ -271,7 +271,7 @@ def test_workbench_asset_vulns_invalid_filter(api):
                                     ('operating_system', 'contains', 'Linux'))
 
 
-@pytest.mark.vcr()
+
 def test_workbench_asset_vulns(api):
     '''
     test to get workbench asset vulnerabilities
@@ -295,7 +295,7 @@ def test_workbench_asset_vulns(api):
             check(vulnerability, 'severity', int)
             check(vulnerability, 'vulnerability_state', str)
 
-@pytest.mark.vcr()
+
 def test_workbench_asset_vulns_filtered(api):
     '''
     test to get filtered workbench asset vulnerabilities
@@ -319,7 +319,7 @@ def test_workbench_asset_vulns_filtered(api):
             check(vulnerability, 'severity', int)
             check(vulnerability, 'vulnerability_state', str)
 
-@pytest.mark.vcr()
+
 def test_workbench_asset_vuln_info_uuid_typeerror(api):
     '''
     test to raise exception when type of uuid param does not match the expected type.
@@ -328,7 +328,7 @@ def test_workbench_asset_vuln_info_uuid_typeerror(api):
         api.workbenches.asset_vuln_info(1, 1)
 
 
-@pytest.mark.vcr()
+
 def test_workbench_asset_vuln_info_uuid_unexpectedvalueerror(api):
     '''
     test to raise exception when uuid param value does not match the choices.
@@ -337,7 +337,7 @@ def test_workbench_asset_vuln_info_uuid_unexpectedvalueerror(api):
         api.workbenches.asset_vuln_info('this is not a valid UUID', 1234)
 
 
-@pytest.mark.vcr()
+
 def test_workbench_asset_vuln_info_plugin_id_typeerror(api):
     '''
     test to raise exception when type of plugin_id param does not match the expected type.
@@ -346,7 +346,7 @@ def test_workbench_asset_vuln_info_plugin_id_typeerror(api):
         api.workbenches.asset_vuln_info(str(uuid.uuid4()), 'something here')
 
 
-@pytest.mark.vcr()
+
 def test_workbench_asset_vuln_info_age_typeerror(api):
     '''
     test to raise exception when type of age param does not match the expected type.
@@ -355,7 +355,7 @@ def test_workbench_asset_vuln_info_age_typeerror(api):
         api.workbenches.asset_vuln_info(str(uuid.uuid4()), 19506, age='none')
 
 
-@pytest.mark.vcr()
+
 def test_workbench_asset_vuln_info_filter_type_typeerror(api):
     '''
     test to raise exception when type of filter_type param does not match the expected type.
@@ -364,7 +364,7 @@ def test_workbench_asset_vuln_info_filter_type_typeerror(api):
         api.workbenches.asset_vuln_info(str(uuid.uuid4()), 19506, filter_type=123)
 
 
-@pytest.mark.vcr()
+
 def test_workbench_asset_vuln_info_filter_type_unexpectedvalueerror(api):
     '''
     test to raise exception when filter_type param value does not match the choices.
@@ -373,7 +373,7 @@ def test_workbench_asset_vuln_info_filter_type_unexpectedvalueerror(api):
         api.workbenches.asset_vuln_info(str(uuid.uuid4()), 19506, filter_type='NOT')
 
 
-@pytest.mark.vcr()
+
 def test_workbench_asset_vuln_info_invalid_filter(api):
     '''
     test to raise exception when uuid param value does not match the choices.
@@ -383,7 +383,7 @@ def test_workbench_asset_vuln_info_invalid_filter(api):
                                         ('operating_system', 'contains', 'Linux'))
 
 
-@pytest.mark.vcr()
+
 def test_workbench_asset_vuln_info(api):
     '''
     test to get workbench asset vulnerabilities info
@@ -425,7 +425,7 @@ def test_workbench_asset_vuln_info(api):
             check(info, 'vuln_count', int)
 
 
-@pytest.mark.vcr()
+
 def test_workbench_asset_vuln_output_uuid_typeerror(api):
     '''
     test to raise exception when type of uuid param does not match the expected type.
@@ -434,7 +434,7 @@ def test_workbench_asset_vuln_output_uuid_typeerror(api):
         api.workbenches.asset_vuln_output(1, 1)
 
 
-@pytest.mark.vcr()
+
 def test_workbench_asset_vuln_output_uuid_unexpectedvalueerror(api):
     '''
     test to raise exception when uuid param value does not match the choices.
@@ -443,7 +443,7 @@ def test_workbench_asset_vuln_output_uuid_unexpectedvalueerror(api):
         api.workbenches.asset_vuln_output('this is not a valid UUID', 1234)
 
 
-@pytest.mark.vcr()
+
 def test_workbench_asset_vuln_output_plugin_id_typeerror(api):
     '''
     test to raise exception when type of plugin_id param does not match the expected type.
@@ -452,7 +452,7 @@ def test_workbench_asset_vuln_output_plugin_id_typeerror(api):
         api.workbenches.asset_vuln_output(str(uuid.uuid4()), 'something here')
 
 
-@pytest.mark.vcr()
+
 def test_workbench_asset_vuln_output_age_typeerror(api):
     '''
     test to raise exception when type of age param does not match the expected type.
@@ -461,7 +461,7 @@ def test_workbench_asset_vuln_output_age_typeerror(api):
         api.workbenches.asset_vuln_output(str(uuid.uuid4()), 19506, age='none')
 
 
-@pytest.mark.vcr()
+
 def test_workbench_asset_vuln_output_filter_type_typeerror(api):
     '''
     test to raise exception when type of filter_type param does not match the expected type.
@@ -470,7 +470,7 @@ def test_workbench_asset_vuln_output_filter_type_typeerror(api):
         api.workbenches.asset_vuln_output(str(uuid.uuid4()), 19506, filter_type=123)
 
 
-@pytest.mark.vcr()
+
 def test_workbench_asset_vuln_output_filter_type_unexpectedvalueerror(api):
     '''
     test to raise exception when filter_type param value does not match the choices.
@@ -479,7 +479,7 @@ def test_workbench_asset_vuln_output_filter_type_unexpectedvalueerror(api):
         api.workbenches.asset_vuln_output(str(uuid.uuid4()), 19506, filter_type='NOT')
 
 
-@pytest.mark.vcr()
+
 def test_workbench_asset_vuln_output_invalid_filter(api):
     '''
     test to raise exception when any of filter param value does not match the choices.
@@ -489,7 +489,7 @@ def test_workbench_asset_vuln_output_invalid_filter(api):
                                           ('operating_system', 'contains', 'Linux'))
 
 
-@pytest.mark.vcr()
+
 def test_workbench_asset_vuln_output(api):
     '''
     test to get workbench asset vulnerabilities output
@@ -523,7 +523,7 @@ def test_workbench_asset_vuln_output(api):
                     check(result, 'severity', int)
                     check(result, 'transport_protocol', str)
 
-@pytest.mark.vcr()
+
 def test_workbench_vuln_assets(api):
     '''
     test to get workbench vulnerability assets
@@ -547,7 +547,7 @@ def test_workbench_vuln_assets(api):
         if key in asset:
             check(asset, key, value)
 
-@pytest.mark.vcr()
+
 def test_workbench_export_asset_uuid_typeerror(api):
     '''
     test to raise exception when type of uuid param does not match the expected type.
@@ -556,7 +556,7 @@ def test_workbench_export_asset_uuid_typeerror(api):
         api.workbenches.export(asset_uuid=123)
 
 
-@pytest.mark.vcr()
+
 def test_workbench_export_asset_uuid_unexpectedvalueerror(api):
     '''
     test to raise exception when uuid param value does not match the choices.
@@ -565,7 +565,7 @@ def test_workbench_export_asset_uuid_unexpectedvalueerror(api):
         api.workbenches.export(asset_uuid='something')
 
 
-@pytest.mark.vcr()
+
 def test_workbench_export_plugin_id_typeerror(api):
     '''
     test to raise exception when type of plugin_id param does not match the expected type.
@@ -574,7 +574,7 @@ def test_workbench_export_plugin_id_typeerror(api):
         api.workbenches.export(plugin_id='something')
 
 
-@pytest.mark.vcr()
+
 def test_workbench_export_format_typeerror(api):
     '''
     test to raise exception when type of format param does not match the expected type.
@@ -583,7 +583,7 @@ def test_workbench_export_format_typeerror(api):
         api.workbenches.export(format=1234)
 
 
-@pytest.mark.vcr()
+
 def test_workbench_export_format_unexpectedvalueerror(api):
     '''
     test to raise exception when format param value does not match the choices.
@@ -592,7 +592,7 @@ def test_workbench_export_format_unexpectedvalueerror(api):
         api.workbenches.export(format='something else')
 
 
-@pytest.mark.vcr()
+
 def test_workbench_export_chapters_typeerror(api):
     '''
     test to raise exception when type of chapter param does not match the expected type.
@@ -601,7 +601,7 @@ def test_workbench_export_chapters_typeerror(api):
         api.workbenches.export(format='html', chapters='diff')
 
 
-@pytest.mark.vcr()
+
 def test_workbench_export_chapters_unexpectedvalueerror(api):
     '''
     test to raise exception when chapter param value does not match the choices.
@@ -610,7 +610,7 @@ def test_workbench_export_chapters_unexpectedvalueerror(api):
         api.workbenches.export(format='html', chapters=['something'])
 
 
-@pytest.mark.vcr()
+
 def test_workbench_export_missing_chapters(api):
     '''
     test to raise exception when chapter param value not provided with format.
@@ -619,7 +619,7 @@ def test_workbench_export_missing_chapters(api):
         api.workbenches.export(format='html')
 
 
-@pytest.mark.vcr()
+
 def test_workbench_export_filter_type_typeerror(api):
     '''
     test to raise exception when type of filter_type param does not match the expected type.
@@ -628,7 +628,7 @@ def test_workbench_export_filter_type_typeerror(api):
         api.workbenches.export(filter_type=1)
 
 
-@pytest.mark.vcr()
+
 def test_workbench_export_filter_type_unexpectedvalueerror(api):
     '''
     test to raise exception when filter_type param value does not match the choices.
@@ -637,7 +637,7 @@ def test_workbench_export_filter_type_unexpectedvalueerror(api):
         api.workbenches.export(filter_type='NOT')
 
 
-@pytest.mark.vcr()
+
 def test_workbench_export(api):
     '''
     test workbench export
@@ -646,7 +646,7 @@ def test_workbench_export(api):
     assert isinstance(fobj, BytesIO)
 
 
-@pytest.mark.vcr()
+
 def test_workbench_export_plugin_id(api):
     '''
     test workbench export with plugin_id
@@ -655,7 +655,7 @@ def test_workbench_export_plugin_id(api):
     assert isinstance(fobj, BytesIO)
 
 
-@pytest.mark.vcr()
+
 def test_workbench_export_asset_uuid(api):
     '''
     test workbench export with asset_uuid
@@ -665,7 +665,7 @@ def test_workbench_export_asset_uuid(api):
     assert isinstance(fobj, BytesIO)
 
 
-@pytest.mark.vcr()
+
 def test_workbench_vulns_age_typeerror(api):
     '''
     test to raise exception when type of age param does not match the expected type.
@@ -674,7 +674,7 @@ def test_workbench_vulns_age_typeerror(api):
         api.workbenches.vulns(age='none')
 
 
-@pytest.mark.vcr()
+
 def test_workbench_vulns_filter_type_typeerror(api):
     '''
     test to raise exception when type of filter_type param does not match the expected type.
@@ -683,7 +683,7 @@ def test_workbench_vulns_filter_type_typeerror(api):
         api.workbenches.vulns(filter_type=123)
 
 
-@pytest.mark.vcr()
+
 def test_workbench_vulns_filter_type_unexpectedvalueerror(api):
     '''
     test to raise exception when filter_type param value does not match the choices.
@@ -692,7 +692,7 @@ def test_workbench_vulns_filter_type_unexpectedvalueerror(api):
         api.workbenches.vulns(filter_type='NOT')
 
 
-@pytest.mark.vcr()
+
 def test_workbench_vulns_invalid_filter(api):
     '''
     test to raise exception when any of filter param value does not match the choices.
@@ -701,7 +701,7 @@ def test_workbench_vulns_invalid_filter(api):
         api.workbenches.vulns(('nothing here', 'contains', 'Linux'))
 
 
-@pytest.mark.vcr()
+
 def test_workbench_vulns_authenticated_typeerror(api):
     '''
     test to raise exception when type of authenticated param does not match the expected type.
@@ -710,7 +710,7 @@ def test_workbench_vulns_authenticated_typeerror(api):
         api.workbenches.vulns(authenticated='nope')
 
 
-@pytest.mark.vcr()
+
 def test_workbench_vulns_exploitable_typeerror(api):
     '''
     test to raise exception when type of exploitable param does not match the expected type.
@@ -719,7 +719,7 @@ def test_workbench_vulns_exploitable_typeerror(api):
         api.workbenches.vulns(exploitable='nope')
 
 
-@pytest.mark.vcr()
+
 def test_workbench_vulns_resolvable_typeerror(api):
     '''
     test to raise exception when type of resolvable param does not match the expected type.
@@ -728,7 +728,7 @@ def test_workbench_vulns_resolvable_typeerror(api):
         api.workbenches.vulns(resolvable='nope')
 
 
-@pytest.mark.vcr()
+
 def test_workbench_vulns_severity_typeerror(api):
     '''
     test to raise exception when type of severity param does not match the expected type.
@@ -737,7 +737,7 @@ def test_workbench_vulns_severity_typeerror(api):
         api.workbenches.vulns(severity=['low'])
 
 
-@pytest.mark.vcr()
+
 def test_workbench_vulns_severity_unexpectedvalueerror(api):
     '''
     test to raise exception when severity param value does not match the choices.
@@ -746,7 +746,7 @@ def test_workbench_vulns_severity_unexpectedvalueerror(api):
         api.workbenches.vulns(severity='something else')
 
 
-@pytest.mark.vcr()
+
 def test_workbench_vulns(api):
     '''
     test to get workbench vulnerabilities
@@ -766,7 +766,7 @@ def test_workbench_vulns(api):
         check(vulnerability, 'recasted_count', int)
         check(vulnerability, 'vulnerability_state', str)
 
-@pytest.mark.vcr()
+
 def test_workbench_vuln_info_age_typeerror(api):
     '''
     test to raise exception when type of age param does not match the expected type.
@@ -775,7 +775,7 @@ def test_workbench_vuln_info_age_typeerror(api):
         api.workbenches.vuln_info(19506, age='none')
 
 
-@pytest.mark.vcr()
+
 def test_workbench_vuln_info_filter_type_typeerror(api):
     '''
     test to raise exception when type of filter_type param does not match the expected type.
@@ -784,7 +784,7 @@ def test_workbench_vuln_info_filter_type_typeerror(api):
         api.workbenches.vuln_info(19506, filter_type=123)
 
 
-@pytest.mark.vcr()
+
 def test_workbench_vuln_info_filter_type_unexpectedvalueerror(api):
     '''
     test to raise exception when filter_type param value does not match the choices.
@@ -793,7 +793,7 @@ def test_workbench_vuln_info_filter_type_unexpectedvalueerror(api):
         api.workbenches.vuln_info(19506, filter_type='NOT')
 
 
-@pytest.mark.vcr()
+
 def test_workbench_vuln_info_plugin_id_typeerror(api):
     '''
     test to raise exception when type of plugin_id param does not match the expected type.
@@ -802,7 +802,7 @@ def test_workbench_vuln_info_plugin_id_typeerror(api):
         api.workbenches.vuln_info('something')
 
 
-@pytest.mark.vcr()
+
 def test_workbench_vuln_info(api):
     '''
     test to get workbench vulnerability info
@@ -842,7 +842,7 @@ def test_workbench_vuln_info(api):
         check(info, 'vuln_count', int)
 
 
-@pytest.mark.vcr()
+
 def test_workbench_vuln_outputs_age_typeerror(api):
     '''
     test to raise exception when type of age param does not match the expected type.
@@ -851,7 +851,7 @@ def test_workbench_vuln_outputs_age_typeerror(api):
         api.workbenches.vuln_outputs(19506, age='none')
 
 
-@pytest.mark.vcr()
+
 def test_workbench_vuln_outputs_filter_type_typeerror(api):
     '''
     test to raise exception when type of filter_type param does not match the expected type.
@@ -860,7 +860,7 @@ def test_workbench_vuln_outputs_filter_type_typeerror(api):
         api.workbenches.vuln_outputs(19506, filter_type=123)
 
 
-@pytest.mark.vcr()
+
 def test_workbench_vuln_outputs_filter_type_unexpectedvalueerror(api):
     '''
     test to raise exception when filter_type param value does not match the choices.
@@ -869,7 +869,7 @@ def test_workbench_vuln_outputs_filter_type_unexpectedvalueerror(api):
         api.workbenches.vuln_outputs(19506, filter_type='NOT')
 
 
-@pytest.mark.vcr()
+
 def test_workbench_vuln_outputs_plugin_id_typeerror(api):
     '''
     test to raise exception when type of plugin_id param does not match the expected type.
@@ -878,7 +878,7 @@ def test_workbench_vuln_outputs_plugin_id_typeerror(api):
         api.workbenches.vuln_outputs('something')
 
 
-@pytest.mark.vcr()
+
 def test_workbench_vuln_outputs(api):
     '''
     test to get workbench vulnerability output
@@ -910,7 +910,7 @@ def test_workbench_vuln_outputs(api):
                     check(result, 'severity', int)
                     check(result, 'transport_protocol', str)
 
-@pytest.mark.vcr()
+
 def test_workbenches_asset_delete_asset_uuid_typeerror(api):
     '''
     test to raise exception when type of uuid param does not match the expected type.
@@ -919,7 +919,7 @@ def test_workbenches_asset_delete_asset_uuid_typeerror(api):
         api.workbenches.asset_delete(1)
 
 
-@pytest.mark.vcr()
+
 @pytest.mark.skip('We don\'t want to delete asset')
 def test_workbenches_asset_delete_success(api):
     '''
@@ -928,7 +928,7 @@ def test_workbenches_asset_delete_success(api):
     asset = api.workbenches.assets()[0]
     api.workbenches.asset_delete(asset['id'])
 
-@pytest.mark.vcr()
+
 def test_workbench_assets_fields(api):
     '''
     test to get the workbench assets and verifying their types
@@ -996,7 +996,7 @@ def test_workbench_assets_fields(api):
     check(asset, 'updated_at', 'datetime')
 
 
-@pytest.mark.vcr()
+
 def test_workbenches_export_success(api):
     '''
     test to export the data from vulnerability workbench
@@ -1006,7 +1006,7 @@ def test_workbenches_export_success(api):
                                fobj=fobj)
 
 
-@pytest.mark.vcr()
+
 def test_workbench_vulns_fields(api):
     '''
     test to get the workbench vulnerabilities
@@ -1029,7 +1029,7 @@ def test_workbench_vulns_fields(api):
     check(each_vuln, 'vulnerability_state', str)
 
 
-@pytest.mark.vcr()
+
 def test_workbench_asset_info_success(api):
     '''
     test to get the asset information
@@ -1039,7 +1039,7 @@ def test_workbench_asset_info_success(api):
 
 
 
-@pytest.mark.vcr()
+
 def test_workbench_assets_fields(api):
     '''
     test to get the workbench assets and verifying their types
@@ -1107,7 +1107,7 @@ def test_workbench_assets_fields(api):
     check(asset, 'updated_at', 'datetime')
 
 
-@pytest.mark.vcr()
+
 def test_workbenches_export_success(api):
     '''
     test to export the data from vulnerability workbench
@@ -1117,7 +1117,7 @@ def test_workbenches_export_success(api):
                                fobj=fobj)
 
 
-@pytest.mark.vcr()
+
 def test_workbench_vulns_fields(api):
     '''
     test to get the workbench vulnerabilities
@@ -1140,7 +1140,7 @@ def test_workbench_vulns_fields(api):
     check(each_vuln, 'vulnerability_state', str)
 
 
-@pytest.mark.vcr()
+
 def test_workbench_asset_info_success(api):
     '''
     test to get the asset information

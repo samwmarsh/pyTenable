@@ -4,7 +4,7 @@ import pytest
 from tenable.io.plugins import PluginIterator
 
 
-@pytest.mark.vcr()
+
 def test_families(api):
     families = api.plugins.families()
     assert isinstance(families, list)
@@ -14,13 +14,13 @@ def test_families(api):
         check(f, 'name', str)
 
 
-@pytest.mark.vcr()
+
 def test_family_details_family_id_typeerror(api):
     with pytest.raises(TypeError):
         api.plugins.family_details('nope')
 
 
-@pytest.mark.vcr()
+
 def test_family_details(api):
     f = api.plugins.family_details(27)
     assert isinstance(f, dict)
@@ -33,13 +33,13 @@ def test_family_details(api):
     assert f['id'] == 27
 
 
-@pytest.mark.vcr()
+
 def test_plugin_details_plugin_id_typerror(api):
     with pytest.raises(TypeError):
         api.plugins.plugin_details('nope')
 
 
-@pytest.mark.vcr()
+
 def test_plugin_details(api):
     p = api.plugins.plugin_details(19506)
     assert isinstance(p, dict)
@@ -53,31 +53,31 @@ def test_plugin_details(api):
     assert p['id'] == 19506
 
 
-@pytest.mark.vcr()
+
 def test_plugins_list_page_typeerror(api):
     with pytest.raises(TypeError):
         api.plugins.list(page='one')
 
 
-@pytest.mark.vcr()
+
 def test_plugins_list_size_typeerror(api):
     with pytest.raises(TypeError):
         api.plugins.list(size='one')
 
 
-@pytest.mark.vcr()
+
 def test_plugins_list_last_updated_date_typeerror(api):
     with pytest.raises(TypeError):
         api.plugins.list(last_updated=1)
 
 
-@pytest.mark.vcr()
+
 def test_plugins_list_num_pages_typeerror(api):
     with pytest.raises(TypeError):
         api.plugins.list(num_pages='one')
 
 
-@pytest.mark.vcr()
+
 def test_plugins_list_success(api):
     plugins = api.plugins.list(
         last_updated=date(2019, 1, 1),
@@ -94,6 +94,6 @@ def test_plugins_list_success(api):
         check(p, 'name', str)
 
 
-@pytest.mark.vcr()
+
 def test_plugin_iterator_populate_family_cache(api):
     api.pluginsIterator._populate_family_cache()

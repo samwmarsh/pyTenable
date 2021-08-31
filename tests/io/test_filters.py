@@ -4,7 +4,7 @@ test filters
 import pytest
 from tests.checker import check
 
-@pytest.mark.vcr()
+
 def test_agent_filters(api):
     '''
     test to get agent filters
@@ -16,7 +16,7 @@ def test_agent_filters(api):
         check(filters[data], 'operators', list)
         check(filters[data], 'pattern', str, allow_none=True)
 
-@pytest.mark.vcr()
+
 def test_workbench_vuln_filters(api):
     '''
     test to get workbench vulnerabilities filters
@@ -28,7 +28,7 @@ def test_workbench_vuln_filters(api):
         check(filters[data], 'operators', list)
         check(filters[data], 'pattern', str, allow_none=True)
 
-@pytest.mark.vcr()
+
 def test_workbench_asset_filters(api):
     '''
     test to get workbench asset filters
@@ -40,7 +40,7 @@ def test_workbench_asset_filters(api):
         check(filters[data], 'operators', list)
         check(filters[data], 'pattern', str, allow_none=True)
 
-@pytest.mark.vcr()
+
 def test_scan_filters(api):
     '''
     test to get scan filters
@@ -52,7 +52,7 @@ def test_scan_filters(api):
         check(filters[data], 'operators', list)
         check(filters[data], 'pattern', str, allow_none=True)
 
-@pytest.mark.vcr()
+
 def test_access_group_asset_rules_filters(api):
     '''
     test to get access group asset rules filters
@@ -64,7 +64,7 @@ def test_access_group_asset_rules_filters(api):
         check(filters[data], 'operators', list)
         check(filters[data], 'pattern', str, allow_none=True)
 
-@pytest.mark.vcr()
+
 def test_access_group_filters(api):
     '''
     test to get access group filters
@@ -76,7 +76,7 @@ def test_access_group_filters(api):
         check(filters[data], 'operators', list)
         check(filters[data], 'pattern', str, allow_none=True)
 
-@pytest.mark.vcr()
+
 def test_access_group_asset_rules_filters_v2(api):
     '''
     test to get access group asset rules filters v2
@@ -88,7 +88,7 @@ def test_access_group_asset_rules_filters_v2(api):
         check(filters[data], 'operators', list)
         check(filters[data], 'pattern', str, allow_none=True)
 
-@pytest.mark.vcr()
+
 def test_access_group_filters_v2(api):
     '''
     test to get access group filters v2
@@ -100,7 +100,7 @@ def test_access_group_filters_v2(api):
         check(filters[data ], 'operators', list)
         check(filters[data ], 'pattern', str, allow_none=True)
         
-@pytest.mark.vcr()
+
 def test_asset_tag_filters(api):
     '''
     test to get asset tag filters
@@ -112,7 +112,7 @@ def test_asset_tag_filters(api):
         check(filters[data], 'operators', list)
         check(filters[data], 'pattern', str, allow_none=True)
 
-@pytest.mark.vcr()
+
 def test_use_cache_true_filters(api):
     '''
     test to raise the exception use_cache filter is normalized
@@ -127,7 +127,7 @@ def test_use_cache_true_filters(api):
 
 
 
-@pytest.mark.vcr()
+
 def test_use_cache_false_filters(api):
     '''
     test to raise the exception use_cache filter is not normalized
@@ -141,7 +141,7 @@ def test_use_cache_false_filters(api):
         check(data[1], 'readable_name', str, allow_none=True)
         check(data[1], 'control', dict, allow_none=True)
 
-@pytest.mark.vcr()
+
 def test_filters_credentials_false_filters(api):
     '''
     test to raise the exception when the credentials filter is not normalized

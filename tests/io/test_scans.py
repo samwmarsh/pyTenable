@@ -41,7 +41,7 @@ def fixture_scheduled_scan(request, api):
     return scan
 
 
-@pytest.mark.vcr()
+
 def test_scan_create_scan_document_template_typeerror(api):
     '''
     test to raise exception when type of template param does not match the expected type.
@@ -50,7 +50,7 @@ def test_scan_create_scan_document_template_typeerror(api):
         getattr(api.scans, '_create_scan_document')({'template': 123})
 
 
-@pytest.mark.vcr()
+
 def test_scan_create_scan_document_template_unexpected_value_error(api):
     '''
     test to raise exception when template param value does not match the choices.
@@ -59,7 +59,7 @@ def test_scan_create_scan_document_template_unexpected_value_error(api):
         getattr(api.scans, '_create_scan_document')({'template': 'nothing_here'})
 
 
-@pytest.mark.vcr()
+
 def test_scan_create_scan_socument_template_pass(api):
     '''
     test to create scan document basic template
@@ -71,7 +71,7 @@ def test_scan_create_scan_socument_template_pass(api):
     assert resp['uuid'] == templates['basic']
 
 
-@pytest.mark.vcr()
+
 def test_scan_create_scan_document_policies_id_pass(api):
     '''
     test to create scan document policy param using id
@@ -85,7 +85,7 @@ def test_scan_create_scan_document_policies_id_pass(api):
     assert resp['settings']['policy_id'] == policy['id']
 
 
-@pytest.mark.vcr()
+
 def test_scan_create_scan_document_policies_name_pass(api):
     '''
     test to create scan document with policy param using name
@@ -100,7 +100,7 @@ def test_scan_create_scan_document_policies_name_pass(api):
     assert resp['settings']['policy_id'] == policy['id']
 
 
-@pytest.mark.vcr()
+
 def test_scan_create_scan_document_file_target_name(api, target_file):
     '''
     test to create scan document with file targets param and uploaded file name
@@ -113,7 +113,7 @@ def test_scan_create_scan_document_file_target_name(api, target_file):
 
 
 
-@pytest.mark.vcr()
+
 def test_scan_create_scan_document_scanner_unexpectedvalueerror(api):
     '''
     test to raise exception when scanner param value does not match the choices.
@@ -122,7 +122,7 @@ def test_scan_create_scan_document_scanner_unexpectedvalueerror(api):
         getattr(api.scans, '_create_scan_document')({'scanner': 'nothing to see here'})
 
 
-@pytest.mark.vcr()
+
 def test_scan_create_scan_document_scanner_uuid_pass(api):
     '''
     test to create scan document with scanner uuid param
@@ -136,7 +136,7 @@ def test_scan_create_scan_document_scanner_uuid_pass(api):
     assert resp['settings']['scanner_id'] == scanner['id']
 
 
-@pytest.mark.vcr()
+
 def test_scan_create_scan_document_scanner_name_pass(api):
     '''
     test to create scan document with scanner name param
@@ -149,12 +149,12 @@ def test_scan_create_scan_document_scanner_name_pass(api):
     check(resp['settings'], 'scanner_id', str)
     assert resp['settings']['scanner_id'] == scanner['id']
 
-# @pytest.mark.vcr()
+# 
 # def test_scan_attachment_scan_id_typeerror(api):
 #    with pytest.raises(TypeError):
 #        api.scans.attachment('nope', 1)
 
-@pytest.mark.vcr()
+
 def test_scan_attachment_attachement_id_typeerror(api):
     '''
     test to raise exception when type of attachment_id param does not match the expected type.
@@ -163,7 +163,7 @@ def test_scan_attachment_attachement_id_typeerror(api):
         api.scans.attachment(1, 'nope')
 
 
-@pytest.mark.vcr()
+
 @pytest.mark.xfail(raises=InvalidInputError)
 def test_scan_attachement_notfounderror(api):
     '''
@@ -173,7 +173,7 @@ def test_scan_attachement_notfounderror(api):
         api.scans.attachment(1, 1, 'none')
 
 
-@pytest.mark.vcr()
+
 def test_scan_create_scan_schedule_freq_typeerror(api):
     '''
     test to raise exception when type of frequency param does not match the expected type.
@@ -182,7 +182,7 @@ def test_scan_create_scan_schedule_freq_typeerror(api):
         api.scans.create_scan_schedule(enabled=True, frequency=1)
 
 
-@pytest.mark.vcr()
+
 def test_scan_create_scan_schedule_freq_unexpectedvalueerror(api):
     '''
     test to raise exception when frequency param value does not match the choices.
@@ -191,7 +191,7 @@ def test_scan_create_scan_schedule_freq_unexpectedvalueerror(api):
         api.scans.create_scan_schedule(enabled=True, frequency='nope')
 
 
-@pytest.mark.vcr()
+
 def test_scan_create_scan_schedule_interval_typeerror(api):
     '''
     test to raise exception when type of interval param does not match the expected type.
@@ -200,7 +200,7 @@ def test_scan_create_scan_schedule_interval_typeerror(api):
         api.scans.create_scan_schedule(enabled=True, interval='nope')
 
 
-@pytest.mark.vcr()
+
 def test_scan_create_scan_schedule_day_of_month_typeerror(api):
     '''
     test to raise exception when type of day_of_month param does not match the expected type.
@@ -209,7 +209,7 @@ def test_scan_create_scan_schedule_day_of_month_typeerror(api):
         api.scans.create_scan_schedule(enabled=True, frequency='monthly', day_of_month='nope')
 
 
-@pytest.mark.vcr()
+
 def test_scan_create_scan_schedule_day_of_month_unexpectedvalueerror(api):
     '''
     test to raise exception when day_of_month param value does not match the choices.
@@ -218,7 +218,7 @@ def test_scan_create_scan_schedule_day_of_month_unexpectedvalueerror(api):
         api.scans.create_scan_schedule(enabled=True, frequency='monthly', day_of_month=300)
 
 
-@pytest.mark.vcr()
+
 def test_scan_create_scan_schedule_weekdays_typeerror(api):
     '''
     test to raise exception when type of weekdays param does not match the expected type.
@@ -227,7 +227,7 @@ def test_scan_create_scan_schedule_weekdays_typeerror(api):
         api.scans.create_scan_schedule(enabled=True, frequency='weekly', weekdays='nope')
 
 
-@pytest.mark.vcr()
+
 def test_scan_create_scan_schedule_weekdays_unexpectedvalueerror(api):
     '''
     test to raise exception when weekdays param value does not match the choices.
@@ -236,7 +236,7 @@ def test_scan_create_scan_schedule_weekdays_unexpectedvalueerror(api):
         api.scans.create_scan_schedule(
             enabled=True, frequency='weekly', weekdays=['MO', 'WE', 'nope'])
 
-@pytest.mark.vcr()
+
 def test_scan_create_scan_schedule_starttime_typeerror(api):
     '''
     test to raise exception when type of starttime param does not match the expected type.
@@ -245,7 +245,7 @@ def test_scan_create_scan_schedule_starttime_typeerror(api):
         api.scans.create_scan_schedule(enabled=True, starttime='fail')
 
 
-@pytest.mark.vcr()
+
 def test_scan_create_scan_schedule_timezone_typeerror(api):
     '''
     test to raise exception when type of timezone param does not match the expected type.
@@ -254,7 +254,7 @@ def test_scan_create_scan_schedule_timezone_typeerror(api):
         api.scans.create_scan_schedule(enabled=True, timezone=1)
 
 
-@pytest.mark.vcr()
+
 def test_scan_create_scan_schedule_timezone_unexpectedvalueerror(api):
     '''
     test to raise exception when timezone param value does not match the choices.
@@ -263,7 +263,7 @@ def test_scan_create_scan_schedule_timezone_unexpectedvalueerror(api):
         api.scans.create_scan_schedule(enabled=True, timezone='the zone of time')
 
 
-@pytest.mark.vcr()
+
 def test_scan_configure_scan_schedule_freq_typeerror(api, scan):
     '''
     test to raise exception when type of frequency param does not match the expected type.
@@ -272,7 +272,7 @@ def test_scan_configure_scan_schedule_freq_typeerror(api, scan):
         api.scans.configure_scan_schedule(scan['id'], enabled=True, frequency=1)
 
 
-@pytest.mark.vcr()
+
 def test_scan_configure_scan_schedule_freq_unexpectedvalueerror(api, scan):
     '''
     test to raise exception when frequency param value does not match the choices.
@@ -281,7 +281,7 @@ def test_scan_configure_scan_schedule_freq_unexpectedvalueerror(api, scan):
         api.scans.configure_scan_schedule(scan['id'], enabled=True, frequency='nope')
 
 
-@pytest.mark.vcr()
+
 def test_scan_configure_scan_schedule_interval_typeerror(api, scan):
     '''
     test to raise exception when type of interval param does not match the expected type.
@@ -290,7 +290,7 @@ def test_scan_configure_scan_schedule_interval_typeerror(api, scan):
         api.scans.configure_scan_schedule(scan['id'], enabled=True, interval='nope')
 
 
-@pytest.mark.vcr()
+
 def test_scan_configure_scan_schedule_day_of_month_typeerror(api, scan):
     '''
     test to raise exception when type of day_of_month param does not match the expected type.
@@ -300,7 +300,7 @@ def test_scan_configure_scan_schedule_day_of_month_typeerror(api, scan):
             scan['id'], enabled=True, frequency='monthly', day_of_month='nope')
 
 
-@pytest.mark.vcr()
+
 def test_scan_configure_scan_schedule_day_of_month_unexpectedvalueerror(api, scan):
     '''
     test to raise exception when day_of_month param value does not match the choices.
@@ -310,7 +310,7 @@ def test_scan_configure_scan_schedule_day_of_month_unexpectedvalueerror(api, sca
             scan['id'], enabled=True, frequency='monthly', day_of_month=300)
 
 
-@pytest.mark.vcr()
+
 def test_scan_configure_scan_schedule_weekdays_typeerror(api, scan):
     '''
     test to raise exception when type of weekdays param does not match the expected type.
@@ -320,7 +320,7 @@ def test_scan_configure_scan_schedule_weekdays_typeerror(api, scan):
             scan['id'], enabled=True, frequency='weekly', weekdays='nope')
 
 
-@pytest.mark.vcr()
+
 def test_scan_configure_scan_schedule_weekdays_unexpectedvalueerror(api, scan):
     '''
     test to raise exception when weekdays param value does not match the choices.
@@ -330,7 +330,7 @@ def test_scan_configure_scan_schedule_weekdays_unexpectedvalueerror(api, scan):
             scan['id'], enabled=True, frequency='weekly', weekdays=['MO', 'WE', 'nope'])
 
 
-@pytest.mark.vcr()
+
 def test_scan_configure_scan_schedule_starttime_typeerror(api, scan):
     '''
     test to raise exception when type of starttime param does not match the expected type.
@@ -339,7 +339,7 @@ def test_scan_configure_scan_schedule_starttime_typeerror(api, scan):
         api.scans.configure_scan_schedule(scan['id'], enabled=True, starttime='fail')
 
 
-@pytest.mark.vcr()
+
 def test_scan_configure_scan_schedule_timezone_typeerror(api, scan):
     '''
     test to raise exception when type of timezone param does not match the expected type.
@@ -348,7 +348,7 @@ def test_scan_configure_scan_schedule_timezone_typeerror(api, scan):
         api.scans.configure_scan_schedule(scan['id'], enabled=True, timezone=1)
 
 
-@pytest.mark.vcr()
+
 def test_scan_configure_scan_schedule_timezone_unexpectedvalueerror(api, scan):
     '''
     test to raise exception when timezone param value does not match the choices.
@@ -357,17 +357,17 @@ def test_scan_configure_scan_schedule_timezone_unexpectedvalueerror(api, scan):
         api.scans.configure_scan_schedule(scan['id'], enabled=True, timezone='the zone of time')
 
 
-# @pytest.mark.vcr()
+# 
 # def test_scan_configure_id_typeerror(api):
 #    with pytest.raises(TypeError):
 #        api.scans.configure('abc123')
 
-# @pytest.mark.vcr()
+# 
 # def test_scan_configure_scan_id_typeerror(api):
 #    with pytest.raises(TypeError):
 #        api.scans.configure('nope')
 
-@pytest.mark.vcr()
+
 def test_scan_configure_notfounderror(api):
     '''
     test to raise exception when scan_id not found.
@@ -376,7 +376,7 @@ def test_scan_configure_notfounderror(api):
         api.scans.configure(1, name=str(uuid.uuid4()))
 
 
-@pytest.mark.vcr()
+
 def test_scan_configure(api, scan):
     '''
     test to configure scan
@@ -386,7 +386,7 @@ def test_scan_configure(api, scan):
     assert mod['name'] == 'MODIFIED'
 
 
-@pytest.mark.vcr()
+
 def test_scan_configure_schedule_onetime_to_daily(api, scheduled_scan):
     '''
     test to edit scan schedule frequency from onetime to daily
@@ -420,7 +420,7 @@ def test_scan_configure_schedule_onetime_to_daily(api, scheduled_scan):
     assert mod['rrules'] == 'FREQ=DAILY;INTERVAL=1'
 
 
-@pytest.mark.vcr()
+
 def test_scan_configure_schedule_onetime_to_weekly_valdefault(api, scheduled_scan):
     '''
     test to edit scheduled scan frequency from onetime to weekly
@@ -455,7 +455,7 @@ def test_scan_configure_schedule_onetime_to_weekly_valdefault(api, scheduled_sca
     assert mod['rrules'] == 'FREQ=WEEKLY;INTERVAL=1;BYDAY=SU,MO,TU,WE,TH,FR,SA'
 
 
-@pytest.mark.vcr()
+
 def test_scan_configure_schedule_onetime_to_weekly_valassigned(api, scheduled_scan):
     '''
     test to edit scheduled scan frequency from onetime to weekly
@@ -491,7 +491,7 @@ def test_scan_configure_schedule_onetime_to_weekly_valassigned(api, scheduled_sc
     assert mod['rrules'] == 'FREQ=WEEKLY;INTERVAL=1;BYDAY=MO,TU'
 
 
-@pytest.mark.vcr()
+
 def test_scan_configure_schedule_freq_weekly_valavailable(api):
     '''
     test to edit weekly scheduled scan and assign existing weekdays values to weekdays param
@@ -604,7 +604,7 @@ def test_upsert_aws_credentials_no_add(api):
     assert scan_expected == scan_actual
 
 
-@pytest.mark.vcr()
+
 def test_scan_configure_schedule_onetime_to_monthly_valdefault(api, scheduled_scan):
     '''
     test to edit scheduled scan frequency from onetime to monthly
@@ -640,7 +640,7 @@ def test_scan_configure_schedule_onetime_to_monthly_valdefault(api, scheduled_sc
     api.scans.delete(mod['id'])
 
 
-@pytest.mark.vcr()
+
 def test_scan_configure_schedule_onetime_to_monthly_valassigned(api, scheduled_scan):
     '''
     test to edit scheduled scan frequency from onetime to monthly
@@ -676,7 +676,7 @@ def test_scan_configure_schedule_onetime_to_monthly_valassigned(api, scheduled_s
     assert mod['rrules'] == 'FREQ=MONTHLY;INTERVAL=1;BYMONTHDAY=8'
 
 
-@pytest.mark.vcr()
+
 def test_scan_configure_schedule_freq_monthly_valavailable(api):
     '''
     test to edit scheduled scan and assign existing day_of_month value to day_of_month param
@@ -718,7 +718,7 @@ def test_scan_configure_schedule_freq_monthly_valavailable(api):
     api.scans.delete(mod['id'])
 
 
-@pytest.mark.vcr()
+
 def test_scan_configure_schedule_freq_yearly(api, scheduled_scan):
     '''
     test to edit scheduled schan frequency from onetime to yearly
@@ -753,7 +753,7 @@ def test_scan_configure_schedule_freq_yearly(api, scheduled_scan):
     assert mod['rrules'] == 'FREQ=YEARLY;INTERVAL=2'
 
 
-@pytest.mark.vcr()
+
 def test_scan_configure_enable_scan_schedule(api, scan):
     '''
     test to enable scan schedule
@@ -787,7 +787,7 @@ def test_scan_configure_enable_scan_schedule(api, scan):
     assert mod['rrules'] == 'FREQ=ONETIME;INTERVAL=1'
 
 
-@pytest.mark.vcr()
+
 def test_scan_configure_disable_scan_schedule(api, scheduled_scan):
     '''
     test to disable scan schedule
@@ -820,12 +820,12 @@ def test_scan_configure_disable_scan_schedule(api, scheduled_scan):
     assert mod['enabled'] is False
 
 
-# @pytest.mark.vcr()
+# 
 # def test_scan_copy_scan_id_typeerror(api):
 #    with pytest.raises(TypeError):
 #        api.scans.copy('nope')
 
-@pytest.mark.vcr()
+
 def test_scan_copy_folder_id_typeerror(api):
     '''
     test to raise exception when type of folder_id param does not match the expected type.
@@ -834,7 +834,7 @@ def test_scan_copy_folder_id_typeerror(api):
         api.scans.copy(1, folder_id='nope')
 
 
-@pytest.mark.vcr()
+
 def test_scan_copy_name_typeerror(api):
     '''
     test to raise exception when type of name param does not match the expected type.
@@ -843,7 +843,7 @@ def test_scan_copy_name_typeerror(api):
         api.scans.copy(1, name=1)
 
 
-@pytest.mark.vcr()
+
 def test_scan_copy_notfounderror(api):
     '''
     test to raise exception when scan_id not found.
@@ -852,7 +852,7 @@ def test_scan_copy_notfounderror(api):
         api.scans.copy(1)
 
 
-@pytest.mark.vcr()
+
 def test_scan_copy(api, scan):
     '''
     test to copy scan
@@ -878,7 +878,7 @@ def test_scan_copy(api, scan):
     check(clone, 'uuid', 'scanner-uuid')
 
 
-@pytest.mark.vcr()
+
 def test_scan_create_no_template_pass(scan):
     '''
     test to create scan when no template is provided by user
@@ -906,7 +906,7 @@ def test_scan_create_no_template_pass(scan):
     check(scan, 'uuid', str)
 
 
-@pytest.mark.vcr()
+
 def test_scan_create_scheduled_scan_default_schedule(api):
     '''
     test to create scan with default schedule
@@ -944,7 +944,7 @@ def test_scan_create_scheduled_scan_default_schedule(api):
     api.scans.delete(scan['id'])
 
 
-@pytest.mark.vcr()
+
 def test_scan_create_scheduled_scan_freq_daily(api):
     '''
     test to create scheduled scan with frequency as daily
@@ -982,7 +982,7 @@ def test_scan_create_scheduled_scan_freq_daily(api):
     api.scans.delete(scan['id'])
 
 
-@pytest.mark.vcr()
+
 def test_scan_create_scheduled_scan_freq_weekly_valdefault(api):
     '''
     test to create scheduled scan with frequency as weekly
@@ -1021,7 +1021,7 @@ def test_scan_create_scheduled_scan_freq_weekly_valdefault(api):
     api.scans.delete(scan['id'])
 
 
-@pytest.mark.vcr()
+
 def test_scan_create_scheduled_scan_freq_weekly_valassigned(api):
     '''
     test to create scheduled scan with frequency as weekly
@@ -1061,7 +1061,7 @@ def test_scan_create_scheduled_scan_freq_weekly_valassigned(api):
     api.scans.delete(scan['id'])
 
 
-@pytest.mark.vcr()
+
 def test_scan_create_scheduled_scan_freq_monthly_valdefault(api):
     '''
     test to create scheduled scan with frequency as monthly
@@ -1100,7 +1100,7 @@ def test_scan_create_scheduled_scan_freq_monthly_valdefault(api):
     api.scans.delete(scan['id'])
 
 
-@pytest.mark.vcr()
+
 def test_scan_create_scheduled_scan_freq_monthly_valassigned(api):
     '''
     test to create scheduled scan with frequency as monthly
@@ -1140,7 +1140,7 @@ def test_scan_create_scheduled_scan_freq_monthly_valassigned(api):
     api.scans.delete(scan['id'])
 
 
-@pytest.mark.vcr()
+
 def test_scan_create_scheduled_scan_freq_yearly(api):
     '''
     test to create scheduled scan with frequency as yearly
@@ -1177,12 +1177,12 @@ def test_scan_create_scheduled_scan_freq_yearly(api):
     assert scan['rrules'] == 'FREQ=YEARLY;INTERVAL=2'
     api.scans.delete(scan['id'])
 
-#@pytest.mark.vcr()
+#
 #def test_scan_delete_scan_id_typeerror(api):
 #    with pytest.raises(TypeError):
 #        api.scans.delete('nope')
 
-@pytest.mark.vcr()
+
 def test_scan_delete_notfounderror(api):
     '''
     test to raise exception when scan_id not found.
@@ -1191,24 +1191,24 @@ def test_scan_delete_notfounderror(api):
         api.scans.delete(0)
 
 
-@pytest.mark.vcr()
+
 def test_scan_delete(api, scan):
     '''
     test to delete scan
     '''
     api.scans.delete(scan['id'])
 
-# @pytest.mark.vcr()
+# 
 # def test_scan_delete_history_scan_id_typeerror(api):
 #    with pytest.raises(TypeError):
 #        api.scans.delete_history('nope', 1)
 
-# @pytest.mark.vcr()
+# 
 # def test_scan_delete_history_history_id_typeerror(api):
 #    with pytest.raises(TypeError):
 #        api.scans.delete_history(1, 'nope')
 
-@pytest.mark.vcr()
+
 def test_scan_delete_history_notfounderror(api):
     '''
     test to raise exception when scan_id not found.
@@ -1216,12 +1216,12 @@ def test_scan_delete_history_notfounderror(api):
     with pytest.raises(NotFoundError):
         api.scans.delete_history(1, 1)
 
-# @pytest.mark.vcr()
+# 
 # def test_scan_details_scan_id_typeerror(api):
 #    with pytest.raises(TypeError):
 #        api.scans.details('nope')
 
-@pytest.mark.vcr()
+
 def test_scan_details_history_it_typeerror(api):
     '''
     test to raise exception when type of scan_id param does not match the expected type.
@@ -1230,7 +1230,7 @@ def test_scan_details_history_it_typeerror(api):
         api.scans.details(1, 'nope')
 
 
-@pytest.mark.vcr()
+
 def test_scan_results(api):
     '''
     test to get scan results
@@ -1374,12 +1374,12 @@ def test_scan_results(api):
                 check(compliance, 'plugin_family', str)
 
 
-# @pytest.mark.vcr()
+# 
 # def test_scan_export_scan_id_typeerror(api):
 #    with pytest.raises(TypeError):
 #        api.scans.export('nope')
 
-@pytest.mark.vcr()
+
 def test_scan_export_history_id_typeerror(api):
     '''
     test to raise exception when type of history_id param does not match the expected type.
@@ -1388,7 +1388,7 @@ def test_scan_export_history_id_typeerror(api):
         api.scans.export(1, history_id='nope')
 
 
-@pytest.mark.vcr()
+
 def test_scan_export_format_typeerror(api):
     '''
     test to raise exception when type of format param does not match the expected type.
@@ -1397,7 +1397,7 @@ def test_scan_export_format_typeerror(api):
         api.scans.export(1, format=1)
 
 
-@pytest.mark.vcr()
+
 def test_scan_export_format_unexpectedvalueerror(api):
     '''
     test to raise exception when format param value does not match the choices.
@@ -1406,7 +1406,7 @@ def test_scan_export_format_unexpectedvalueerror(api):
         api.scans.export(1, format='something else')
 
 
-@pytest.mark.vcr()
+
 def test_scan_export_password_typeerror(api):
     '''
     test to raise exception when type of password param does not match the expected type.
@@ -1415,7 +1415,7 @@ def test_scan_export_password_typeerror(api):
         api.scans.export(1, password=1)
 
 
-@pytest.mark.vcr()
+
 def test_scan_export_chapters_typeerror(api):
     '''
     test to raise exception when type of chapter param does not match the expected type.
@@ -1424,7 +1424,7 @@ def test_scan_export_chapters_typeerror(api):
         api.scans.export(1, chapters=1)
 
 
-@pytest.mark.vcr()
+
 def test_scan_export_chapters_unexpectedvalueerror(api):
     '''
     test to raise exception when chapter param value does not match the choices.
@@ -1433,7 +1433,7 @@ def test_scan_export_chapters_unexpectedvalueerror(api):
         api.scans.export(1, chapters=['nothing to see here'])
 
 
-@pytest.mark.vcr()
+
 def test_scan_export_filter_type_typeerror(api):
     '''
     test to raise exception when type of filter_type param does not match the expected type.
@@ -1442,7 +1442,7 @@ def test_scan_export_filter_type_typeerror(api):
         api.scans.export(1, filter_type=1)
 
 
-@pytest.mark.vcr()
+
 def test_scan_export_filter_type_unexpectedvalueerror(api):
     '''
     test to raise exception when filter_type param value does not match the choices.
@@ -1451,7 +1451,7 @@ def test_scan_export_filter_type_unexpectedvalueerror(api):
         api.scans.export(1, filter_type='nothing')
 
 
-@pytest.mark.vcr()
+
 def test_scan_export_was_typeerror(api):
     '''
     test to raise exception when scan_type param value does not match the choices.
@@ -1459,7 +1459,7 @@ def test_scan_export_was_typeerror(api):
     with pytest.raises(UnexpectedValueError):
         api.scans.export(SCAN_ID_WITH_RESULTS, scan_type='bad-value')
 
-@pytest.mark.vcr()
+
 def test_scan_export_bytesio_stream_hook(api, scan_results):
     '''
     test to export scan using optional `stream_hook` kwarg, provided by user (Issue #305)
@@ -1484,7 +1484,7 @@ def test_scan_export_bytesio_stream_hook(api, scan_results):
         if counter > 10:
             break
 
-@pytest.mark.vcr()
+
 def test_scan_export_bytesio(api):
     '''
     test to export scan
@@ -1502,7 +1502,7 @@ def test_scan_export_bytesio(api):
                 break
 
 
-@pytest.mark.vcr()
+
 def test_scan_export_file_object(api):
     '''
     test to export scan file object
@@ -1522,12 +1522,12 @@ def test_scan_export_file_object(api):
                     break
         os.remove(filename)
 
-# @pytest.mark.vcr()
+# 
 # def test_scan_host_details_scan_id_typeerror(api):
 #    with pytest.raises(TypeError):
 #        api.scans.host_details('nope', 1)
 
-@pytest.mark.vcr()
+
 def test_scan_host_details_host_id_typeerror(api):
     '''
     test to raise exception when type of host_id param does not match the expected type.
@@ -1536,7 +1536,7 @@ def test_scan_host_details_host_id_typeerror(api):
         api.scans.host_details(1, 'nope')
 
 
-@pytest.mark.vcr()
+
 def test_scan_host_details_history_id_typeerror(api):
     '''
     test to raise exception when type of history_id param does not match the expected type.
@@ -1545,7 +1545,7 @@ def test_scan_host_details_history_id_typeerror(api):
         api.scans.host_details(1, 1, 'nope')
 
 
-@pytest.mark.vcr()
+
 def test_scan_host_details_notfounderror(api):
     '''
     test to raise exception when scan_id not found.
@@ -1554,7 +1554,7 @@ def test_scan_host_details_notfounderror(api):
         api.scans.host_details(1, 1)
 
 
-@pytest.mark.vcr()
+
 def test_scan_host_details(api, scan_results):
     '''
     test to retrieve the host details from a specific scan
@@ -1597,7 +1597,7 @@ def test_scan_host_details(api, scan_results):
         print('Key error: ', key)
 
 
-@pytest.mark.vcr()
+
 def test_scan_import_scan_folder_id_typeerror(api):
     '''
     test to raise exception when type of folder_id param does not match the expected type.
@@ -1606,7 +1606,7 @@ def test_scan_import_scan_folder_id_typeerror(api):
         api.scans.import_scan(None, folder_id='nope')
 
 
-@pytest.mark.vcr()
+
 def test_scan_import_scan_password_typeerror(api):
     '''
     test to raise exception when type of password param does not match the expected type.
@@ -1615,7 +1615,7 @@ def test_scan_import_scan_password_typeerror(api):
         api.scans.import_scan(None, password=1)
 
 
-@pytest.mark.vcr()
+
 def test_scan_import_scan(api):
     '''
     test to import scan
@@ -1626,12 +1626,12 @@ def test_scan_import_scan(api):
         fobj = api.scans.export(scan_list[0])
         api.scans.import_scan(fobj)
 
-# @pytest.mark.vcr()
+# 
 # def test_scan_launch_scanid_typeerror(api):
 #    with pytest.raises(TypeError):
 #        api.scans.launch('nope')
 
-@pytest.mark.vcr()
+
 def test_scan_launch_targets_typerror(api):
     '''
     test to raise exception when type of targets param does not match the expected type.
@@ -1660,7 +1660,7 @@ def test_scan_launch_alt_targets(api, scan):
     api.scans.stop(scan['id'], block=True)
 
 
-@pytest.mark.vcr()
+
 def test_scan_list_folder_id_typeerror(api):
     '''
     test to raise exception when type of folder_id param does not match the expected type.
@@ -1669,7 +1669,7 @@ def test_scan_list_folder_id_typeerror(api):
         api.scans.list(folder_id='nope')
 
 
-@pytest.mark.vcr()
+
 def test_scan_list_last_modified_typeerror(api):
     '''
     test to raise exception when type of last_modified param does not match the expected type.
@@ -1678,7 +1678,7 @@ def test_scan_list_last_modified_typeerror(api):
         api.scans.list(last_modified='nope')
 
 
-@pytest.mark.vcr()
+
 def test_scan_list(api):
     '''
     test to get list of scans
@@ -1705,7 +1705,7 @@ def test_scan_list(api):
     check(scan, 'user_permissions', int)
     check(scan, 'uuid', 'scanner-uuid')
 
-# @pytest.mark.vcr()
+# 
 # def test_scan_pause_scan_id_typeerror(api):
 #    with pytest.raises(TypeError):
 #        api.scans.pause('nope')
@@ -1718,12 +1718,12 @@ def test_scan_pause_scan(api, scan):
     _ = api.scans.launch(scan['id'])
     api.scans.pause(scan['id'], block=True)
 
-# @pytest.mark.vcr()
+# 
 # def test_scan_plugin_output_scan_id_typeerror(api):
 #    with pytest.raises(TypeError):
 #        api.scans.plugin_output('nope', 1, 1)
 
-@pytest.mark.vcr()
+
 def test_scan_plugin_output_host_id_typeerror(api):
     '''
     test to raise exception when type of host_id param does not match the expected type.
@@ -1732,7 +1732,7 @@ def test_scan_plugin_output_host_id_typeerror(api):
         api.scans.plugin_output(1, 'nope', 1)
 
 
-@pytest.mark.vcr()
+
 def test_scan_plugin_output_plugin_id_typeerror(api):
     '''
     test to raise exception when type of plugin_id param does not match the expected type.
@@ -1741,7 +1741,7 @@ def test_scan_plugin_output_plugin_id_typeerror(api):
         api.scans.plugin_output(1, 1, 'nope')
 
 
-@pytest.mark.vcr()
+
 def test_scan_plugin_output_history_id_typeerror(api):
     '''
     test to raise exception when type of history_id param does not match the expected type.
@@ -1750,7 +1750,7 @@ def test_scan_plugin_output_history_id_typeerror(api):
         api.scans.plugin_output(1, 1, 1, history_id='nope')
 
 
-@pytest.mark.vcr()
+
 def test_scan_plugin_output(api, scan_results):
     '''
     test to get scan plugin output
@@ -1803,12 +1803,12 @@ def test_scan_plugin_output(api, scan_results):
         print('Invalid key', error)
 
 
-# @pytest.mark.vcr()
+# 
 # def test_scan_read_status_scan_id_typeerror(api):
 #    with pytest.raises(TypeError):
 #        api.scans.set_read_status('nope', False)
 
-@pytest.mark.vcr()
+
 def test_scan_read_status_read_status_typeerror(api):
     '''
     test to raise exception when type of read_status param does not match the expected type.
@@ -1817,7 +1817,7 @@ def test_scan_read_status_read_status_typeerror(api):
         api.scans.set_read_status(1, 'nope')
 
 
-@pytest.mark.vcr()
+
 def test_scan_read_status(api, scan):
     '''
     test to get scan read status
@@ -1829,13 +1829,13 @@ def test_scan_read_status(api, scan):
         if resp['id'] == scan['id']:
             assert scan['read'] != resp['read']
 
-# @pytest.mark.vcr()
+# 
 # def test_scan_resume_scan_id_typeerror(api):
 #    with pytest.raises(TypeError):
 #        api.scans.resume('nope')
 
 @pytest.mark.skip(reason="Switching between scan states can be tricky")
-@pytest.mark.vcr()
+
 def test_scan_resume(api, scan):
     '''
     test to resume scan
@@ -1848,12 +1848,12 @@ def test_scan_resume(api, scan):
     time.sleep(5)
     api.scans.stop(scan['id'], block=True)
 
-# @pytest.mark.vcr()
+# 
 # def test_scan_schedule_scan_id_typeerror(api):
 #    with pytest.raises(TypeError):
 #        api.scans.schedule('nope', False)
 
-@pytest.mark.vcr()
+
 def test_scan_schedule_enabled_typeerror(api):
     '''
     test to raise exception when type of enabled param does not match the expected type.
@@ -1863,20 +1863,20 @@ def test_scan_schedule_enabled_typeerror(api):
 
 
 @pytest.mark.skip(reason="Need to configure the scan w/ a schedule.")
-@pytest.mark.vcr()
+
 def test_scan_schedule(api, scan):
     '''
     test to disable scan schedule
     '''
     api.scans.schedule(scan['id'], False)
 
-# @pytest.mark.vcr()
+# 
 # def test_scan_stop_scan_id_typeerror(api):
 #    with pytest.raises(TypeError):
 #        api.scans.stop('nope')
 
 @pytest.mark.skip(reason="Switching between scan states can be tricky")
-@pytest.mark.vcr()
+
 def test_scan_stop(api, scan):
     '''
     test to stop scan
@@ -1885,12 +1885,12 @@ def test_scan_stop(api, scan):
     time.sleep(5)
     api.scans.stop(scan['id'])
 
-# @pytest.mark.vcr()
+# 
 # def test_scan_status_scan_id_typeerror(api):
 #    with pytest.raises(TypeError):
 #        api.scans.status('no')
 
-@pytest.mark.vcr()
+
 def test_scan_status(api, scan):
     '''
     test to check scan status
@@ -1899,7 +1899,7 @@ def test_scan_status(api, scan):
     single(status, str)
 
 
-@pytest.mark.vcr()
+
 def test_scan_timezones(api):
     '''
     test to get list of allowed timezone strings
@@ -1907,7 +1907,7 @@ def test_scan_timezones(api):
     assert isinstance(api.scans.timezones(), list)
 
 
-@pytest.mark.vcr()
+
 def test_scan_check_auto_targets_success(api):
     '''
     test to evaluates a list of targets and/or tags against
@@ -1921,7 +1921,7 @@ def test_scan_check_auto_targets_success(api):
     check(resp, 'total_missed_targets', int)
 
 
-@pytest.mark.vcr()
+
 def test_scan_check_auto_targets_limit_typeerror(api):
     '''
     test to raise exception when type of limit param does not match the expected type.
@@ -1930,7 +1930,7 @@ def test_scan_check_auto_targets_limit_typeerror(api):
         api.scans.check_auto_targets('nope', 5, targets=['127.0.0.1'])
 
 
-@pytest.mark.vcr()
+
 def test_scan_check_auto_targets_matched_resource_limit_typeerror(api):
     '''
     test to raise exception when type of matched_resource_limit param
@@ -1940,7 +1940,7 @@ def test_scan_check_auto_targets_matched_resource_limit_typeerror(api):
         api.scans.check_auto_targets(10, 'nope', targets=['127.0.0.1'])
 
 
-@pytest.mark.vcr()
+
 def test_scan_check_auto_targets_network_uuid_unexpectedvalueerror(api):
     '''
     test to raise exception when network_uuid param value does not match the choices.
@@ -1949,7 +1949,7 @@ def test_scan_check_auto_targets_network_uuid_unexpectedvalueerror(api):
         api.scans.check_auto_targets(10, 5, network_uuid='nope', targets=['127.0.0.1'])
 
 
-@pytest.mark.vcr()
+
 def test_scan_check_auto_targets_network_uuid_typeerror(api):
     '''
     test to raise exception when type of network_uuid param does not match the expected type.
@@ -1958,7 +1958,7 @@ def test_scan_check_auto_targets_network_uuid_typeerror(api):
         api.scans.check_auto_targets(10, 5, network_uuid=1, targets=['127.0.0.1'])
 
 
-@pytest.mark.vcr()
+
 def test_scan_check_auto_targets_tags_unexpectedvalueerror(api):
     '''
     test to raise exception when type of any value in tags param
@@ -1968,7 +1968,7 @@ def test_scan_check_auto_targets_tags_unexpectedvalueerror(api):
         api.scans.check_auto_targets(10, 5, tags=['nope'], targets=['127.0.0.1'])
 
 
-@pytest.mark.vcr()
+
 def test_scan_check_auto_targets_tags_typeerror(api):
     '''
     test to raise exception when type of tags param does not match the expected type.
@@ -1977,7 +1977,7 @@ def test_scan_check_auto_targets_tags_typeerror(api):
         api.scans.check_auto_targets(10, 5, tags=1, targets=['127.0.0.1'])
 
 
-@pytest.mark.vcr()
+
 def test_scan_check_auto_targets_targets_typeerror(api):
     '''
     test to raise exception when type of targets param does not match the expected type.
@@ -1993,13 +1993,13 @@ def test_scan_check_auto_targets_targets_typeerror(api):
 #     # print('scan_results: {}'.format(scan_results))
 #     api.scans.details()
 
-@pytest.mark.vcr()
+
 def test_scan_create_scan_schedule_success(api):
     '''test to create a scan schedule'''
     api.scans.create_scan_schedule(enabled=False)
 
 
-@pytest.mark.vcr()
+
 def test_scan_create_scan_success(api):
     '''
     test to create a scan
@@ -2041,7 +2041,7 @@ def test_scan_create_scan_success(api):
     check(scan, 'id', int)
 
 
-@pytest.mark.vcr()
+
 def test_scan_create_scan_document_policy_setting_valueerror(api):
     '''
     test to raise when policy setting is invalid
@@ -2050,7 +2050,7 @@ def test_scan_create_scan_document_policy_setting_valueerror(api):
         getattr(api.scans, '_create_scan_document')({'policy': 'some_policy'})
 
 
-@pytest.mark.vcr()
+
 def test_scan_create_scan_document_credentials_pass(api):
     '''
     test to create a scan document along with credentials

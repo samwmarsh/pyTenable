@@ -6,7 +6,7 @@ from tenable.errors import UnexpectedValueError
 from ..checker import check
 
 
-@pytest.mark.vcr()
+
 def test_agents_list_scanner_id_typeerror(api):
     '''
     test to raise the exception when type of scanner_id is not as defined
@@ -15,7 +15,7 @@ def test_agents_list_scanner_id_typeerror(api):
         api.agents.list(scanner_id='nope')
 
 
-@pytest.mark.vcr()
+
 def test_agents_list_offset_typeerror(api):
     '''
     test to raise the exception when type of offset is not as defined
@@ -24,7 +24,7 @@ def test_agents_list_offset_typeerror(api):
         api.agents.list(offset='nope')
 
 
-@pytest.mark.vcr()
+
 def test_agents_list_limit_typeerror(api):
     '''
     test to raise the exception when type of limit is not as defined
@@ -33,7 +33,7 @@ def test_agents_list_limit_typeerror(api):
         api.agents.list(limit='nope')
 
 
-@pytest.mark.vcr()
+
 def test_agents_list_sort_field_typeerror(api):
     '''
     test to raise the exception when type of sort field is not as defined
@@ -42,7 +42,7 @@ def test_agents_list_sort_field_typeerror(api):
         api.agents.list(sort=((1, 'asc'),))
 
 
-@pytest.mark.vcr()
+
 def test_agents_list_sort_direction_typeerror(api):
     '''
     test to raise the exception when type of sort direction is not as defined
@@ -51,7 +51,7 @@ def test_agents_list_sort_direction_typeerror(api):
         api.agents.list(sort=(('uuid', 1),))
 
 
-@pytest.mark.vcr()
+
 def test_agents_list_sort_direction_unexpectedvalue(api):
     '''
     test to raise the exception when value of sort direction is not as defined
@@ -60,7 +60,7 @@ def test_agents_list_sort_direction_unexpectedvalue(api):
         api.agents.list(sort=(('uuid', 'nope'),))
 
 
-@pytest.mark.vcr()
+
 def test_agents_list_filter_name_typeerror(api):
     '''
     test to raise the exception when type of filter name is not as defined
@@ -69,7 +69,7 @@ def test_agents_list_filter_name_typeerror(api):
         api.agents.list((1, 'match', 'win'))
 
 
-@pytest.mark.vcr()
+
 def test_agents_list_filter_operator_typeerror(api):
     '''
     test to raise the exception when type of filter operator is not as defined
@@ -78,7 +78,7 @@ def test_agents_list_filter_operator_typeerror(api):
         api.agents.list(('distro', 1, 'win'))
 
 
-@pytest.mark.vcr()
+
 def test_agents_list_filter_value_typeerror(api):
     '''
     test to raise the exception when type of filter value is not as defined
@@ -87,7 +87,7 @@ def test_agents_list_filter_value_typeerror(api):
         api.agents.list(('distro', 'match', 1))
 
 
-@pytest.mark.vcr()
+
 def test_agents_list_filter_type_typeerror(api):
     '''
     test to raise the exception when type of filter type is not as defined
@@ -96,7 +96,7 @@ def test_agents_list_filter_type_typeerror(api):
         api.agents.list(filter_type=1)
 
 
-@pytest.mark.vcr()
+
 def test_agents_list_wildcard_typeerror(api):
     '''
     test to raise the exception when type of wildcard is not as defined
@@ -105,7 +105,7 @@ def test_agents_list_wildcard_typeerror(api):
         api.agents.list(wildcard=1)
 
 
-@pytest.mark.vcr()
+
 def test_agents_list_wildcard_fields_typeerror(api):
     '''
     test to raise the exception when type of wildcard fields is not as defined
@@ -114,7 +114,7 @@ def test_agents_list_wildcard_fields_typeerror(api):
         api.agents.list(wildcard_fields='nope')
 
 
-@pytest.mark.vcr()
+
 def test_agents_list(api):
     '''
     test to get the agents list
@@ -134,7 +134,7 @@ def test_agents_list(api):
     assert count == agents.total
 
 
-@pytest.mark.vcr()
+
 def test_agents_details_scanner_id_typeerror(api):
     '''
     test to raise the exception when type of scanner_id is not as defined
@@ -143,7 +143,7 @@ def test_agents_details_scanner_id_typeerror(api):
         api.agents.details(scanner_id='nope')
 
 
-@pytest.mark.vcr()
+
 def test_agents_details_agent_id_typeerror(api):
     '''
     test to raise the exception when type of agent_id is not as defined
@@ -152,7 +152,7 @@ def test_agents_details_agent_id_typeerror(api):
         api.agents.details('nope')
 
 
-@pytest.mark.vcr()
+
 def test_agents_details_agent_details(api, agent):
     '''
     test to get the agent details
@@ -171,7 +171,7 @@ def test_agents_details_agent_details(api, agent):
 
 # Add tests for singular & bulk agent deletion.
 # att tests for task_status.
-@pytest.mark.vcr()
+
 def test_agents_list_fields(api):
     '''
     test to get the agent list

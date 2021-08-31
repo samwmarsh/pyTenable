@@ -10,35 +10,35 @@ from tests.pytenable_log_handler import log_exception
 from tenable.errors import UnexpectedValueError, TioExportsError
 
 
-@pytest.mark.vcr()
+
 def test_exports_vuln_num_assets_typeerror(api):
     '''test to raise the exception when type of num_assets is not as defined'''
     with pytest.raises(TypeError):
         api.exports.vulns(num_assets='nope')
 
 
-@pytest.mark.vcr()
+
 def test_exports_vuln_severity_typeerror(api):
     '''test to raise the exception when type of severity is not as defined'''
     with pytest.raises(TypeError):
         api.exports.vulns(severity='info')
 
 
-@pytest.mark.vcr()
+
 def test_exports_vuln_state_typeerror(api):
     '''test to raise the exception when type of state is not as defined'''
     with pytest.raises(TypeError):
         api.exports.vulns(state=1)
 
 
-@pytest.mark.vcr()
+
 def test_exports_vuln_state_unexpectedvalueerror(api):
     '''test to raise the exception when value of state is not as defined'''
     with pytest.raises(UnexpectedValueError):
         api.exports.vulns(state=['nothing here'])
 
 
-@pytest.mark.vcr()
+
 def test_exports_vuln_plugin_family_typeerror(api):
     '''test to raise the exception when type of plugin_family is not as defined'''
 
@@ -46,14 +46,14 @@ def test_exports_vuln_plugin_family_typeerror(api):
         api.exports.vulns(plugin_family='yes')
 
 
-@pytest.mark.vcr()
+
 def test_exports_vuln_since_typeerror(api):
     '''test to raise the exception when type of since is not as defined'''
     with pytest.raises(TypeError):
         api.exports.vulns(since='nothing here')
 
 
-@pytest.mark.vcr()
+
 def test_exports_vuln_cidr_range_invalid_cidr(api):
     '''test to raise the exception when cidr_range is not correct'''
     with pytest.raises(UnexpectedValueError):
@@ -70,7 +70,7 @@ def test_process_page(api):
     assert exports_iterator.page == 'page_data'
 
 
-@pytest.mark.vcr()
+
 def test_exports_vulns_success(api):
     '''test to export vulns data on some parameters'''
     vulns = api.exports.vulns(
@@ -88,7 +88,7 @@ def test_exports_vulns_success(api):
     assert isinstance(vulns, ExportsIterator)
 
 
-@pytest.mark.vcr()
+
 def test_exports_vulns(api):
     '''test to export the vulns data'''
     vulns = api.exports.vulns()
@@ -133,70 +133,70 @@ def test_exports_vulns(api):
     check(vuln, 'state', str)
 
 
-@pytest.mark.vcr()
+
 def test_exports_assets_chunk_size_typeerror(api):
     '''test to raise the exception when type of chunk_size is not as defined'''
     with pytest.raises(TypeError):
         api.exports.assets(chunk_size='something')
 
 
-@pytest.mark.vcr()
+
 def test_exports_assets_created_at_typeerror(api):
     '''test to raise the exception when type of created_at is not as defined'''
     with pytest.raises(TypeError):
         api.exports.assets(created_at='nope')
 
 
-@pytest.mark.vcr()
+
 def test_exports_assets_updated_at_typeerror(api):
     '''test to raise the exception when type of updated_at is not as defined'''
     with pytest.raises(TypeError):
         api.exports.assets(updated_at='something')
 
 
-@pytest.mark.vcr()
+
 def test_exports_assets_terminated_at_typeerror(api):
     '''test to raise the exception when type of terminated_at is not as defined'''
     with pytest.raises(TypeError):
         api.exports.assets(terminated_at='something')
 
 
-@pytest.mark.vcr()
+
 def test_exports_assets_deleted_at_typerror(api):
     '''test to raise the exception when type of deleted_at is not as defined'''
     with pytest.raises(TypeError):
         api.exports.assets(deleted_at='something')
 
 
-@pytest.mark.vcr()
+
 def test_exports_assets_last_authenticated_scan_time_typerror(api):
     '''test to raise the exception when type of last_authenticated_scan_time is not as defined'''
     with pytest.raises(TypeError):
         api.exports.assets(last_authenticated_scan_time='something')
 
 
-@pytest.mark.vcr()
+
 def test_exports_assets_last_assessed_typeerror(api):
     '''test to raise the exception when type of last_assessed is not as defined'''
     with pytest.raises(TypeError):
         api.exports.assets(last_assessed='something')
 
 
-@pytest.mark.vcr()
+
 def test_exports_assets_servicenow_sysid_typeerror(api):
     '''test to raise the exception when type of servicenow_sysid is not as defined'''
     with pytest.raises(TypeError):
         api.exports.assets(servicenow_sysid='something')
 
 
-@pytest.mark.vcr()
+
 def test_exports_assets_sources_typeerror(api):
     '''test to raise the exception when type of sources is not as defined'''
     with pytest.raises(TypeError):
         api.exports.assets(sources=1)
 
 
-@pytest.mark.vcr()
+
 def test_exports_assets_has_plugin_results_typeerror(api):
     '''test to raise the exception when type of has_plugin_details
     is not matching with the type defined'''
@@ -204,7 +204,7 @@ def test_exports_assets_has_plugin_results_typeerror(api):
         api.exports.assets(has_plugin_results='something')
 
 
-@pytest.mark.vcr()
+
 def test_exports_assets_success(api):
     '''test to export the assets data of particular source, tag and uuid'''
     assets = api.exports.assets(sources=['source1'],
@@ -213,7 +213,7 @@ def test_exports_assets_success(api):
     assert isinstance(assets, ExportsIterator)
 
 
-@pytest.mark.vcr()
+
 def test_exports_assets(api):
     '''test to export the asset data'''
     assets = api.exports.assets()
@@ -277,28 +277,28 @@ def test_exports_assets(api):
     check(asset, 'updated_at', str)
 
 
-@pytest.mark.vcr()
+
 def test_exports_compliance_num_findings_typeerror(api):
     '''test to raise exception when type of num_findings param does not match the expected type'''
     with pytest.raises(TypeError):
         api.exports.compliance(num_findings='something')
 
 
-@pytest.mark.vcr()
+
 def test_exports_compliance_num_findings_unexpectedvalueerror(api):
     '''test to raise exception when num_findings param value does not match the choices'''
     with pytest.raises(UnexpectedValueError):
         api.exports.compliance(num_findings=1)
 
 
-@pytest.mark.vcr()
+
 def test_exports_compliance_asset_typeerror(api):
     '''test to raise exception when type of asset param does not match the expected type'''
     with pytest.raises(TypeError):
         api.exports.compliance(asset='something')
 
 
-@pytest.mark.vcr()
+
 def test_exports_compliance_asset_unexpectedvalueerror(api):
     '''test to raise exception when any of asset param value
     does not match the expected type'''
@@ -306,28 +306,28 @@ def test_exports_compliance_asset_unexpectedvalueerror(api):
         api.exports.compliance(asset=['something'])
 
 
-@pytest.mark.vcr()
+
 def test_exports_compliance_asset_limit_exceed_unexpectedvalueerror(api):
     '''test to raise exception when count of asset param values exceeds allowed count'''
     with pytest.raises(UnexpectedValueError):
         api.exports.compliance(asset=[str(uuid.uuid4()) for _ in range(202)])
 
 
-@pytest.mark.vcr()
+
 def test_exports_compliance_last_seen_typeerror(api):
     ''''test to raise exception when type of last_seen param does not match the expected type'''
     with pytest.raises(TypeError):
         api.exports.compliance(last_seen='something')
 
 
-@pytest.mark.vcr()
+
 def test_exports_compliance_first_seen_typeerror(api):
     '''test to raise exception when type of first_seen param does not match the expected type'''
     with pytest.raises(TypeError):
         api.exports.compliance(last_seen=1, first_seen='something')
 
 
-@pytest.mark.vcr()
+
 def test_exports_compliance_success(api):
     '''test to export the compliance data'''
     last_seen = int(time.time()) - (12 * 60 * 60)
@@ -337,7 +337,7 @@ def test_exports_compliance_success(api):
     assert isinstance(compliance, ExportsIterator)
 
 
-@pytest.mark.vcr()
+
 def test_exports_compliance(api):
     '''test to export the compliance data'''
     compliance = api.exports.compliance(last_seen=1626168578)

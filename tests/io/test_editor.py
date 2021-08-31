@@ -14,117 +14,117 @@ from tenable.errors import UnexpectedValueError
 ### for the list command.
 ###
 
-@pytest.mark.vcr()
+
 def test_editor_audits_etype_typeerror(api):
     '''test to raise the exception when type of etype is not as defined'''
     with pytest.raises(TypeError):
         api.editor.audits(1, 1, 1)
 
 
-@pytest.mark.vcr()
+
 def test_editor_audits_etype_unexpectedvalue(api):
     '''test to raise the exception when value of etype is not as defined'''
     with pytest.raises(UnexpectedValueError):
         api.editor.audits('nope', 1, 1)
 
 
-@pytest.mark.vcr()
+
 def test_editor_audits_object_id_typeerror(api):
     '''test to raise the exception when type of object_id is not as defined'''
     with pytest.raises(TypeError):
         api.editor.audits('scan', 'nope', 1)
 
 
-@pytest.mark.vcr()
+
 def test_editor_audits_file_id_typeerror(api):
     '''test to raise the exception when type of file_id is not as defined'''
     with pytest.raises(TypeError):
         api.editor.audits('scan', 1, 'nope')
 
 
-@pytest.mark.vcr()
+
 def test_editor_template_details_etype_typeerror(api):
     '''test to raise the exception when type of etype is not as defined'''
     with pytest.raises(TypeError):
         api.editor.template_details(1, 'uuid')
 
 
-@pytest.mark.vcr()
+
 def test_editor_template_details_etype_unexpectedvalue(api):
     '''test to raise the exception when value of etype is not as defined'''
     with pytest.raises(UnexpectedValueError):
         api.editor.template_details('nope', 'uuid')
 
 
-@pytest.mark.vcr()
+
 def test_editor_template_details_id_typeerror(api):
     '''test to raise the exception when type of id is not as defined'''
     with pytest.raises(TypeError):
         api.editor.template_details('scan', 1)
 
 
-@pytest.mark.vcr()
+
 def test_editor_details_etype_typeerror(api):
     '''test to raise the exception when type of etype is not as defined'''
     with pytest.raises(TypeError):
         api.editor.details(1, 'uuid')
 
 
-@pytest.mark.vcr()
+
 def test_editor_details_etype_unexpectedvalue(api):
     '''test to raise the exception when value of etype is not as defined'''
     with pytest.raises(UnexpectedValueError):
         api.editor.details('nope', 'uuid')
 
 
-# @pytest.mark.vcr()
+# 
 # def test_editor_details_id_typeerror(api):
 #    with pytest.raises(TypeError):
 #        api.editor.details('scan', 'nope')
 
-@pytest.mark.vcr()
+
 def test_editor_template_list_etype_typeerror(api):
     '''test to raise the exception when type of etype is not as defined'''
     with pytest.raises(TypeError):
         api.editor.template_list(1)
 
 
-@pytest.mark.vcr()
+
 def test_editor_template_list_etype_unexpectedvalue(api):
     '''test to raise the exception when value of etype is not as defined'''
     with pytest.raises(UnexpectedValueError):
         api.editor.template_list('nope')
 
 
-@pytest.mark.vcr()
+
 def test_editor_template_list(api):
     '''test to get template list'''
     items = api.editor.template_list('scan')
     assert isinstance(items, list)
 
 
-@pytest.mark.vcr()
+
 def test_editor_plugin_desc_policy_id_typeerror(api):
     '''test to raise the exception when type of policy_id is not as defined'''
     with pytest.raises(TypeError):
         api.editor.plugin_description('nope', 1, 1)
 
 
-@pytest.mark.vcr()
+
 def test_editor_plugin_desc_family_id_typeerror(api):
     '''test to raise the exception when type of family_id is not as defined'''
     with pytest.raises(TypeError):
         api.editor.plugin_description(1, 'nope', 1)
 
 
-@pytest.mark.vcr()
+
 def test_editor_plugin_desc_plugin_id_typeerror(api):
     '''test to raise the exception when type of plugin_id is not as defined'''
     with pytest.raises(TypeError):
         api.editor.plugin_description(1, 1, 'nope')
 
 
-@pytest.mark.vcr()
+
 def test_editor_parse_creds(api):
     '''test to parse creds'''
     data = [{'types':
@@ -138,7 +138,7 @@ def test_editor_parse_creds(api):
     api.editor.parse_creds(data)
 
 
-@pytest.mark.vcr()
+
 def test_editor_parse_audits(api):
     '''test to parse audits'''
     data = [{'audits':
@@ -150,7 +150,7 @@ def test_editor_parse_audits(api):
     api.editor.parse_audits(data)
 
 
-@pytest.mark.vcr()
+
 def test_editor_details(api):
     '''
     test the details of the editor for the given scan_id

@@ -12,7 +12,6 @@ from tests.pytenable_log_handler import log_exception
 
 
 @pytest.fixture(name='exclusion')
-@pytest.mark.vcr()
 def fixture_exclusion(request, api):
     '''
     Fixture to create exclusion
@@ -35,7 +34,7 @@ def fixture_exclusion(request, api):
     return excl
 
 
-@pytest.mark.vcr()
+
 def test_exclusions_create_name_typeerror(api):
     '''
     test to raise exception when type of name param does not match the expected type.
@@ -46,7 +45,7 @@ def test_exclusions_create_name_typeerror(api):
                               end_time=datetime.utcnow() + timedelta(hours=1))
 
 
-@pytest.mark.vcr()
+
 def test_exclusions_create_members_typeerror(api):
     '''
     test to raise exception when type of members param does not match the expected type.
@@ -57,7 +56,7 @@ def test_exclusions_create_members_typeerror(api):
                               end_time=datetime.utcnow() + timedelta(hours=1))
 
 
-@pytest.mark.vcr()
+
 def test_exclusions_create_start_time_typeerror(api):
     '''
     test to raise exception when type of start_time param does not match the expected type.
@@ -68,7 +67,7 @@ def test_exclusions_create_start_time_typeerror(api):
                               end_time=datetime.utcnow() + timedelta(hours=1))
 
 
-@pytest.mark.vcr()
+
 def test_exclusions_create_end_time_typeerror(api):
     '''
     test to raise exception when type of end_time param does not match the expected type.
@@ -79,7 +78,7 @@ def test_exclusions_create_end_time_typeerror(api):
                               end_time='later')
 
 
-@pytest.mark.vcr()
+
 def test_exclusions_create_timezone_typeerror(api):
     '''
     test to raise exception when type of timezone param does not match the expected type.
@@ -91,7 +90,7 @@ def test_exclusions_create_timezone_typeerror(api):
                               end_time=datetime.utcnow() + timedelta(hours=1))
 
 
-@pytest.mark.vcr()
+
 def test_exclusions_create_timezone_unexpectedvalue(api):
     '''
     test to raise exception when timezone param value does not match the choices.
@@ -103,7 +102,7 @@ def test_exclusions_create_timezone_unexpectedvalue(api):
                               end_time=datetime.utcnow() + timedelta(hours=1))
 
 
-@pytest.mark.vcr()
+
 def test_exclusions_create_description_typeerror(api):
     '''
     test to raise exception when type of description param does not match the expected type.
@@ -115,7 +114,7 @@ def test_exclusions_create_description_typeerror(api):
                               end_time=datetime.utcnow() + timedelta(hours=1))
 
 
-@pytest.mark.vcr()
+
 def test_exclusions_create_frequency_typeerror(api):
     '''
     test to raise exception when type of frequency param does not match the expected type.
@@ -127,7 +126,7 @@ def test_exclusions_create_frequency_typeerror(api):
                               end_time=datetime.utcnow() + timedelta(hours=1))
 
 
-@pytest.mark.vcr()
+
 def test_exclusions_create_frequency_unexpectedvalue(api):
     '''
     test to raise exception when frequency param value does not match the choices.
@@ -139,7 +138,7 @@ def test_exclusions_create_frequency_unexpectedvalue(api):
                               end_time=datetime.utcnow() + timedelta(hours=1))
 
 
-@pytest.mark.vcr()
+
 def test_exclusions_create_interval_typeerror(api):
     '''
     test to raise exception when type of interval param does not match the expected type.
@@ -151,7 +150,7 @@ def test_exclusions_create_interval_typeerror(api):
                               end_time=datetime.utcnow() + timedelta(hours=1))
 
 
-@pytest.mark.vcr()
+
 def test_exclusions_create_weekdays_typeerror(api):
     '''
     test to raise exception when type of weekdays param does not match the expected type.
@@ -164,7 +163,7 @@ def test_exclusions_create_weekdays_typeerror(api):
                               end_time=datetime.utcnow() + timedelta(hours=1))
 
 
-@pytest.mark.vcr()
+
 def test_exclusions_create_weekdays_unexpectedvalue(api):
     '''
     test to raise exception when weekdays param value does not match the choices.
@@ -177,7 +176,7 @@ def test_exclusions_create_weekdays_unexpectedvalue(api):
                               end_time=datetime.utcnow() + timedelta(hours=1))
 
 
-@pytest.mark.vcr()
+
 def test_exclusions_create_day_of_month_typeerror(api):
     '''
     test to raise exception when type of day_of_month param does not match the expected type.
@@ -190,7 +189,7 @@ def test_exclusions_create_day_of_month_typeerror(api):
                               end_time=datetime.utcnow() + timedelta(hours=1))
 
 
-@pytest.mark.vcr()
+
 def test_exclusions_create_day_of_month_unexpectedvalue(api):
     '''
     test to raise exception when day_of_month param value does not match the choices.
@@ -203,7 +202,7 @@ def test_exclusions_create_day_of_month_unexpectedvalue(api):
                               end_time=datetime.utcnow() + timedelta(hours=1))
 
 
-@pytest.mark.vcr()
+
 def test_exclusions_create_enabled_typeerror(api):
     '''
     test to raise exception when type of enabled param does not match the expected type.
@@ -212,7 +211,7 @@ def test_exclusions_create_enabled_typeerror(api):
         api.exclusions.create(str(uuid.uuid4()), ['127.0.0.1'], enabled='yup')
 
 
-@pytest.mark.vcr()
+
 def test_exclusions_create_standard_user_permissionerror(stdapi):
     '''
     test to raise exception when standard_user tries to create exclusion.
@@ -223,7 +222,7 @@ def test_exclusions_create_standard_user_permissionerror(stdapi):
                                  end_time=datetime.utcnow() + timedelta(hours=1))
 
 
-@pytest.mark.vcr()
+
 def test_exclusions_create_with_selected_network_unexpectedvalueerror(api):
     '''
     test to raise exception when network_id param value does not match the choices.
@@ -235,7 +234,7 @@ def test_exclusions_create_with_selected_network_unexpectedvalueerror(api):
                               network_id='nope')
 
 
-@pytest.mark.vcr()
+
 def test_exclusions_create_with_selected_network_typeerror(api):
     '''
     test to raise exception when type of network_id param does not match the expected type.
@@ -247,7 +246,7 @@ def test_exclusions_create_with_selected_network_typeerror(api):
                               network_id=1)
 
 
-@pytest.mark.vcr()
+
 def test_exclusions_create_with_selected_network_notfounderror(api):
     '''
     test to raise exception when network_id not found.
@@ -259,7 +258,7 @@ def test_exclusions_create_with_selected_network_notfounderror(api):
                               network_id='00000000-0000-0000-0000-100000000001')
 
 
-@pytest.mark.vcr()
+
 def test_exclusions_create_onetime_exclusion(api):
     '''
     test to create exclusion with frequency onetime
@@ -284,7 +283,7 @@ def test_exclusions_create_onetime_exclusion(api):
     api.exclusions.delete(resp['id'])
 
 
-@pytest.mark.vcr()
+
 def test_exclusions_create_daily_exclusion(api):
     '''
     test to create exclusion with frequency daily
@@ -310,7 +309,7 @@ def test_exclusions_create_daily_exclusion(api):
     api.exclusions.delete(resp['id'])
 
 
-@pytest.mark.vcr()
+
 def test_exclusions_create_weekly_exclusion(api):
     '''
     test to create exclusion with frequency weekly
@@ -338,7 +337,7 @@ def test_exclusions_create_weekly_exclusion(api):
     api.exclusions.delete(resp['id'])
 
 
-@pytest.mark.vcr()
+
 def test_exclusions_create_monthly_exclusion(api):
     '''
     test to create exclusion with frequency monthly
@@ -366,7 +365,7 @@ def test_exclusions_create_monthly_exclusion(api):
     api.exclusions.delete(resp['id'])
 
 
-@pytest.mark.vcr()
+
 def test_exclusions_create_yearly_exclusion(api):
     '''
     test to create exclusion with frequency yearly
@@ -392,7 +391,7 @@ def test_exclusions_create_yearly_exclusion(api):
     api.exclusions.delete(resp['id'])
 
 
-@pytest.mark.vcr()
+
 def test_exclusions_create_enabled_false_exclusion(api):
     '''
     test to create exclusion with enabled param as false
@@ -410,7 +409,7 @@ def test_exclusions_create_enabled_false_exclusion(api):
     api.exclusions.delete(resp['id'])
 
 
-@pytest.mark.vcr()
+
 def test_exclusions_create_with_selected_network_exclusion(api, network):
     '''
     test to create exclusion and apply to user defined network_id
@@ -440,7 +439,7 @@ def test_exclusions_create_with_selected_network_exclusion(api, network):
     api.exclusions.delete(resp['id'])
 
 
-@pytest.mark.vcr()
+
 def test_exclusions_create_with_default_network_exclusion(api):
     '''
     test to create exclusion with default network_id
@@ -469,7 +468,7 @@ def test_exclusions_create_with_default_network_exclusion(api):
     api.exclusions.delete(resp['id'])
 
 
-@pytest.mark.vcr()
+
 def test_exclusions_delete_notfounderror(api):
     '''
     test to raise exception when exclusion_id not found.
@@ -478,7 +477,7 @@ def test_exclusions_delete_notfounderror(api):
         api.exclusions.delete(999999)
 
 
-@pytest.mark.vcr()
+
 def test_exclusions_delete_exclusion(api, exclusion):
     '''
     test to delete exclusion
@@ -486,7 +485,7 @@ def test_exclusions_delete_exclusion(api, exclusion):
     api.exclusions.delete(exclusion['id'])
 
 
-@pytest.mark.vcr()
+
 def test_exclusions_delete_standard_user_fail(stdapi, exclusion):
     '''
     test to raise exception when standard user try to delete exclusion.
@@ -495,7 +494,7 @@ def test_exclusions_delete_standard_user_fail(stdapi, exclusion):
         stdapi.exclusions.delete(exclusion['id'])
 
 
-@pytest.mark.vcr()
+
 def test_exclusions_edit_no_exclusion_id_typeerror(api):
     '''
     test to raise exception when exclusion_id is not provided.
@@ -504,7 +503,7 @@ def test_exclusions_edit_no_exclusion_id_typeerror(api):
         api.exclusions.edit()
 
 
-@pytest.mark.vcr()
+
 def test_exclusions_edit_exclusion_id_typeerror(api):
     '''
     test to raise exception when type of exclusion_id param does not match the expected type.
@@ -513,7 +512,7 @@ def test_exclusions_edit_exclusion_id_typeerror(api):
         api.exclusions.edit('nope')
 
 
-@pytest.mark.vcr()
+
 def test_exclusions_edit_members_typeerror(api, exclusion):
     '''
     test to raise exception when type of members param does not match the expected type.
@@ -522,7 +521,7 @@ def test_exclusions_edit_members_typeerror(api, exclusion):
         api.exclusions.edit(exclusion['id'], members='192.168.0.1')
 
 
-@pytest.mark.vcr()
+
 def test_exclusions_edit_name_typeerror(api, exclusion):
     '''
     test to raise exception when type of name param does not match the expected type.
@@ -531,7 +530,7 @@ def test_exclusions_edit_name_typeerror(api, exclusion):
         api.exclusions.edit(exclusion['id'], name=1.02)
 
 
-@pytest.mark.vcr()
+
 def test_exclusions_edit_starttime_typerror(api, exclusion):
     '''
     test to raise exception when type of start time param does not match the expected type.
@@ -540,7 +539,7 @@ def test_exclusions_edit_starttime_typerror(api, exclusion):
         api.exclusions.edit(exclusion['id'], start_time='nope')
 
 
-@pytest.mark.vcr()
+
 def test_exclusions_edit_timezone_typerror(api, exclusion):
     '''
     test to raise exception when type of timezone param does not match the expected type.
@@ -549,7 +548,7 @@ def test_exclusions_edit_timezone_typerror(api, exclusion):
         api.exclusions.edit(exclusion['id'], timezone=1)
 
 
-@pytest.mark.vcr()
+
 def test_exclusions_edit_timezone_unexpectedvalue(api, exclusion):
     '''
     test to raise exception when timezone param value does not match the choices.
@@ -558,7 +557,7 @@ def test_exclusions_edit_timezone_unexpectedvalue(api, exclusion):
         api.exclusions.edit(exclusion['id'], timezone='nope')
 
 
-@pytest.mark.vcr()
+
 def test_exclusions_edit_description_typerror(api, exclusion):
     '''
     test to raise exception when type of description param does not match the expected type.
@@ -567,7 +566,7 @@ def test_exclusions_edit_description_typerror(api, exclusion):
         api.exclusions.edit(exclusion['id'], description=1)
 
 
-@pytest.mark.vcr()
+
 def test_exclusions_edit_frequency_typerror(api, exclusion):
     '''
     test to raise exception when type of frequency param does not match the expected type.
@@ -576,7 +575,7 @@ def test_exclusions_edit_frequency_typerror(api, exclusion):
         api.exclusions.edit(exclusion['id'], frequency=1)
 
 
-@pytest.mark.vcr()
+
 def test_exclusions_edit_frequency_unexpectedvalue(api, exclusion):
     '''
     test to raise exception when frequency param value does not match the choices.
@@ -585,7 +584,7 @@ def test_exclusions_edit_frequency_unexpectedvalue(api, exclusion):
         api.exclusions.edit(exclusion['id'], frequency='nope')
 
 
-@pytest.mark.vcr()
+
 def test_exclusions_edit_interval_typerror(api, exclusion):
     '''
     test to raise exception when type of interval param does not match the expected type.
@@ -594,7 +593,7 @@ def test_exclusions_edit_interval_typerror(api, exclusion):
         api.exclusions.edit(exclusion['id'], interval='nope')
 
 
-@pytest.mark.vcr()
+
 def test_exclusions_edit_weekdays_typerror(api, exclusion):
     '''
     test to raise exception when type of weekdays param does not match the expected type.
@@ -603,7 +602,7 @@ def test_exclusions_edit_weekdays_typerror(api, exclusion):
         api.exclusions.edit(exclusion['id'], frequency='Weekly', weekdays='nope')
 
 
-@pytest.mark.vcr()
+
 def test_exclusions_edit_weekdays_unexpectedvalue(api, exclusion):
     '''
     test to raise exception when weekdays param value does not match the choices.
@@ -612,7 +611,7 @@ def test_exclusions_edit_weekdays_unexpectedvalue(api, exclusion):
         api.exclusions.edit(exclusion['id'], frequency='Weekly', weekdays=['MO', 'WE', 'nope'])
 
 
-@pytest.mark.vcr()
+
 def test_exclusions_edit_dayofmonth_typerror(api, exclusion):
     '''
     test to raise exception when type of day_of_month param does not match the expected type.
@@ -621,7 +620,7 @@ def test_exclusions_edit_dayofmonth_typerror(api, exclusion):
         api.exclusions.edit(exclusion['id'], frequency='monthly', day_of_month='nope')
 
 
-@pytest.mark.vcr()
+
 def test_exclusions_edit_dayofmonth_unexpectedvalue(api, exclusion):
     '''
     test to raise exception when day_of_month param value does not match the choices.
@@ -630,7 +629,7 @@ def test_exclusions_edit_dayofmonth_unexpectedvalue(api, exclusion):
         api.exclusions.edit(exclusion['id'], frequency='monthly', day_of_month=0)
 
 
-@pytest.mark.vcr()
+
 def test_exclusions_edit_standard_user_permission_error(stdapi, exclusion):
     '''
     test to raise exception when standard user try to edit exclusion.
@@ -639,7 +638,7 @@ def test_exclusions_edit_standard_user_permission_error(stdapi, exclusion):
         stdapi.exclusions.edit(exclusion['id'], name=str(uuid.uuid4()))
 
 
-@pytest.mark.vcr()
+
 def test_exclusions_edit_network_select_notfounderror(api, exclusion):
     '''
     test to raise exception when user provided network_id not found.
@@ -648,7 +647,7 @@ def test_exclusions_edit_network_select_notfounderror(api, exclusion):
         api.exclusions.edit(exclusion['id'], network_id='00000000-0000-0000-0000-100000000001')
 
 
-@pytest.mark.vcr()
+
 def test_exclusions_edit_network_select_unexpectedvalueerror(api, exclusion):
     '''
     test to raise exception when network_id param value does not match the choices.
@@ -657,7 +656,7 @@ def test_exclusions_edit_network_select_unexpectedvalueerror(api, exclusion):
         api.exclusions.edit(exclusion['id'], network_id='nope')
 
 
-@pytest.mark.vcr()
+
 def test_exclusions_edit_network_select_typeerror(api, exclusion):
     '''
     test to raise exception when type of network_id param does not match the expected type.
@@ -666,7 +665,7 @@ def test_exclusions_edit_network_select_typeerror(api, exclusion):
         api.exclusions.edit(exclusion['id'], network_id=1)
 
 
-@pytest.mark.vcr()
+
 def test_exclusions_edit_success(api, exclusion):
     '''
     test to edit exclusion name
@@ -688,7 +687,7 @@ def test_exclusions_edit_success(api, exclusion):
     check(resp['schedule'], 'timezone', str)
 
 
-@pytest.mark.vcr()
+
 def test_exclusions_edit_network_success(api, exclusion, network):
     '''
     test to edit exclusion network
@@ -712,7 +711,7 @@ def test_exclusions_edit_network_success(api, exclusion, network):
     assert resp['network_id'] == network['uuid']
 
 
-@pytest.mark.vcr()
+
 def test_exclusions_edit_freq_onetime_to_daily(api, exclusion):
     '''
     test to edit exclusion frequency from onetime to daily
@@ -737,7 +736,7 @@ def test_exclusions_edit_freq_onetime_to_daily(api, exclusion):
     assert resp['schedule']['rrules']['interval'] == 2
 
 
-@pytest.mark.vcr()
+
 def test_exclusions_edit_freq_onetime_to_weekly_valdefault(api, exclusion):
     '''
     test to edit exclusion frequency from onetime to weekly
@@ -764,7 +763,7 @@ def test_exclusions_edit_freq_onetime_to_weekly_valdefault(api, exclusion):
     assert resp['schedule']['rrules']['byweekday'] == 'SU,MO,TU,WE,TH,FR,SA'
 
 
-@pytest.mark.vcr()
+
 def test_exclusions_edit_freq_onetime_to_weekly_valassigned(api, exclusion):
     '''
     test to edit exclusion frequency from onetime to weekly
@@ -791,7 +790,7 @@ def test_exclusions_edit_freq_onetime_to_weekly_valassigned(api, exclusion):
     assert resp['schedule']['rrules']['byweekday'] == 'TH,FR'
 
 
-@pytest.mark.vcr()
+
 def test_exclusions_edit_freq_onetime_to_weekly_valavailable(api):
     '''
     test to edit weekly exclusion and assign existing weekdays values to weekdays param
@@ -821,7 +820,7 @@ def test_exclusions_edit_freq_onetime_to_weekly_valavailable(api):
     api.exclusions.delete(resp['id'])
 
 
-@pytest.mark.vcr()
+
 def test_exclusions_edit_enable_false_to_weekly_valdefault(api):
     '''
     test to enable exclusion and assign frequency as weekly and weekdays as default
@@ -849,7 +848,7 @@ def test_exclusions_edit_enable_false_to_weekly_valdefault(api):
     api.exclusions.delete(resp['id'])
 
 
-@pytest.mark.vcr()
+
 def test_exclusions_edit_enable_false_to_weekly_valassigned(api):
     '''
     test to enable exclusion and assign frequency as weekly and weekdays as defined
@@ -879,7 +878,7 @@ def test_exclusions_edit_enable_false_to_weekly_valassigned(api):
     api.exclusions.delete(resp['id'])
 
 
-@pytest.mark.vcr()
+
 def test_exclusions_edit_freq_onetime_to_monthly_valddefault(api, exclusion):
     '''
     test to edit exclusion frequency from onetime to monthly
@@ -905,7 +904,7 @@ def test_exclusions_edit_freq_onetime_to_monthly_valddefault(api, exclusion):
     assert resp['schedule']['rrules']['interval'] == 2
 
 
-@pytest.mark.vcr()
+
 def test_exclusions_edit_freq_onetime_to_monthly_valassigned(api, exclusion):
     '''
     test to edit exclusion frequency from onetime to monthly
@@ -932,7 +931,7 @@ def test_exclusions_edit_freq_onetime_to_monthly_valassigned(api, exclusion):
     assert resp['schedule']['rrules']['bymonthday'] == 8
 
 
-@pytest.mark.vcr()
+
 def test_exclusions_edit_freq_onetime_to_monthly_valavailable(api):
     '''
     test to edit exclusion and assign existing day_of_month value to day_of_month param
@@ -961,7 +960,7 @@ def test_exclusions_edit_freq_onetime_to_monthly_valavailable(api):
     api.exclusions.delete(resp['id'])
 
 
-@pytest.mark.vcr()
+
 def test_exclusions_edit_enable_false_to_monthly_valdefault(api):
     '''
     test to enable exclusion and assign frequency as monthly and day_of_month as default
@@ -988,7 +987,7 @@ def test_exclusions_edit_enable_false_to_monthly_valdefault(api):
     api.exclusions.delete(resp['id'])
 
 
-@pytest.mark.vcr()
+
 def test_exclusions_edit_enable_false_to_monthly_valassigned(api):
     '''
     test to enable exclusion and assign frequency as monthly and day_of_month as defined
@@ -1018,7 +1017,7 @@ def test_exclusions_edit_enable_false_to_monthly_valassigned(api):
     api.exclusions.delete(resp['id'])
 
 
-@pytest.mark.vcr()
+
 def test_exclusions_edit_freq_onetime_to_yearly(api, exclusion):
     '''
     test to edit exclusion frequency from onetime to yearly
@@ -1043,7 +1042,7 @@ def test_exclusions_edit_freq_onetime_to_yearly(api, exclusion):
     assert resp['schedule']['rrules']['interval'] == 2
 
 
-@pytest.mark.vcr()
+
 def test_exclusions_edit_enable_true_exclusion(api):
     '''
     test to enable exclusion
@@ -1068,7 +1067,7 @@ def test_exclusions_edit_enable_true_exclusion(api):
     api.exclusions.delete(resp['id'])
 
 
-@pytest.mark.vcr()
+
 def test_exclusions_edit_interval_exclusion_valdefault(api):
     '''
     test to enable exclusion and assign default interval value
@@ -1094,7 +1093,7 @@ def test_exclusions_edit_interval_exclusion_valdefault(api):
     api.exclusions.delete(resp['id'])
 
 
-@pytest.mark.vcr()
+
 def test_exclusions_edit_interval_exclusion_valassigned(api):
     '''
     test to enable exclusion and assign defined interval value
@@ -1120,7 +1119,7 @@ def test_exclusions_edit_interval_exclusion_valassigned(api):
     api.exclusions.delete(resp['id'])
 
 
-@pytest.mark.vcr()
+
 def test_exclusions_edit_interval_exclusion_valavailable(api):
     '''
     test to edit exclusion and assign existing interval value
@@ -1147,7 +1146,7 @@ def test_exclusions_edit_interval_exclusion_valavailable(api):
     api.exclusions.delete(resp['id'])
 
 
-@pytest.mark.vcr()
+
 def test_exclusions_edit_enabled_false_exclusion(api):
     '''
     test to edit enabled false exclusion
@@ -1165,7 +1164,7 @@ def test_exclusions_edit_enabled_false_exclusion(api):
     api.exclusions.delete(resp['id'])
 
 
-@pytest.mark.vcr()
+
 def test_exclusions_list(api):
     '''
     test to list exclusions
@@ -1189,7 +1188,7 @@ def test_exclusions_list(api):
             check(exclusion['schedule'], 'timezone', str)
 
 
-@pytest.mark.vcr()
+
 def test_exclusion_import_exclusion(api):
     '''
     test to import exclusion from file

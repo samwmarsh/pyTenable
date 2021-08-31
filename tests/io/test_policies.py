@@ -7,7 +7,7 @@ from tenable.errors import NotFoundError
 from ..checker import check
 
 
-@pytest.mark.vcr()
+
 def test_configure_id_typeerror(api):
     '''
     test to raise the exception when type of id is not as defined
@@ -16,7 +16,7 @@ def test_configure_id_typeerror(api):
         api.policies.configure('nope', dict())
 
 
-@pytest.mark.vcr()
+
 def test_configure_policy_typeerror(api):
     '''
     test to raise the exception when type of policy is not as defined
@@ -25,7 +25,7 @@ def test_configure_policy_typeerror(api):
         api.policies.configure(1, 'nope')
 
 
-@pytest.mark.vcr()
+
 def test_configure_policy_notfounderror(api):
     '''
     test to raise the exception when a policy to be configured is not found
@@ -34,7 +34,7 @@ def test_configure_policy_notfounderror(api):
         api.policies.configure(1, dict())
 
 
-@pytest.mark.vcr()
+
 def test_configure_policy(api, policy):
     '''
     test to configure the policy
@@ -46,7 +46,7 @@ def test_configure_policy(api, policy):
     assert updated['settings']['name'] == 'MODIFIED'
 
 
-@pytest.mark.vcr()
+
 def test_copy_policy_id_typeerror(api):
     '''
     test to raise the exception when type of policy_id is not as defined
@@ -55,7 +55,7 @@ def test_copy_policy_id_typeerror(api):
         api.policies.copy('nope')
 
 
-@pytest.mark.vcr()
+
 def test_copy_policy_notfounderror(api):
     '''
     test to raise the exception when the policy to be copied is not found
@@ -64,7 +64,7 @@ def test_copy_policy_notfounderror(api):
         api.policies.copy(1)
 
 
-@pytest.mark.vcr()
+
 def test_copy_policy(api, policy):
     '''
     test to copy the policy
@@ -77,7 +77,7 @@ def test_copy_policy(api, policy):
     api.policies.delete(new['id'])
 
 
-@pytest.mark.vcr()
+
 def test_create_policy(api, policy):
     '''test to check types of a policy'''
     assert isinstance(policy, dict)
@@ -85,7 +85,7 @@ def test_create_policy(api, policy):
     check(policy, 'policy_name', str)
 
 
-@pytest.mark.vcr()
+
 def test_delete_policy_id_typeerror(api):
     '''
     test to raise the exception when type of policy_id is not as defined
@@ -94,7 +94,7 @@ def test_delete_policy_id_typeerror(api):
         api.policies.delete('nope')
 
 
-@pytest.mark.vcr()
+
 def test_delete_policy_notfounderror(api):
     '''
     test to raise the exception when policy to be deleted is not found
@@ -103,7 +103,7 @@ def test_delete_policy_notfounderror(api):
         api.policies.delete(1)
 
 
-@pytest.mark.vcr()
+
 def test_delete_policy(api, policy):
     '''
     test to delete the policy
@@ -111,7 +111,7 @@ def test_delete_policy(api, policy):
     api.policies.delete(policy['policy_id'])
 
 
-@pytest.mark.vcr()
+
 def test_policy_details_id_typeerror(api):
     '''
     test to raise the exception when the type of id is
@@ -121,7 +121,7 @@ def test_policy_details_id_typeerror(api):
         api.policies.details('nope')
 
 
-@pytest.mark.vcr()
+
 def test_policy_details_notfounderror(api):
     '''
     test to raise the exception when the details of the policy is not found
@@ -130,7 +130,7 @@ def test_policy_details_notfounderror(api):
         api.policies.details(1)
 
 
-@pytest.mark.vcr()
+
 def test_policy_details(api, policy):
     '''
     test to get the policy details
@@ -141,7 +141,7 @@ def test_policy_details(api, policy):
     check(policy, 'settings', dict)
 
 
-@pytest.mark.vcr()
+
 def test_policy_export_id_typeerror(api):
     '''
     test to raise the exception when type of export id is not as defined
@@ -150,7 +150,7 @@ def test_policy_export_id_typeerror(api):
         api.policies.policy_export('nope')
 
 
-@pytest.mark.vcr()
+
 def test_policy_export_notfounderror(api):
     '''
     test to raise the exception when the policy to be exported is not found
@@ -159,7 +159,7 @@ def test_policy_export_notfounderror(api):
         api.policies.policy_export(1)
 
 
-@pytest.mark.vcr()
+
 def test_policy_export(api, policy):
     '''
     test to export the policy data
@@ -168,7 +168,7 @@ def test_policy_export(api, policy):
     assert isinstance(pobj, io.BytesIO)
 
 
-@pytest.mark.vcr()
+
 def test_policy_import(api, policy):
     '''
     test to import the policy
@@ -189,7 +189,7 @@ def test_policy_import(api, policy):
     check(resp, 'user_permissions', int)
 
 
-@pytest.mark.vcr()
+
 def test_policy_list(api, policy):
     '''
     test to get the policy list
@@ -211,7 +211,7 @@ def test_policy_list(api, policy):
         check(pol, 'visibility', str)
 
 
-@pytest.mark.vcr()
+
 def test_policy_template_details_success(api):
     '''
     test to get the template details
@@ -224,7 +224,7 @@ def test_policy_template_details_success(api):
     check(template_detail, 'uuid', 'scanner-uuid')
 
 
-@pytest.mark.vcr()
+
 def test_policy_template_details_keyerror(api):
     '''
     test to raise the exception when key of template details is not as defined
@@ -233,7 +233,7 @@ def test_policy_template_details_keyerror(api):
         api.policies.template_details('one')
 
 
-@pytest.mark.vcr()
+
 def test_policy_template_details_typeerror(api):
     '''
     test to raise the exception when type of details is not as defined
@@ -242,7 +242,7 @@ def test_policy_template_details_typeerror(api):
         api.policies.template_details(1)
 
 
-@pytest.mark.vcr()
+
 def test_policies_template_details_new_success(api):
     '''
     test to get template details

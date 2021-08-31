@@ -5,7 +5,7 @@ import os
 import pytest
 
 
-@pytest.mark.vcr()
+
 def test_files_upload(api):
     """
     test to uploads the file object
@@ -13,7 +13,7 @@ def test_files_upload(api):
     api.files.upload('ExampleDataGoesHere')
 
 
-@pytest.mark.vcr()
+
 def test_files_encryption_success(api, datafiles):
     """
     test to upload the file with encryption
