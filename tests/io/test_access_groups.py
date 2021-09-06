@@ -19,7 +19,7 @@ def fixture_agroup(request, api, rules):
     '''
     Fixture to create access_group
     '''
-    group = api.access_groups.create('Example', rules)
+    group = api.access_groups.create(str(uuid.uuid4()), rules)
     def teardown():
         '''
         cleanup function to delete access_group
@@ -208,7 +208,7 @@ def test_access_group_edit_success(api, agroup):
     '''
     test to edit access group
     '''
-    group = api.access_groups.edit(agroup['id'], name='Updated')
+    group = api.access_groups.edit(agroup['id'], name=str(uuid.uuid4()))
     assert isinstance(group, dict)
     check(group, 'created_at', 'datetime')
     check(group, 'updated_at', 'datetime')
