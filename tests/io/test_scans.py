@@ -1617,8 +1617,22 @@ def test_scan_import_scan(api):
     scan_list = [id['id'] for id in list(
         filter(lambda value: value['status'] == 'completed', api.scans.list()))]
     if scan_list:
-        fobj = api.scans.export(scan_list[0])
-        api.scans.import_scan(fobj)
+        fname = str(uuid.uuid4())
+        filename = os.path.join(os.path.dirname(os.path.realpath(__file__)),
+                                '..', 'test_files', f'{fname}.nessus')
+
+        # export last completed scan to file
+        with open(filename, 'wb') as reportobj:
+            api.scans.export(scan_list[0], fobj=reportobj)
+
+        try:
+            with open(filename, 'rb') as fobj:
+                api.scans.import_scan(fobj)
+        except InvalidInputError:
+            raise
+        finally:
+            # remove created file
+            os.remove(filename)
 
 # 
 # def test_scan_launch_scanid_typeerror(api):

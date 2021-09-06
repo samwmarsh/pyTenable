@@ -181,8 +181,9 @@ def scan_results(api):
 
 @pytest.fixture
 def target_file(request, api):
+    filename = str(uuid.uuid4())+'.txt'
     lines = ['scan create document with fileUpload ', 'only file name in file target']
-    with open('file.txt', 'w') as targetFile:
+    with open(filename, 'w') as targetFile:
         for line in lines:
             targetFile.write(line)
             targetFile.write('\n')
