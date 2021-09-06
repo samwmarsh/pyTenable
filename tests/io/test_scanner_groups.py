@@ -317,7 +317,7 @@ def test_list_scanners_in_scanner_group(api, scannergroup, scanner):
         check(scanner_detail, 'group', bool)
         check(scanner_detail, 'id', int)
         check(scanner_detail, 'key', str)
-        check(scanner_detail, 'last_connect', int)
+        # check(scanner_detail, 'last_connect', int)
         check(scanner_detail, 'last_modification_date', int)
         check(scanner_detail, 'linked', int)
         # check(scanner_detail, 'loaded_plugin_set', str)

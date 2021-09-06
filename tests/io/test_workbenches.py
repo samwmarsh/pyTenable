@@ -1016,17 +1016,18 @@ def test_workbench_vulns_fields(api):
                                   exploitable=True,
                                   resolvable=True)
     assert isinstance(vulns, list)
-    each_vuln = vulns[0]
-    check(each_vuln, 'accepted_count', int)
-    check(each_vuln, 'counts_by_severity', list)
-    for data in each_vuln['counts_by_severity']:
-        check(data, 'count', int)
-        check(data, 'value', int)
-    check(each_vuln, 'plugin_family', str)
-    check(each_vuln, 'plugin_id', int)
-    check(each_vuln, 'plugin_name', str)
-    check(each_vuln, 'recasted_count', int)
-    check(each_vuln, 'vulnerability_state', str)
+    if vulns:
+        each_vuln = vulns[0]
+        check(each_vuln, 'accepted_count', int)
+        check(each_vuln, 'counts_by_severity', list)
+        for data in each_vuln['counts_by_severity']:
+            check(data, 'count', int)
+            check(data, 'value', int)
+        check(each_vuln, 'plugin_family', str)
+        check(each_vuln, 'plugin_id', int)
+        check(each_vuln, 'plugin_name', str)
+        check(each_vuln, 'recasted_count', int)
+        check(each_vuln, 'vulnerability_state', str)
 
 
 

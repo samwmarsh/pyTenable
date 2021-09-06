@@ -796,7 +796,8 @@ def test_tags_edit_category_success(api, tagcat):
     '''
     test to edit tag category information.
     '''
-    resp = api.tags.edit_category(tagcat['uuid'], name='Edited')
+    name = str(uuid.uuid4())
+    resp = api.tags.edit_category(tagcat['uuid'], name=name)
     assert isinstance(resp, dict)
     check(resp, 'uuid', 'uuid')
     check(resp, 'created_at', 'datetime')
@@ -806,7 +807,7 @@ def test_tags_edit_category_success(api, tagcat):
     check(resp, 'name', str)
     # check(t, 'description', str, allow_none=True)
     check(resp, 'reserved', bool)
-    assert resp['name'] == 'Edited'
+    assert resp['name'] == name
 
 
 def test_tags_list_constructor_filter_type_typeerror(api):

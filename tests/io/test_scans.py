@@ -1277,7 +1277,6 @@ def test_scan_results(api):
         check(info, 'scan_type', str, allow_none=True)
         check(info, 'name', str)
 
-        check(result, 'comphosts', list)
         if 'comphosts' in result and len(result['comphosts']) > 0:
             for comphosts in result['comphosts']:
                 check(comphosts, 'totalchecksconsidered', int)
@@ -1296,7 +1295,6 @@ def test_scan_results(api):
                 check(comphosts, 'host_id', int)
                 check(comphosts, 'hostname', str)
 
-        check(result, 'hosts', list)
         if 'hosts' in result and len(result['hosts']) > 0:
             for hosts in result['hosts']:
                 check(hosts, 'totalchecksconsidered', int)
@@ -1315,7 +1313,6 @@ def test_scan_results(api):
                 check(hosts, 'host_id', int)
                 check(hosts, 'hostname', str)
 
-        check(result, 'notes', list)
         if len(result['notes']) > 0:
             for notes in result['notes']:
                 check(notes, 'title', str)
@@ -1336,7 +1333,6 @@ def test_scan_results(api):
                 check(remediation, 'hosts', int)
                 check(remediation, 'vulns', int)
 
-        check(result, 'vulnerabilities', list)
         if 'vulnerabilities' in result and len(result['vulnerabilities']) > 0:
             for vulnerability in result['vulnerabilities']:
                 check(vulnerability, 'count', int)
@@ -1348,7 +1344,6 @@ def test_scan_results(api):
                 # check(vulnerability, 'severity_index', int)
                 check(vulnerability, 'plugin_family', str)
 
-        check(result, 'history', list)
         for history in result['history']:
             check(history, 'alt_targets_used', bool)
             check(history, 'scheduler', int)
@@ -1361,7 +1356,6 @@ def test_scan_results(api):
             check(history, 'history_id', int)
             check(history, 'is_archived', bool)
 
-        check(result, 'compliance', list)
         if 'compliance' in result and len(result['compliance']) > 0:
             for compliance in result['compliance']:
                 check(compliance, 'count', int)
