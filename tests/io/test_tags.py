@@ -697,7 +697,7 @@ def test_tags_edit_success(api, tagvalue):
     '''
     test to edit tag category/value pair information.
     '''
-    resp = api.tags.edit(tagvalue['uuid'], value='Edited')
+    resp = api.tags.edit(tagvalue['uuid'], value=str(uuid.uuid4()))
     assert isinstance(resp, dict)
     check(resp, 'uuid', 'uuid')
     check(resp, 'created_at', 'datetime')

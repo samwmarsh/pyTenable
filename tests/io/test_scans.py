@@ -1834,10 +1834,10 @@ def test_scan_read_status(api, scan):
     '''
     scans = api.scans.list()
     scan = scans[0]
-    api.scans.set_read_status(scans[0]['id'], not scans[0]['read'])
+    api.scans.set_read_status(scans[0]['id'], False)
     for resp in api.scans.list():
         if resp['id'] == scan['id']:
-            assert scan['read'] != resp['read']
+            assert resp['read'] is False
 
 # 
 # def test_scan_resume_scan_id_typeerror(api):

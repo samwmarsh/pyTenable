@@ -169,11 +169,16 @@ def test_workbench_asset_activity(api):
                     check(data, 'details', dict)
                     check(data['details'], 'assetId', 'uuid')
                     check(data['details'], 'createdAt', 'datetime')
-                    check(data['details'], 'firstScanTime', 'datetime')
-                    check(data['details'], 'hasAgent', bool)
-                    check(data['details'], 'lastLicensedScanTime', 'datetime')
-                    check(data['details'], 'lastLicensedScanTimeV2', 'datetime')
-                    check(data['details'], 'lastScanTime', 'datetime')
+                    resp_keys = {
+                        'firstScanTime': 'datetime',
+                        'hasAgent': bool,
+                        'lastLicensedScanTime': 'datetime',
+                        'lastLicensedScanTimeV2': 'datetime',
+                        'lastScanTime': 'datetime'
+                    }
+                    for k, v in resp_keys.items():
+                        if k in data['details']:
+                            check(data['details'], k, v)
                     check(data['details'], 'properties', dict)
                     for keys in data['details']['properties'].keys():
                         check(data['details']['properties'][keys], 'values', list)
