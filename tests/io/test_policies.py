@@ -2,6 +2,7 @@
 test policies
 '''
 import io
+import os
 import uuid
 
 import pytest
@@ -176,20 +177,32 @@ def test_policy_import(api, policy):
     '''
     test to import the policy
     '''
-    pobj = api.policies.policy_export(policy['policy_id'])
-    resp = api.policies.policy_import(pobj)
-    assert isinstance(resp, dict)
-    check(resp, 'creation_date', int)
-    check(resp, 'description', str, allow_none=True)
-    check(resp, 'id', int)
-    check(resp, 'last_modification_date', int)
-    check(resp, 'name', str)
-    check(resp, 'no_target', str)
-    check(resp, 'owner', str)
-    check(resp, 'owner_id', int)
-    check(resp, 'shared', int)
-    check(resp, 'template_uuid', 'scanner-uuid')
-    check(resp, 'user_permissions', int)
+    filename = os.path.join(os.path.dirname(os.path.realpath(__file__)),
+        '..', 'test_files', 'policy-' + str(uuid.uuid4()) + '.nessus')
+
+    with open(filename, 'wb') as pobj:
+        api.policies.policy_export(policy['policy_id'], fobj=pobj)
+
+    try:
+        with open(filename, 'rb') as fobj:
+            resp = api.scans.policy_import(fobj)
+            assert isinstance(resp, dict)
+            check(resp, 'creation_date', int)
+            check(resp, 'description', str, allow_none=True)
+            check(resp, 'id', int)
+            check(resp, 'last_modification_date', int)
+            check(resp, 'name', str)
+            check(resp, 'no_target', str)
+            check(resp, 'owner', str)
+            check(resp, 'owner_id', int)
+            check(resp, 'shared', int)
+            check(resp, 'template_uuid', 'scanner-uuid')
+            check(resp, 'user_permissions', int)
+    except:
+        raise
+    finally:
+        os.remove(filename)
+
 
 
 

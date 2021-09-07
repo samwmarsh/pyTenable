@@ -2,6 +2,7 @@
 test for uploading the file and file with encryption
 """
 import os
+import uuid
 import pytest
 
 
@@ -10,7 +11,7 @@ def test_files_upload(api):
     """
     test to uploads the file object
     """
-    api.files.upload('ExampleDataGoesHere')
+    api.files.upload(str(uuid.uuid4()))
 
 
 

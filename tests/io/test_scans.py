@@ -1628,7 +1628,7 @@ def test_scan_import_scan(api):
         try:
             with open(filename, 'rb') as fobj:
                 api.scans.import_scan(fobj)
-        except InvalidInputError:
+        except:
             raise
         finally:
             # remove created file

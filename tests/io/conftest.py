@@ -188,7 +188,9 @@ def target_file(request, api):
             targetFile.write(line)
             targetFile.write('\n')
     targetFile.close()
-    api.files.upload(targetFile.name)
+
+    with open(filename, 'r') as tfile:
+        api.files.upload(tfile.name)
 
     def teardown():
         os.remove(targetFile.name)
