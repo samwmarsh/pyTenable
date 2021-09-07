@@ -196,4 +196,4 @@ def target_file(request, api):
         os.remove(targetFile.name)
 
     request.addfinalizer(teardown)
-    return targetFile
+    return tfile

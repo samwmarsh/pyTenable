@@ -185,7 +185,7 @@ def test_policy_import(api, policy):
 
     try:
         with open(filename, 'rb') as fobj:
-            resp = api.scans.policy_import(fobj)
+            resp = api.policies.policy_import(fobj)
             assert isinstance(resp, dict)
             check(resp, 'creation_date', int)
             check(resp, 'description', str, allow_none=True)
