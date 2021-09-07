@@ -8,7 +8,7 @@ from io import BytesIO
 from sys import stdout
 import pytest
 from tenable.reports.nessusv2 import NessusReportv2
-from tenable.errors import UnexpectedValueError, NotFoundError, InvalidInputError
+from tenable.errors import UnexpectedValueError, NotFoundError, InvalidInputError, UnsupportedError
 from tests.checker import check, single
 from tests.io.conftest import SCAN_ID_WITH_RESULTS
 from tests.pytenable_log_handler import log_exception
@@ -32,6 +32,9 @@ def fixture_scheduled_scan(request, api):
         cleanup function to delete scan
         '''
         try:
+            api.scans.delete(scan['id'])
+        except UnsupportedError as e:
+            api.scans.schedule(scan['id'], False)
             api.scans.delete(scan['id'])
         except NotFoundError as err:
             log_exception(err)
@@ -637,7 +640,6 @@ def test_scan_configure_schedule_onetime_to_monthly_valdefault(api, scheduled_sc
     assert mod['id'] == scheduled_scan['id']
     assert mod['enabled'] is True
     assert mod['rrules'].split(';')[0] == 'FREQ=MONTHLY'
-    api.scans.delete(mod['id'])
 
 
 

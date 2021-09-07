@@ -58,7 +58,7 @@ def fixture_tagcat(request, api):
     '''
     Fixture to create tag category
     '''
-    tag = api.tags.create_category('Example category')
+    tag = api.tags.create_category(str(uuid.uuid4()))
 
     def teardown():
         '''
