@@ -1707,7 +1707,7 @@ def test_scan_list(api):
     check(scan, 'permissions', int)
     check(scan, 'read', bool)
     check(scan, 'rrules', str, allow_none=True)
-    check(scan, 'schedule_uuid', 'scanner-uuid')
+    check(scan, 'schedule_uuid', str, allow_none=True)
     check(scan, 'shared', bool)
     check(scan, 'starttime', str, allow_none=True)
     check(scan, 'status', str)

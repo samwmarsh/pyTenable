@@ -697,7 +697,8 @@ def test_tags_edit_success(api, tagvalue):
     '''
     test to edit tag category/value pair information.
     '''
-    resp = api.tags.edit(tagvalue['uuid'], value=str(uuid.uuid4()))
+    value = str(uuid.uuid4())
+    resp = api.tags.edit(tagvalue['uuid'], value=value)
     assert isinstance(resp, dict)
     check(resp, 'uuid', 'uuid')
     check(resp, 'created_at', 'datetime')
@@ -716,7 +717,7 @@ def test_tags_edit_success(api, tagvalue):
     check(resp['access_control'], 'current_user_permissions', list)
     check(resp['access_control'], 'defined_domain_permissions', list)
     # check(tagvalue, 'filters', dict, allow_none=True)
-    assert resp['value'] == 'Edited'
+    assert resp['value'] == value
 
 
 
