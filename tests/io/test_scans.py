@@ -1557,38 +1557,39 @@ def test_scan_host_details(api, scan_results):
     test to retrieve the host details from a specific scan
     '''
     try:
-        host = api.scans.host_details(
-            scan_results['id'], scan_results['results']['hosts'][0]['asset_id'])
-        assert isinstance(host, dict)
-        check(host, 'info', dict)
-        check(host['info'], 'host-fqdn', str, allow_none=True)
-        check(host['info'], 'host_end', str)
-        check(host['info'], 'host_start', str)
-        check(host['info'], 'operating-system', list, allow_none=True)
-        check(host['info'], 'host-ip', str)
-        check(host['info'], 'mac-address', str, allow_none=True)
+        hosts = api.scans.host_details(scan_results['id'], scan_results['results']['hosts'])
+        if hosts:
+            host = hosts[0]['asset_id']
+            assert isinstance(host, dict)
+            check(host, 'info', dict)
+            check(host['info'], 'host-fqdn', str, allow_none=True)
+            check(host['info'], 'host_end', str)
+            check(host['info'], 'host_start', str)
+            check(host['info'], 'operating-system', list, allow_none=True)
+            check(host['info'], 'host-ip', str)
+            check(host['info'], 'mac-address', str, allow_none=True)
 
-        check(host, 'vulnerabilities', list)
-        for vulnerability in host['vulnerabilities']:
-            check(vulnerability, 'count', int)
-            check(vulnerability, 'severity', int)
-            check(vulnerability, 'plugin_family', str)
-            check(vulnerability, 'hostname', str)
-            check(vulnerability, 'plugin_name', str)
-            check(vulnerability, 'severity_index', int)
-            check(vulnerability, 'vuln_index', int)
-            check(vulnerability, 'host_id', int)
-            check(vulnerability, 'plugin_id', int)
+            check(host, 'vulnerabilities', list)
+            for vulnerability in host['vulnerabilities']:
+                check(vulnerability, 'count', int)
+                check(vulnerability, 'severity', int)
+                check(vulnerability, 'plugin_family', str)
+                check(vulnerability, 'hostname', str)
+                check(vulnerability, 'plugin_name', str)
+                check(vulnerability, 'severity_index', int)
+                check(vulnerability, 'vuln_index', int)
+                check(vulnerability, 'host_id', int)
+                check(vulnerability, 'plugin_id', int)
 
-        check(host, 'compliance', list)
-        for compliance in host['compliance']:
-            check(compliance, 'count', int)
-            check(compliance, 'plugin_name', str)
-            check(compliance, 'vuln_index', int)
-            check(compliance, 'severity', int)
-            check(compliance, 'plugin_id', int)
-            check(compliance, 'severity_index', int)
-            check(compliance, 'plugin_family', str)
+            check(host, 'compliance', list)
+            for compliance in host['compliance']:
+                check(compliance, 'count', int)
+                check(compliance, 'plugin_name', str)
+                check(compliance, 'vuln_index', int)
+                check(compliance, 'severity', int)
+                check(compliance, 'plugin_id', int)
+                check(compliance, 'severity_index', int)
+                check(compliance, 'plugin_family', str)
     except KeyError as key:
         log_exception(key)
         print('Key error: ', key)
@@ -1767,48 +1768,50 @@ def test_scan_plugin_output(api, scan_results):
     test to get scan plugin output
     '''
     try:
-        host = api.scans.host_details(
+        hosts = api.scans.host_details(
             scan_results['id'], scan_results['results']['hosts'][0]['asset_id'])
-        output = api.scans.plugin_output(
-            scan_results['id'],
-            host['vulnerabilities'][0]['host_id'],
-            host['vulnerabilities'][0]['plugin_id'])
-        output_info_pdesc = output['info']['plugindescription']
-        output_info_pdesc_patt = output_info_pdesc['pluginattributes']
-        output_info_pdesc_patt_pinfo = output_info_pdesc['pluginattributes']['plugin_information']
-        assert isinstance(output, dict)
-        check(output, 'info', dict)
-        check(output['info'], 'plugindescription', dict)
-        check(output_info_pdesc, 'pluginattributes', dict)
-        check(output_info_pdesc, 'pluginfamily', str)
-        check(output_info_pdesc, 'pluginid', str)
-        check(output_info_pdesc, 'pluginname', str)
-        check(output_info_pdesc, 'severity', int)
-        check(output_info_pdesc_patt, 'description', str)
-        check(output_info_pdesc_patt, 'has_patch', bool)
-        check(output_info_pdesc_patt, 'plugin_information', dict)
-        check(output_info_pdesc_patt_pinfo, 'plugin_family', str)
-        check(output_info_pdesc_patt_pinfo, 'plugin_id', int)
-        check(output_info_pdesc_patt_pinfo, 'plugin_modification_date', str)
-        check(output_info_pdesc_patt_pinfo, 'plugin_publication_date', str)
-        check(output_info_pdesc_patt_pinfo, 'plugin_type', str)
-        check(output_info_pdesc_patt_pinfo, 'plugin_version', str)
-        check(output_info_pdesc_patt, 'risk_information', dict)
-        check(output_info_pdesc_patt['risk_information'], 'risk_factor', str)
-        check(output_info_pdesc_patt, 'solution', str, allow_none=True)
-        check(output_info_pdesc_patt, 'synopsis', str, allow_none=True)
+        if hosts:
+            host = hosts[0]['asset_id']
+            output = api.scans.plugin_output(
+                scan_results['id'],
+                host['vulnerabilities'][0]['host_id'],
+                host['vulnerabilities'][0]['plugin_id'])
+            output_info_pdesc = output['info']['plugindescription']
+            output_info_pdesc_patt = output_info_pdesc['pluginattributes']
+            output_info_pdesc_patt_pinfo = output_info_pdesc['pluginattributes']['plugin_information']
+            assert isinstance(output, dict)
+            check(output, 'info', dict)
+            check(output['info'], 'plugindescription', dict)
+            check(output_info_pdesc, 'pluginattributes', dict)
+            check(output_info_pdesc, 'pluginfamily', str)
+            check(output_info_pdesc, 'pluginid', str)
+            check(output_info_pdesc, 'pluginname', str)
+            check(output_info_pdesc, 'severity', int)
+            check(output_info_pdesc_patt, 'description', str)
+            check(output_info_pdesc_patt, 'has_patch', bool)
+            check(output_info_pdesc_patt, 'plugin_information', dict)
+            check(output_info_pdesc_patt_pinfo, 'plugin_family', str)
+            check(output_info_pdesc_patt_pinfo, 'plugin_id', int)
+            check(output_info_pdesc_patt_pinfo, 'plugin_modification_date', str)
+            check(output_info_pdesc_patt_pinfo, 'plugin_publication_date', str)
+            check(output_info_pdesc_patt_pinfo, 'plugin_type', str)
+            check(output_info_pdesc_patt_pinfo, 'plugin_version', str)
+            check(output_info_pdesc_patt, 'risk_information', dict)
+            check(output_info_pdesc_patt['risk_information'], 'risk_factor', str)
+            check(output_info_pdesc_patt, 'solution', str, allow_none=True)
+            check(output_info_pdesc_patt, 'synopsis', str, allow_none=True)
 
-        check(output, 'outputs', list)
-        for data in output['outputs']:
-            check(data, 'has_attachment', int)
-            check(data, 'hosts', list, allow_none=True)
-            check(data, 'plugin_output', str, allow_none=True)
-            check(data, 'ports', dict)
-            for port in data['ports']:
-                check(data['ports'], port, list)
-                for port_detail in data['ports'][port]:
-                    check(port_detail, 'hostname', str)
-            check(data, 'severity', int)
+            check(output, 'outputs', list)
+            for data in output['outputs']:
+                check(data, 'has_attachment', int)
+                check(data, 'hosts', list, allow_none=True)
+                check(data, 'plugin_output', str, allow_none=True)
+                check(data, 'ports', dict)
+                for port in data['ports']:
+                    check(data['ports'], port, list)
+                    for port_detail in data['ports'][port]:
+                        check(port_detail, 'hostname', str)
+                check(data, 'severity', int)
     except KeyError as error:
         log_exception(error)
         print('Invalid key', error)

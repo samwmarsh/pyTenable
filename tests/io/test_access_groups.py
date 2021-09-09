@@ -380,7 +380,8 @@ def test_access_groups_list(api):
         check(group, 'all_assets', bool)
         check(group, 'all_users', bool)
         #check(group, 'created_by_uuid', 'uuid') # Will not return for default group
-        check(group, 'updated_by_uuid', 'uuid')
+        if group.get('updated_by_uuid'):
+            check(group, 'updated_by_uuid', 'uuid')
         check(group, 'created_by_name', str)
         check(group, 'updated_by_name', str)
         check(group, 'processing_percent_complete', int)

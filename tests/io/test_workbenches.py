@@ -507,7 +507,8 @@ def test_workbench_asset_vuln_output(api):
             outputs = api.workbenches.asset_vuln_output(vuln[0]['id'], plugin_id)
             assert isinstance(outputs, list)
             output = outputs[0]
-            check(output, 'plugin_output', str)
+            if output.get('plugin_output'):
+                check(output, 'plugin_output', str)
             check(output, 'states', list)
             for state in output['states']:
                 check(state, 'name', str)
@@ -894,7 +895,8 @@ def test_workbench_vuln_outputs(api):
         assert isinstance(outputs, list)
         if outputs:
             output = outputs[0]
-            check(output, 'plugin_output', str)
+            if output.get('plugin_output'):
+                check(output, 'plugin_output', str)
             check(output, 'states', list)
             for state in output['states']:
                 check(state, 'name', str)
