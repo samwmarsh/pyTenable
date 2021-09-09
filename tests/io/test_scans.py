@@ -1177,6 +1177,7 @@ def test_scan_create_scheduled_scan_freq_yearly(api):
     check(scan, 'uuid', str)
     assert scan['enabled'] is True
     assert scan['rrules'] == 'FREQ=YEARLY;INTERVAL=2'
+    api.scans.schedule(scan['id'], False)
     api.scans.delete(scan['id'])
 
 #
