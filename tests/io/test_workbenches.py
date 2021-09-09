@@ -169,16 +169,11 @@ def test_workbench_asset_activity(api):
                     check(data, 'details', dict)
                     check(data['details'], 'assetId', 'uuid')
                     check(data['details'], 'createdAt', 'datetime')
-                    resp_keys = {
-                        'firstScanTime': 'datetime',
-                        'hasAgent': bool,
-                        'lastLicensedScanTime': 'datetime',
-                        'lastLicensedScanTimeV2': 'datetime',
-                        'lastScanTime': 'datetime'
-                    }
-                    for k, v in resp_keys.items():
-                        if k in data['details']:
-                            check(data['details'], k, v)
+                    check(data['details'], 'firstScanTime', 'datetime', missing=True)
+                    check(data['details'], 'hasAgent', bool, missing=True)
+                    check(data['details'], 'lastLicensedScanTime', 'datetime', missing=True)
+                    check(data['details'], 'lastLicensedScanTimeV2', 'datetime', missing=True)
+                    check(data['details'], 'lastScanTime', 'datetime', missing=True)
                     check(data['details'], 'properties', dict)
                     for keys in data['details']['properties'].keys():
                         check(data['details']['properties'][keys], 'values', list)
@@ -189,9 +184,9 @@ def test_workbench_asset_activity(api):
                         check(status, 'name', str)
                     check(data['details'], 'updatedAt', 'datetime')
                 if data['type'] in ['discovered', 'seen']:
-                    check(data, 'scan_id', str)
-                    check(data, 'schedule_id', str)
-                    check(data, 'source', str)
+                    check(data, 'scan_id', str, missing=True)
+                    check(data, 'schedule_id', str, missing=True)
+                    check(data, 'source', str, missing=True)
     except NotFoundError:
         print('Activity for the asset uuid is not found')
 
@@ -507,8 +502,7 @@ def test_workbench_asset_vuln_output(api):
             outputs = api.workbenches.asset_vuln_output(vuln[0]['id'], plugin_id)
             assert isinstance(outputs, list)
             output = outputs[0]
-            if output.get('plugin_output'):
-                check(output, 'plugin_output', str)
+            check(output, 'plugin_output', str, missing=True)
             check(output, 'states', list)
             for state in output['states']:
                 check(state, 'name', str)
@@ -895,8 +889,7 @@ def test_workbench_vuln_outputs(api):
         assert isinstance(outputs, list)
         if outputs:
             output = outputs[0]
-            if output.get('plugin_output'):
-                check(output, 'plugin_output', str)
+            check(output, 'plugin_output', str, missing=True)
             check(output, 'states', list)
             for state in output['states']:
                 check(state, 'name', str)
