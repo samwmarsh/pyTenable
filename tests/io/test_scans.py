@@ -1320,7 +1320,6 @@ def test_scan_results(api):
             for notes in result['notes']:
                 check(notes, 'title', str)
                 check(notes, 'message', str)
-                check(notes, 'severity', int)
 
         check(result, 'remediations', dict)
         check(result['remediations'], 'num_hosts', int)
@@ -1557,9 +1556,8 @@ def test_scan_host_details(api, scan_results):
     test to retrieve the host details from a specific scan
     '''
     try:
-        hosts = api.scans.host_details(scan_results['id'], scan_results['results']['hosts'])
-        if hosts:
-            host = hosts[0]['asset_id']
+        if scan_results['results']['hosts']:
+            host = api.scans.host_details(scan_results['id'], scan_results['results']['hosts'][0]['asset_id'])
             assert isinstance(host, dict)
             check(host, 'info', dict)
             check(host['info'], 'host-fqdn', str, allow_none=True)
@@ -1768,10 +1766,9 @@ def test_scan_plugin_output(api, scan_results):
     test to get scan plugin output
     '''
     try:
-        hosts = api.scans.host_details(
-            scan_results['id'], scan_results['results']['hosts'][0]['asset_id'])
-        if hosts:
-            host = hosts[0]['asset_id']
+        if scan_results['results']['hosts']:
+            host = api.scans.host_details(
+                scan_results['id'], scan_results['results']['hosts'][0]['asset_id'])
             output = api.scans.plugin_output(
                 scan_results['id'],
                 host['vulnerabilities'][0]['host_id'],

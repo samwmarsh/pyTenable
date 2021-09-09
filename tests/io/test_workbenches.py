@@ -189,7 +189,7 @@ def test_workbench_asset_activity(api):
                         check(status, 'name', str)
                     check(data['details'], 'updatedAt', 'datetime')
                 if data['type'] in ['discovered', 'seen']:
-                    check(data, 'scan_id', 'scanner-uuid')
+                    check(data, 'scan_id', str)
                     check(data, 'schedule_id', str)
                     check(data, 'source', str)
     except NotFoundError:
