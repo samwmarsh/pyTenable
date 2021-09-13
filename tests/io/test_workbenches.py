@@ -1,10 +1,11 @@
 '''
 test workbenches
 '''
+import time
 import uuid
 from io import BytesIO
 import pytest
-from tenable.errors import UnexpectedValueError, NotFoundError
+from tenable.errors import UnexpectedValueError, NotFoundError, UnsupportedError
 from tests.checker import check
 
 
@@ -642,8 +643,17 @@ def test_workbench_export(api):
     '''
     test workbench export
     '''
-    fobj = api.workbenches.export()
-    assert isinstance(fobj, BytesIO)
+    retry = 3
+    wait = 5
+    for i in range(retry):
+        try:
+            fobj = api.workbenches.export()
+            assert isinstance(fobj, BytesIO)
+            break
+        except UnsupportedError as e:
+            if i == retry - 1:
+                raise
+            time.sleep(wait)
 
 
 
@@ -651,9 +661,17 @@ def test_workbench_export_plugin_id(api):
     '''
     test workbench export with plugin_id
     '''
-    fobj = api.workbenches.export(plugin_id=19506)
-    assert isinstance(fobj, BytesIO)
-
+    retry = 3
+    wait = 5
+    for i in range(retry):
+        try:
+            fobj = api.workbenches.export(plugin_id=19506)
+            assert isinstance(fobj, BytesIO)
+            break
+        except UnsupportedError as e:
+            if i == retry - 1:
+                raise
+            time.sleep(wait)
 
 
 def test_workbench_export_asset_uuid(api):
@@ -661,8 +679,17 @@ def test_workbench_export_asset_uuid(api):
     test workbench export with asset_uuid
     '''
     assets = api.workbenches.assets()
-    fobj = api.workbenches.export(asset_uuid=assets[0]['id'])
-    assert isinstance(fobj, BytesIO)
+    retry = 3
+    wait = 5
+    for i in range(retry):
+        try:
+            fobj = api.workbenches.export(asset_uuid=assets[0]['id'])
+            assert isinstance(fobj, BytesIO)
+            break
+        except UnsupportedError as e:
+            if i == retry - 1:
+                raise
+            time.sleep(wait)
 
 
 
@@ -1001,10 +1028,19 @@ def test_workbenches_export_success(api):
     '''
     test to export the data from vulnerability workbench
     '''
-    with open('example.nessus', 'wb') as fobj:
-        api.workbenches.export(filter_type='or',
-                               fobj=fobj)
-
+    retry = 3
+    wait = 5
+    for i in range(retry):
+        try:
+            with open('example.nessus', 'wb') as fobj:
+                api.workbenches.export(filter_type='or',
+                                       fobj=fobj)
+            fobj.close()
+            break
+        except UnsupportedError as e:
+            if i == retry - 1:
+                raise
+            time.sleep(wait)
 
 
 def test_workbench_vulns_fields(api):
