@@ -5,7 +5,7 @@ import uuid
 import time
 import os
 from io import BytesIO
-from sys import stdout
+from sys import stdout, version
 import pytest
 from tenable.reports.nessusv2 import NessusReportv2
 from tenable.errors import UnexpectedValueError, NotFoundError, InvalidInputError, UnsupportedError
@@ -21,7 +21,7 @@ def fixture_scheduled_scan(request, api):
     '''
     schedule_scan = api.scans.create_scan_schedule(enabled=True)
     scan = api.scans.create(
-        name='pytest: {}'.format(uuid.uuid4()),
+        name='py: {} pytest: {}'.format(version[0:3], uuid.uuid4()),
         template='basic',
         targets=['127.0.0.1'],
         schedule_scan=schedule_scan
