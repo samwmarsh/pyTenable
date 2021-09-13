@@ -501,7 +501,7 @@ def test_scan_configure_schedule_freq_weekly_valavailable(api):
     create_schedule = api.scans.create_scan_schedule(
         enabled=True, frequency='weekly', weekdays=['MO', 'TU'])
     scan = api.scans.create(
-        name='pytest: {}'.format(uuid.uuid4()),
+        name='py: {} pytest: {}'.format(version[0:3], uuid.uuid4()),
         template='basic',
         targets=['127.0.0.1'],
         schedule_scan=create_schedule)
@@ -685,7 +685,7 @@ def test_scan_configure_schedule_freq_monthly_valavailable(api):
     create_schedule = api.scans.create_scan_schedule(
         enabled=True, frequency='monthly', day_of_month=8)
     scan = api.scans.create(
-        name='pytest: {}'.format(uuid.uuid4()),
+        name='py: {} pytest: {}'.format(version[0:3], uuid.uuid4()),
         template='basic',
         targets=['127.0.0.1'],
         schedule_scan=create_schedule)
@@ -914,7 +914,7 @@ def test_scan_create_scheduled_scan_default_schedule(api):
     '''
     schedule_scan = api.scans.create_scan_schedule(enabled=True)
     scan = api.scans.create(
-        name='pytest: {}'.format(uuid.uuid4()),
+        name='py: {} pytest: {}'.format(version[0:3], uuid.uuid4()),
         template='basic',
         targets=['127.0.0.1'],
         schedule_scan=schedule_scan
@@ -952,7 +952,7 @@ def test_scan_create_scheduled_scan_freq_daily(api):
     '''
     schedule_scan = api.scans.create_scan_schedule(enabled=True, frequency='daily')
     scan = api.scans.create(
-        name='pytest: {}'.format(uuid.uuid4()),
+        name='py: {} pytest: {}'.format(version[0:3], uuid.uuid4()),
         template='basic',
         targets=['127.0.0.1'],
         schedule_scan=schedule_scan
@@ -991,7 +991,7 @@ def test_scan_create_scheduled_scan_freq_weekly_valdefault(api):
     '''
     schedule_scan = api.scans.create_scan_schedule(enabled=True, frequency='weekly')
     scan = api.scans.create(
-        name='pytest: {}'.format(uuid.uuid4()),
+        name='py: {} pytest: {}'.format(version[0:3], uuid.uuid4()),
         template='basic',
         targets=['127.0.0.1'],
         schedule_scan=schedule_scan
@@ -1031,7 +1031,7 @@ def test_scan_create_scheduled_scan_freq_weekly_valassigned(api):
     schedule_scan = api.scans.create_scan_schedule(
         enabled=True, frequency='weekly', weekdays=['MO', 'TU'])
     scan = api.scans.create(
-        name='pytest: {}'.format(uuid.uuid4()),
+        name='py: {} pytest: {}'.format(version[0:3], uuid.uuid4()),
         template='basic',
         targets=['127.0.0.1'],
         schedule_scan=schedule_scan
@@ -1070,7 +1070,7 @@ def test_scan_create_scheduled_scan_freq_monthly_valdefault(api):
     '''
     schedule_scan = api.scans.create_scan_schedule(enabled=True, frequency='monthly')
     scan = api.scans.create(
-        name='pytest: {}'.format(uuid.uuid4()),
+        name='py: {} pytest: {}'.format(version[0:3], uuid.uuid4()),
         template='basic',
         targets=['127.0.0.1'],
         schedule_scan=schedule_scan
@@ -1110,7 +1110,7 @@ def test_scan_create_scheduled_scan_freq_monthly_valassigned(api):
     schedule_scan = api.scans.create_scan_schedule(
         enabled=True, frequency='monthly', day_of_month=8)
     scan = api.scans.create(
-        name='pytest: {}'.format(uuid.uuid4()),
+        name='py: {} pytest: {}'.format(version[0:3], uuid.uuid4()),
         template='basic',
         targets=['127.0.0.1'],
         schedule_scan=schedule_scan
@@ -1148,7 +1148,7 @@ def test_scan_create_scheduled_scan_freq_yearly(api):
     '''
     schedule_scan = api.scans.create_scan_schedule(enabled=True, frequency='yearly', interval=2)
     scan = api.scans.create(
-        name='pytest: {}'.format(uuid.uuid4()),
+        name='py: {} pytest: {}'.format(version[0:3], uuid.uuid4()),
         template='basic',
         targets=['127.0.0.1'],
         schedule_scan=schedule_scan
@@ -2015,7 +2015,7 @@ def test_scan_create_scan_success(api):
     test to create a scan
     '''
     scan = api.scans.create(
-        name='pytest: {}'.format(uuid.uuid4()),
+        name='py: {} pytest: {}'.format(version[0:3], uuid.uuid4()),
         targets=['127.0.0.1'])
     assert isinstance(scan, dict)
     check(scan, 'tag_type', None, allow_none=True)

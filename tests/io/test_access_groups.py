@@ -405,7 +405,7 @@ def test_access_groups_list_fields(api):
         check(group, 'all_assets', bool)
         check(group, 'all_users', bool)
         # check(i, 'created_by_uuid', 'uuid') # Will not return for default group
-        check(group, 'updated_by_uuid', 'uuid')
+        check(group, 'updated_by_uuid', 'uuid', missing=True)
         check(group, 'created_by_name', str)
         check(group, 'updated_by_name', str)
         check(group, 'processing_percent_complete', int)
