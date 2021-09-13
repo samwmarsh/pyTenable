@@ -32,8 +32,6 @@ def fixture_scheduled_scan(request, api):
         cleanup function to delete scan
         '''
         try:
-            api.scans.delete(scan['id'])
-        except UnsupportedError as e:
             api.scans.schedule(scan['id'], False)
             time.sleep(5)
             api.scans.delete(scan['id'])
