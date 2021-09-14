@@ -4,7 +4,7 @@ test policies
 import io
 import os
 import uuid
-
+from sys import version
 import pytest
 from tenable.errors import NotFoundError
 from ..checker import check
@@ -42,12 +42,12 @@ def test_configure_policy(api, policy):
     '''
     test to configure the policy
     '''
-    name = str(uuid.uuid4())
+    v =  'MODIFIED_{}'.format(version[0:3])
     details = api.policies.details(policy['policy_id'])
-    details['settings']['name'] = name
+    details['settings']['name'] = v
     api.policies.configure(policy['policy_id'], details)
     updated = api.policies.details(policy['policy_id'])
-    assert updated['settings']['name'] == name
+    assert updated['settings']['name'] == v
 
 
 

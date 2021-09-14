@@ -3,6 +3,7 @@ test tags
 '''
 import uuid
 import pytest
+from sys import version
 from tests.checker import check, single
 from tenable.io.tags import TagsIterator
 from tests.pytenable_log_handler import log_exception
@@ -697,8 +698,8 @@ def test_tags_edit_success(api, tagvalue):
     '''
     test to edit tag category/value pair information.
     '''
-    value = str(uuid.uuid4())
-    resp = api.tags.edit(tagvalue['uuid'], value=value)
+    v = 'Edited_{}'.format(version[0:3])
+    resp = api.tags.edit(tagvalue['uuid'], value=v)
     assert isinstance(resp, dict)
     check(resp, 'uuid', 'uuid')
     check(resp, 'created_at', 'datetime')
@@ -717,7 +718,7 @@ def test_tags_edit_success(api, tagvalue):
     check(resp['access_control'], 'current_user_permissions', list)
     check(resp['access_control'], 'defined_domain_permissions', list)
     # check(tagvalue, 'filters', dict, allow_none=True)
-    assert resp['value'] == value
+    assert resp['value'] == v
 
 
 
@@ -797,8 +798,8 @@ def test_tags_edit_category_success(api, tagcat):
     '''
     test to edit tag category information.
     '''
-    name = str(uuid.uuid4())
-    resp = api.tags.edit_category(tagcat['uuid'], name=name)
+    v = 'Edited_{}'.format(version[0:3])
+    resp = api.tags.edit_category(tagcat['uuid'], name=v)
     assert isinstance(resp, dict)
     check(resp, 'uuid', 'uuid')
     check(resp, 'created_at', 'datetime')
@@ -808,7 +809,7 @@ def test_tags_edit_category_success(api, tagcat):
     check(resp, 'name', str)
     # check(t, 'description', str, allow_none=True)
     check(resp, 'reserved', bool)
-    assert resp['name'] == name
+    assert resp['name'] == v
 
 
 def test_tags_list_constructor_filter_type_typeerror(api):
