@@ -102,7 +102,7 @@ def test_exports_vulns(api):
     check(vuln, 'asset', dict)
     check(vuln, 'first_found', str)
     check(vuln, 'last_found', str)
-    check(vuln, 'output', str)
+    check(vuln, 'output', str, missing=True)
     check(vuln, 'plugin', dict)
 
     # Just like with the asset dictionary, the plug-in sub-document is highly
