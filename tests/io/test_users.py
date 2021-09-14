@@ -131,6 +131,7 @@ def test_users_details_id_typeerror(api):
         api.users.details('nope')
 
 
+@pytest.mark.vcr()
 def test_users_details_notfounderror(api):
     '''
     test to raise exception when user_id not found.
@@ -197,6 +198,7 @@ def test_users_edit_enabled_typeerror(api):
         api.users.edit(1, enabled='nope')
 
 
+@pytest.mark.vcr()
 def test_users_edit_notfounderror(api):
     '''
     test to raise exception when user_id not found.
