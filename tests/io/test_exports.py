@@ -377,3 +377,12 @@ def test_exports_compliance(api):
     except TioExportsError as error:
         print(error.msg)
         log_exception(error)
+
+@pytest.mark.vcr()
+def test_exports_vulns_since_param_check(api):
+    '''
+    test to export the vulnerability data from a specified time.
+    969062400 represents the date 2000/09/16 00:00 hrs
+    '''
+    vulns = api.exports.vulns(since=969062400, state=['OPEN'])
+    assert isinstance(vulns, ExportsIterator)

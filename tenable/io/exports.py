@@ -206,6 +206,22 @@ class ExportsAPI(TIOEndpoint):
             severity (list[str], optional):
                 list of severities to include as part of the export.  Supported
                 values are `info`, `low`, `medium`, `high`, and `critical`.
+            since (int, optional):
+                The start date (in Unix time) for the range of data you want to export.
+                Use this filter in conjunction with the state filter as follows:
+
+                If the state filter is set to ``open`` or ``reopened``, the export includes data for vulnerabilities
+                that were seen on or after the since date you specify.
+
+                If the state filter is set to ``fixed``, the export includes data for vulnerabilities that were
+                fixed on or after the since date you specify.
+
+                If you do not include the state filter in your request, the export includes data for open and
+                reopened vulnerabilities that were seen on or after the since date you specify,
+                and fixed vulnerabilities that were fixed on or after the since date you specify.
+
+                Note: This filter cannot be used in conjunction with the ``first_found``, ``last_found``, or
+                ``last_fixed`` filters.
             state (list[str], optional):
                 list of object states to be returned.  Supported values are
                 `open`, `reopened`, and `fixed`.
@@ -265,6 +281,12 @@ class ExportsAPI(TIOEndpoint):
 
             >>> for vuln in tio.exports.vulns(severity=['critical']):
             ...     pprint(vuln)
+
+            Export the vulnerability data from specified date, say from 2000/09/16 00:00 hrs:
+
+            >>> vulns = api.exports.vulns(since=969062400, state=['OPEN'])
+            >>> for vuln in vulns:
+            >>>     pprint(vuln)
         '''
         uuid = kw.get('uuid')
         payload = {'filters': dict()}
